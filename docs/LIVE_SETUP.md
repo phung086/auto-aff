@@ -14,7 +14,9 @@ Kiểm tra trực tiếp ngày 08/10 trên cùng hồ sơ Chrome đã đăng nh�
 
 Lần consent thật gặp ERR_BLOCKED_BY_CLIENT khi trở về callback. CSP của trang authorize chỉ có form-action self, chặn redirect khác origin trên Chrome. Đã sửa để cho phép thêm đúng origin callback HTTPS thuộc client đã đăng ký, dùng redirect 303 sau POST và giữ Origin/nonce/PKCE/client/resource checks. Kiểm thử local trên cùng Chrome tái hiện form self bị chặn, thêm callback chạy được; 28 Node tests qua với consent POST và Origin sai bị từ chối. Chưa coi đây là bằng chứng consent thật hoàn tất.
 
-Broker đã restart để áp dụng sửa; Quick Tunnel cấp hostname mới, owner code trong file cũng đổi. Chrome pairing giữ nguyên. Kết nối dùng URL cũ không còn hoạt động. UI quản lý hiện không cho sửa endpoint, nên chuẩn bị custom MCP thay thế tên **LinkDesk AI 0.2**. Luôn lấy URL hiện tại từ health/terminal. Không bấm kết nối vào bản LinkDesk AI cũ hoặc dùng owner code đã sao chép trước restart. Chưa xóa bản cũ để tránh xóa cấu hình tài khoản ngoài yêu cầu.
+Broker đã restart để áp dụng sửa; Quick Tunnel cấp hostname mới, owner code trong file cũng đổi. Chrome pairing giữ nguyên. Kết nối dùng URL cũ không còn hoạt động. UI quản lý hiện không cho sửa endpoint, nên đã tạo custom MCP thay thế tên **LinkDesk AI 0.2**, mở trang OAuth để chủ tài khoản nhập mã. Luôn lấy URL hiện tại từ health/terminal. Không bấm kết nối vào bản LinkDesk AI cũ hoặc dùng owner code đã sao chép trước restart. Chưa xóa bản cũ để tránh xóa cấu hình tài khoản ngoài yêu cầu.
+
+Đã đọc trang chủ nhà cung cấp trên Chrome bằng đúng raw affiliate URL và tạo 1 task analyze tại broker để kiểm tra MCP. Task này tạo qua device API, không gắn vào pending handle của dashboard Chrome. Hoàn tất task chứng minh broker nhận kết quả, chưa chứng minh form extension tự điền; cần một yêu cầu do chính extension tạo cho bước nghiệm thu đó. Task thử hết hạn sau 30 phút, không tái enqueue cùng key nếu đã expired. Không giữ session/tunnel tạm như một dịch vụ production.
 
 ## Resume theo thứ tự
 
