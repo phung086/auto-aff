@@ -10,14 +10,15 @@ Ngày08/10/2026. Phân biệt local tests và tích hợp tài khoản thật.
 - MCP SDK initialize/list/call qua in-memory và HTTP stateless; schema/output/pagination. OAuth consent, PKCE sai, code một lần, revoke.
 - Report sai link/ngày/số âm bị chặn, dedupe, backup giữ snapshot khi campaign đổi.
 - HTTPS protected-resource metadata trả200; MCP chưa xác thực trả401. Chưa chứng minh ChatGPT account đã kết nối.
+- Chrome cá nhân điều khiển được qua tiện ích ChatGPT chính thức, Plus đăng nhập sẵn. Form custom MCP đã tự nhận metadata OAuth, DCR, scope compose và resource đúng endpoint. Gói plugin riêng tư đã lưu trong tài khoản, nhưng upload gói không chứng minh kết nối MCP hoạt động.
 - UI Home, ChatGPT mặc định/API nâng cao, stats thiếu click rõ, SUPER_PLAN HTML; desktop và khung390px qua browser preview. Preview không gọi AI/Facebook.
 - Fixture0.1 từng kiểm tra điền/gửi một lần trên trang mô phỏng, không Facebook thật.
 
-Gate release: `npm test`, `npm run check`; CI trong .github/workflows/ci.yml. Evaluation10 câu có dataset mô phỏng cố định và test đáp án, chưa chạy model evaluation trên ChatGPT thật.
+Gate release: **28 kiểm thử đã qua**, `npm run check` đã qua; GitHub Actions trên commit4501d7d đã hoàn tất success. CI trong .github/workflows/ci.yml. Evaluation10 câu có dataset mô phỏng cố định và test đáp án, chưa chạy model evaluation trên ChatGPT thật.
 
 ## Chưa nghiệm thu
 
-ChatGPT Plus/plugin thật, extension trong Chrome profile người dùng, Facebook join/comment/Page, Page quyền/token và supplier API click/conversion/commission. Browser hiện có dừng ở challenge ChatGPT, không Chrome profile được kết nối. Không vượt challenge hoặc đọc cookie.
+OAuth consent và bốn tools trong ChatGPT thật, analyze/compose trả về extension Chrome, Facebook join/comment/Page, Page quyền/token và supplier API click/conversion/commission. Chrome đã kết nối; form MCP đang chờ duyệt quyền. Extension LinkDesk chưa được cài vào profile này. Không vượt challenge hoặc đọc cookie.
 
 ## Giới hạn
 

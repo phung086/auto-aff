@@ -8,7 +8,7 @@ web
 
 ## Stack
 
-Manifest V3 Chrome extension using HTML, CSS and JavaScript modules. The user chose Chrome and explicitly asked to continue building the existing tool. No build dependencies or remote executable code.
+Manifest V3 Chrome extension using HTML, CSS and JavaScript modules, with a Node22 local task broker and official MCP SDK. The user chose Chrome and explicitly asked to continue the existing tool. Extension scripts remain bundled; server dependencies are pinned in package-lock.json.
 
 ## Users
 
@@ -16,7 +16,7 @@ A Vietnamese speaking affiliate for an AI resource supplier, expanding to additi
 
 ## Product Purpose
 
-Read supplier information, produce relevant Vietnamese content using a configured AI API, attach the exact referral URL and publish to selected Facebook destinations that permit advertising.
+Read supplier information, produce relevant Vietnamese content through a ChatGPT MCP plugin without an AI API key, attach the exact referral URL and run bounded sessions for selected Facebook destinations that permit advertising. The prior AI API adapter is optional.
 
 ## Operating Context
 
@@ -25,7 +25,7 @@ The user says their intended groups permit advertising and most activity is comm
 ## Capabilities and Constraints
 
 - Multiple independent supplier campaigns, each with product information, referral URL and keywords.
-- AI source analysis and content generation use a user-supplied OpenAI API key and model. Never fabricate provider prices or endorsements.
+- AI source analysis and content generation use ChatGPT through authenticated MCP by default. An API key/model is only needed for the optional API provider. Never fabricate prices or endorsements.
 - Pages use the authorized Pages API. Groups have no public publishing API; the experimental group adapter scans loaded DOM posts and sends through the Facebook interface.
 - Automatic runs begin only after the user chooses destinations and permits the run. Send once and stop on ambiguous outcome or unsupported interface.
 - Session secrets stay in Chrome session storage, are omitted from state, exports and UI readbacks. Backups require reapproval of pending jobs and disable scheduling.
@@ -44,4 +44,4 @@ The exact user-supplied referral link was opened on 07/10/2026. AgentShop247's h
 
 ## Open Decisions
 
-Actual Facebook destinations, Page token, AI key and API model must be supplied locally by the user. Real Facebook sending has not been validated in this environment.
+Actual Facebook destinations and optional Page token must be supplied locally. ChatGPT OAuth/pairing must be completed in the user's session; an AI API key is not required for that provider. Real Facebook sending and ChatGPT-account task completion have not been validated in this environment.

@@ -14,7 +14,7 @@ ChatGPT thực hiện suy luận và gọi MCP. Cầu nối không đọc cookie
 
 ## Thiết lập trong ChatGPT
 
-Theo [hướng dẫn chính thức](https://developers.openai.com/plugins/deploy/connect-chatgpt): Plugins → nút+ → Add custom MCP server. Đặt tên LinkDesk, mô tả “Biên soạn cho hàng đợi affiliate tại máy”. Nhập HTTPS URL có `/mcp`, chọn OAuth, review quyền/risk notice và Create as a plugin. Khi trang consent LinkDesk mở, nhập mã owner-code tại máy. Quyền chỉ đọc yêu cầu và ghi kết quả biên soạn.
+Theo [hướng dẫn chính thức](https://developers.openai.com/api/docs/guides/custom-mcp-server): Plugins → nút+ → Add custom MCP server (UI tiếng Việt: Thêm → Tạo server MCP tùy chỉnh). Đặt tên LinkDesk AI, mô tả “Biên soạn cho hàng đợi affiliate tại máy”. Nhập HTTPS URL có `/mcp`, chọn OAuth. Cài đặt nâng cao phải tự nhận DCR, scope compose và các endpoint cùng hostname. Review quyền/risk notice và Create as a plugin. Khi trang consent LinkDesk mở, chủ tài khoản tự nhập mã owner-code tại máy và đồng ý. Quyền chỉ đọc yêu cầu và ghi kết quả biên soạn.
 
 Kết quả phải có bốn tools: `linkdesk_list_tasks`, `linkdesk_get_task`, `linkdesk_submit_result`, `linkdesk_queue_summary`. Mở chat mới, @plugin LinkDesk, nhắn: “Xử lý tối đa10 yêu cầu LinkDesk đang chờ. Bỏ qua bài không có nhu cầu trực tiếp. Chỉ viết nội dung không URL; gửi kết quả đúng ID.”
 
@@ -36,4 +36,4 @@ Quick Tunnel đổi URL khi restart; auth provider xóa token khi restart. Acces
 
 ## Gói plugin
 
-Root `plugin.json`, `mcp.json` và `skills/` tạo gói portable local. `npm run package` xuất thư mục `dist/linkdesk`, cần `npm ci` trước khi chạy. Gói stdio kết nối broker đã khởi động. ChatGPT web dùng custom MCP HTTPS; technical ID của plugin thật chỉ có sau khi đăng ký. Không bịa ID trong `.app.json`. Chưa nộp lên public plugin directory.
+Root `plugin.json`, `mcp.json` và `skills/` tạo gói portable local. `npm run package` xuất thư mục `dist/linkdesk`, cần `npm ci` trước khi chạy. Gói stdio kết nối broker đã khởi động. Gói cloud riêng tư có thể hiện trong tài khoản nhưng mở theo luồng Desktop; upload gói không tự đăng ký hay xác thực kết nối MCP web. ChatGPT web dùng custom MCP HTTPS; technical ID của kết nối chỉ có sau khi đăng ký. Không bịa ID trong `.app.json`. Chưa nộp lên public plugin directory. Trạng thái thử nghiệm và cách tiếp tục ở [LIVE_SETUP](LIVE_SETUP.md).

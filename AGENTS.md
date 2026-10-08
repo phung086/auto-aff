@@ -8,7 +8,7 @@ Tiện ích Chrome tiếng Việt quản lý nhiều nhà cung cấp affiliate; 
 
 ## Invariants
 
-`https://agentshop247.com/?ref=AS362560C5A713` phải được giữ nguyên từng ký tự. Không dùng URL.to String() để lưu hoặc xuất link; URL chỉ dùng để kiểm tra hợp lệ. URL snapshot của job không bị đổi khi sửa campaign. AI không tạo URL. assert Link chạy trước mọi gửi; chỉ một URL, trên dòng riêng, nhãn tiếp thị ngắn.
+`https://agentshop247.com/?ref=AS362560C5A713` phải được giữ nguyên từng ký tự. Không dùng `URL.toString()` để lưu hoặc xuất link; URL chỉ dùng để kiểm tra hợp lệ. URL snapshot của job không bị đổi khi sửa campaign. AI không tạo URL. `assertLink` chạy trước mọi gửi; chỉ một URL, trên dòng riêng, nhãn tiếp thị ngắn.
 
 Không giả mạo trải nghiệm. Không bỏ nhãn tiếp thị để giấu hoa hồng. Không tự cấp quyền quảng cáo/tham gia, không vượt kiểm tra tài khoản. Không retry `uncertain`. Mọi gửi có claim nguyên tử và bằng chứng trạng thái. Không dùng tốc độ, account rotation hay stealth làm mục tiêu kỹ thuật.
 
@@ -23,7 +23,7 @@ MCP chỉ đọc task và ghi nội dung soạn, không có tool gửi Facebook.
 - `extension/ai.mjs`, `facebook.mjs`: API tùy chọn, Page API.
 - `extension/dashboard.*`, `style.css`: UI. Giữ font và tokens trong DESIGN.md.
 - `server/`: broker task, hợp đồng Zod, MCP SDK, OAuth, loopback device API.
-- `scripts/`: kết nối, kiểm tra, đóng gói. `plugin/`: manifest/skill portable.
+- `scripts/`: kết nối, kiểm tra, đóng gói. Root `plugin.json`, `mcp.json` và `skills/`: gói plugin portable.
 - `tests/`: kiểm thử hành vi có ý nghĩa; `qa/`: fixture local, không phải Facebook thật.
 
 ## Làm và kiểm chứng

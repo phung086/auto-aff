@@ -14,7 +14,7 @@ SUPER_PLAN có sơ đồ Mermaid và HTML; plan.json ghi mốc. AGENTS và BACKL
 
 ## Bằng chứng và điểm còn thiếu
 
-Local tests và HTTPS metadata/auth rejection có kiểm chứng; xem VALIDATION. Chưa xác minh ChatGPT Plus thật gọi tools và Chrome nhận kết quả. CUA hiện chỉ có In-app Browser; ChatGPT dừng ở kiểm tra truy cập, không có Chrome profile được kết nối. Không đọc/đổi cookies/profile hoặc vượt challenge.
+Local tests và HTTPS metadata/auth rejection có kiểm chứng; xem VALIDATION. Chrome cá nhân đã kết nối qua tiện ích ChatGPT chính thức, tài khoản Plus đang đăng nhập. Đã lưu gói LinkDesk riêng tư trong tài khoản; UI gói này mở theo luồng Desktop. Form custom MCP trên ChatGPT web đã điền tên LinkDesk AI, HTTPS endpoint và OAuth; UI nhận đúng DCR, scope compose và các endpoint. Đang chờ duyệt quyền trước khi tạo kết nối. Chưa xác minh ChatGPT thật gọi bốn tools và Chrome nhận kết quả. Không đọc/đổi cookies/profile hoặc vượt challenge.
 
 Chưa cài extension vào Chrome người dùng, chưa thử Facebook join/comment/Page thật, chưa có Page token hoặc supplier API click/conversion. Quick Tunnel tạm; không ghi URL tạm vào manifest Git. Memory OAuth sessions cần kết nối lại sau restart. Plugin không tự tạo AI chạy nền24/7.
 
@@ -24,7 +24,7 @@ Chưa cài extension vào Chrome người dùng, chưa thử Facebook join/comme
 2. **L040/L031:** người dùng chọn nhóm cho phép quảng cáo và bài cụ thể, cap1. Kiểm tra membership/target và kết quả; câu hỏi thành viên cần người dùng. L043 nếu có Page token đúng quyền.
 3. **L012:** lưu handle manual qua reload; cancel/disconnect rõ. **L060:** host cố định/OAuth bền vững trước mở rộng.
 
-Nếu chưa có phiên Chrome/ChatGPT điều khiển được, tiếp tục L012/L060 và giữ live ticket mở. Không dùng private ChatGPT API làm đường tắt.
+Xem [LIVE_SETUP](LIVE_SETUP.md) để tiếp tục đúng bước còn thiếu. Không tạo lại gói plugin tài khoản nếu chỉ cần thêm kết nối MCP. Nếu đang chờ OAuth hoặc cài extension, tiếp tục L012/L060 và giữ live ticket mở. Không dùng private ChatGPT API làm đường tắt.
 
 ## Bẫy kỹ thuật
 

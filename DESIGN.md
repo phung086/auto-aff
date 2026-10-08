@@ -127,6 +127,8 @@ View arrival animates brightness and 3px vertical movement for .22s with ease-ou
 
 ## Do's and Don'ts
 
+Release0.2 retains these tokens and adds Home activation, ChatGPT-first setup, a contextual statistics table and an HTML development roadmap. Home uses a numbered sequence because setup order matters. Statistics show provenance and unknown click data; no fabricated hero metrics. API credentials live under a collapsed advanced section. Local pairing and actual ChatGPT connection are distinct states.
+
 - Do reuse the actual palette, type and control styles for additional views.
 - Do preserve the exact referral string in storage and generated content; wrapping is presentation only.
 - Do keep preview/simulated data visibly identified and publishing outcomes explicit.
