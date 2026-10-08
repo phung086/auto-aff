@@ -27,7 +27,7 @@ AI không viết URL. Ứng dụng gắn nguyên link đã lưu và kiểm tra t
 5. ChatGPT → Plugins → Add custom MCP server → địa chỉ HTTPS `/mcp`, OAuth. Cho phép bằng mã trong `.linkdesk-data/owner-code.txt` tại máy. Xem [hướng dẫn chi tiết](docs/PLUGIN_SETUP.md).
 6. Mở plugin LinkDesk trong ChatGPT và yêu cầu xử lý các yêu cầu đang chờ. Trong Chrome, kiểm tra chiến dịch/link, thêm nhóm được phép quảng cáo hoặc Page của mình, chọn đích/cap và cho phép phiên chạy.
 
-Giữ Chrome, broker và tunnel đang chạy. **Plugin không tự khởi động một AI chạy nền 24/7.** ChatGPT cần phiên làm việc xử lý hàng đợi. Quick Tunnel dùng để thử nghiệm, địa chỉ đổi khi restart. Host cố định/launcher là M6 trong kế hoạch.
+Giữ Chrome, broker và tunnel đang chạy. **Plugin không tự khởi động một AI chạy nền 24/7.** ChatGPT cần phiên làm việc xử lý hàng đợi. Quick Tunnel dùng để thử nghiệm, địa chỉ đổi khi restart. Code đã hỗ trợ named/external tunnel với URL cố định; xem [cấu hình địa chỉ cố định](docs/STABLE_CONNECTION.md). Chưa provision tên miền/tunnel thật hoặc OAuth bền vững/Windows service.
 
 ## Tính năng hiện có
 

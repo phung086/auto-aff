@@ -21,7 +21,7 @@ Ready nghĩa là có thể triển khai tiếp. Awaiting live nghĩa là code c�
 | L050 | M5 / P1 | Done-code | Status theo campaign, lịch sử CSV, báo cáo click nhập tay; không cộng kỳ trùng |
 | L051 | M5 / P1 | Ready | Adapter CSV nhà cung cấp: preview mapping columns, exact link/ref, dedupe source+period, bằng chứng import |
 | L052 | M5 / P2 | Pending supplier | Nhà cung cấp cấp API click/conversion/commission + định nghĩa metric; không suy đoán endpoint |
-| L060 | M6 / P0 | Ready | Owner code đã persist, startup không ghi đè khi bind lỗi. Còn HTTPS hostname cố định, persisted OAuth client/token hoặc provider chuẩn; revoke device/client; restart không phải reconnect hàng ngày |
+| L060 | M6 / P0 | In progress | Owner code persist; launcher hỗ trợ named/external URL cố định, token-file và cấu hình sai không fallback. Chủ dự án chưa có Cloudflare/domain, chưa provision host thật. Còn OAuth client/token persistence, refresh/revoke và nghiệm thu restart; xem STABLE_CONNECTION |
 | L061 | M6 / P1 | Ready | Windows background launcher, shutdown orderly, safe update/backup/rollback; ký bản phân phối |
 | L062 | M6 / P1 | Ready | Retention/delete task data có backup, không full-file corruption, test disk/full/crash; single-process lock |
 | L070 | M7 / P2 | Planned | Source adapter contracts/version, nhiều industry prompts, platform adapter API có quyền |

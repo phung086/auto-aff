@@ -38,10 +38,10 @@ flowchart LR
 | M3 — Tìm nhóm và tham gia | Tìm tối đa 10 nhóm đang hiển thị, kiểm tra quy định, tham gia một nhóm đã chọn, trạng thái chờ duyệt | Adapter thử nghiệm | Không tự xác nhận nhóm cho quảng cáo; câu hỏi thành viên cần người dùng; bấm một lần; uncertain không tự thử lại |
 | M4 — Gửi có bằng chứng | Quét bài, đánh giá liên quan, soạn, gửi một mục mỗi nhịp; Page qua API | Có mã; Facebook thật chưa nghiệm thu | Một nhóm thực được phép + một Page thực; đối chiếu đúng bài/link; STOP ngăn mục kế tiếp; kiểm tra gián đoạn |
 | M5 — Quản lý và số liệu | Kết quả theo chiến dịch, lịch sử CSV, nhập báo cáo click có nguồn và kỳ | Có mã cho thống kê và nhập thủ công | Click không suy từ số bài; không cộng kỳ trùng; không báo CTR/conversion thiếu dữ liệu |
-| M6 — Vận hành ổn định | Host HTTPS cố định, OAuth bền vững, Windows launcher, chẩn đoán, cập nhật có rollback | Chưa triển khai | Không cần URL tunnel mới mỗi phiên; sao lưu trước nâng cấp; không đưa token lên GitHub |
+| M6 — Vận hành ổn định | Host HTTPS cố định, OAuth bền vững, Windows launcher, chẩn đoán, cập nhật có rollback | Đang làm: named/external config có code; chưa host thật/OAuth bền vững | Không cần URL tunnel mới mỗi phiên; sao lưu trước nâng cấp; không đưa token lên GitHub |
 | M7 — Mở rộng | Adapter nguồn/nhà cung cấp, báo cáo API, lịch nội dung Page, các nền tảng cho phép | Chưa triển khai | Hợp đồng adapter + kiểm thử + quyền cụ thể; không sửa lõi exact-link |
 
-Ưu tiên kế tiếp: **M1 kết nối thật → M4 nghiệm thu Facebook nhỏ → M6 launcher/host ổn định**. Không mở rộng diện đăng khi ba điểm này chưa có bằng chứng.
+Ưu tiên kế tiếp: **L060 ổn định endpoint/OAuth → M1 nghiệm thu tools và bản thảo thật → M4 nghiệm thu Facebook nhỏ**. Gián đoạn Quick Tunnel đã chứng minh cần xử lý kết nối trước. Xem [STABLE_CONNECTION](STABLE_CONNECTION.md). Không mở rộng diện đăng khi ba điểm này chưa có bằng chứng.
 
 ## Các chặng và công việc
 

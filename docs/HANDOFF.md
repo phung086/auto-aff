@@ -22,6 +22,10 @@ Người dùng đã cài extension Chrome thủ công; ảnh version 0.2.0 và p
 
 Consent tài khoản thật đã hoàn tất: trang chi tiết và Quản lý của **LinkDesk AI hiện tại** trên cùng Chrome hiện **Tài khoản đã kết nối**, Primary. Những mô tả chờ consent ở phần lịch sử bên trên đã được thay thế bởi bằng chứng này. Cuộc trò chuyện **Kiểm tra LinkDesk AI** báo `Connection failed`; kiểm tra máy thấy broker đã dừng. Đã khôi phục broker/tunnel ở tiến trình nền, nhưng hostname Quick Tunnel mới khác URL app đang giữ, OAuth client/token trước restart cũng mất. Chưa nghiệm thu tool/task. UI Quản lý không có sửa URL; ưu tiên khôi phục endpoint được hỗ trợ/host ổn định, tránh tiếp tục tạo app trùng và bắt người dùng nhập mã lặp lại khi endpoint chưa đúng. Người dùng cần bấm tạo task trong extension vì browser automation từ chối `chrome-extension://`.
 
+## Cấu hình URL cố định đã có code
+
+Launcher `scripts/connect.mjs` đọc `.linkdesk-data/connection.json`; mode named chạy Cloudflare token-file, mode external dùng tunnel service đã cài, mode quick chỉ thử nghiệm. `scripts/connection-config.mjs` từ chối URL tạm/localhost/path/credentials và không fallback khi file cấu hình sai. Token không nằm trong argv/log hoặc artifact. 35 tests/check đã qua. Xem STABLE_CONNECTION để setup/kiểm chứng. Chủ dự án chưa có Cloudflare/tên miền; chưa provision hostname thật. OAuth client/token memory/24h/không refresh vẫn là blocker riêng. Ưu tiên L060 trước mở rộng Facebook, không đánh dấu M6 hoàn tất vì mới có code cấu hình.
+
 ## Việc tiếp theo
 
 1. **L011/L060:** broker đã khôi phục; không chạy thêm broker. Khôi phục endpoint ChatGPT đang dùng sau thay hostname, rồi xử lý một analyze và một compose từ extension; kiểm tra nguyên URL. Consent từng thành công không chứng minh tools đang truy cập được. Ghi evidence không chứa token.

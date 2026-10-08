@@ -18,7 +18,9 @@ Ngày08/10/2026. Phân biệt local tests và tích hợp tài khoản thật.
 - UI Home, ChatGPT mặc định/API nâng cao, stats thiếu click rõ, SUPER_PLAN HTML; desktop và khung390px qua browser preview. Preview không gọi AI/Facebook.
 - Fixture0.1 từng kiểm tra điền/gửi một lần trên trang mô phỏng, không Facebook thật.
 
-Gate release: **31 kiểm thử đã qua**, `npm run check` đã qua; CI trong .github/workflows/ci.yml chạy cho mỗi commit. Evaluation 10 câu có dataset mô phỏng cố định và test đáp án, chưa chạy model evaluation trên ChatGPT thật.
+- Cấu hình stable tunnel: thiếu file mặc định giữ tương thích; file chỉ định thiếu hoặc JSON sai bị từ chối; named giữ origin và token chỉ đi bằng file path; URL tạm/IP/path/credentials bị chặn; external không spawn tunnel. Đây là kiểm thử cấu hình, chưa nghiệm thu Named Tunnel/DNS hoặc Windows service thật.
+
+Gate release: **35 kiểm thử đã qua**, `npm run check` đã qua; CI trong .github/workflows/ci.yml chạy cho mỗi commit. Evaluation 10 câu có dataset mô phỏng cố định và test đáp án, chưa chạy model evaluation trên ChatGPT thật.
 
 ## Tài khoản thật và gián đoạn kết nối
 

@@ -20,7 +20,7 @@ SDK1.32.1/Zod4; stateless Streamable HTTP JSON, schema/structured output và ann
 
 Host allowlist theo public origin; nonce 5 phút/5 lần nhập; DCR callback HTTPS. Owner code được lưu và dùng lại trong owner-code.txt; chỉ tạo file mới sau khi cả hai cổng bind thành công, không ghi đè khi khởi động broker thứ hai thất bại. Chờ sự kiện listening/error thay vì callback app.listen của Express 5 để phân biệt lỗi bind. Các socket đã mở được đóng nếu startup thất bại. OAuth client/code/token còn trong memory; restart cần kết nối lại, access token 24h không refresh. Lỗi consent phân biệt mã sai, phiên hết hạn/đã dùng và vượt số lần nhập; không xuất mã/nonce trong thông báo.
 
-Tunnel chỉ expose8790; Device API loopback/exact Host. HTTP client không redirect ra host ngoài. PUBLIC_ORIGIN phải HTTPS origin không path/query; metadata không task/secrets. Quick Tunnel đổi hostname, không SLA; M6 cần host cố định/auth bền vững/launcher.
+Tunnel chỉ expose8790; Device API loopback/exact Host. HTTP client không redirect ra host ngoài. PUBLIC_ORIGIN phải HTTPS origin không path/query; metadata không task/secrets. Quick Tunnel đổi hostname, không SLA. Launcher đọc private connection.json: named dùng Cloudflare token-file, external giữ tunnel service riêng; cấu hình sai dừng, không fallback Quick Tunnel. Chưa provision host thật hoặc OAuth bền vững/service; xem STABLE_CONNECTION.
 
 ## Facebook và số liệu
 

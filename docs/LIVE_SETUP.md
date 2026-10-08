@@ -43,4 +43,4 @@ Facebook live là bước riêng: người dùng chọn nhóm được phép qu�
 
 ## Điều chưa đạt
 
-ChatGPT Plus không trở thành daemon tự xử lý hàng đợi chỉ vì cài plugin. Broker giữ task; ChatGPT cần phiên active gọi tools. Quick Tunnel và OAuth memory hiện phục vụ thử nghiệm, cần reconnect khi restart. M6 giải quyết hostname cố định, OAuth bền vững và launcher. Xem [DEPLOYMENT](DEPLOYMENT.md) để phân biệt tunnel vào máy cá nhân và backend cloud.
+ChatGPT Plus không trở thành daemon tự xử lý hàng đợi chỉ vì cài plugin. Broker giữ task; ChatGPT cần phiên active gọi tools. Quick Tunnel và OAuth memory hiện phục vụ thử nghiệm, cần reconnect khi restart. Code đã hỗ trợ named/external URL cố định qua connection.json nhưng chủ dự án chưa có Cloudflare/domain hoặc hosting. Xem [STABLE_CONNECTION](STABLE_CONNECTION.md) để triển khai; OAuth bền vững/service vẫn chưa có. Xem [DEPLOYMENT](DEPLOYMENT.md) để phân biệt tunnel vào máy cá nhân và backend cloud.

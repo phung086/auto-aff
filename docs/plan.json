@@ -4,7 +4,8 @@
   "release": "0.2.0",
   "repository": "https://github.com/phung086/auto-aff",
   "exactDefaultUrl": "https://agentshop247.com/?ref=AS362560C5A713",
-  "nextTickets": ["L011", "L040", "L012", "L060"],
+  "nextTickets": ["L060", "L011", "L012", "L040"],
+  "stableConnection": {"status":"implemented-config-awaiting-infrastructure", "modes":["named","external","quick"], "configFile":".linkdesk-data/connection.json", "secretTransport":"Cloudflare token-file; no token argv/log", "fallback":"invalid fixed configuration fails closed", "infrastructure":"owner has no Cloudflare account or domain yet", "remaining":["actual fixed host","OAuth persistence/refresh/revoke","service supervision","actual ChatGPT analyze/compose"], "testsPassed":35},
   "oauthEvidence": {"consentHeaders":"strict-origin and registered HTTPS callback CSP", "browserRegression":"legacy form sends null Origin/403; fixed form completes 303 callback on user Chrome", "startupRegression":"owner file/runtime mismatch confirmed with valid fresh nonce; persisted code, bind error handling and cleanup covered by 3 regression tests", "liveDiagnostic":"DCR 201, consent 303, token 200, SDK lists 4 tools; diagnostic token revoked", "localTestsPassed":31, "accountConsent":"confirmed-connected-in-user-Chrome", "currentConnectionName":"LinkDesk AI hiện tại", "currentRuntime":"broker restored after stop; new Quick Tunnel hostname differs from connected app URL", "accountTools":"ChatGPT conversation reports Connection failed; actual analyze/compose still unverified"},
   "milestones": [
     {"id":"M0","status":"implemented-tested","dependsOn":[],"acceptance":"raw URL + send/restore invariants"},
@@ -13,7 +14,7 @@
     {"id":"M3","status":"experimental-awaiting-live","dependsOn":["M2"],"acceptance":"known advertising permissions + one join + honest membership states"},
     {"id":"M4","status":"experimental-awaiting-live","dependsOn":["M1","M3"],"acceptance":"cap1 actual Facebook exact link + stop/recovery evidence"},
     {"id":"M5","status":"implemented-manual-reports","dependsOn":["M0"],"acceptance":"status attribution + click source/date/raw link; no fabricated totals"},
-    {"id":"M6","status":"planned","dependsOn":["M1","M4"],"acceptance":"stable HTTPS/OAuth + Windows launcher + rollback"},
+    {"id":"M6","status":"in-progress-config-awaiting-infrastructure","dependsOn":["M0"],"acceptance":"stable HTTPS/OAuth + Windows launcher + rollback; fixed config alone is insufficient"},
     {"id":"M7","status":"planned","dependsOn":["M6"],"acceptance":"adapter contracts and provider data permissions"}
   ]
 }
