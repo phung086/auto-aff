@@ -5,6 +5,7 @@
   "repository": "https://github.com/phung086/auto-aff",
   "exactDefaultUrl": "https://agentshop247.com/?ref=AS362560C5A713",
   "nextTickets": ["L011", "L040", "L012", "L060"],
+  "oauthEvidence": {"consentHeaders":"strict-origin and registered HTTPS callback CSP", "browserRegression":"legacy form sends null Origin/403; fixed form sends expected Origin and completes 303 callback on user Chrome", "accountConsent":"awaiting-owner", "currentConnectionName":"LinkDesk AI 0.2.0"},
   "milestones": [
     {"id":"M0","status":"implemented-tested","dependsOn":[],"acceptance":"raw URL + send/restore invariants"},
     {"id":"M1","status":"implemented-awaiting-live","dependsOn":["M0"],"acceptance":"ChatGPT OAuth tools + actual analyze and compose"},

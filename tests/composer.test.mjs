@@ -76,9 +76,12 @@ test('OAuth requires owner consent, PKCE, resource/client binding and one-use co
   const verifier='a'.repeat(43),challenge=createHash('sha256').update(verifier).digest('base64url');
   const authorize=await call('/authorize?'+new URLSearchParams({client_id:c.client_id,redirect_uri:c.redirect_uris[0],response_type:'code',code_challenge:challenge,code_challenge_method:'S256',scope:'compose',resource:origin+'/mcp',state:'exact-state'}));assert.equal(authorize.status,200);
   assert.match(authorize.headers.get('content-security-policy'),/form-action 'self' https:\/\/chatgpt\.com;/);
+  assert.equal(authorize.headers.get('referrer-policy'),'strict-origin');
   const html=await authorize.text(),nonce=html.match(/name="nonce" value="([^"]+)"/)[1];assert.throws(()=>provider.consent(nonce,'wrong'));
   const consent=from=>call('/consent',{method:'POST',headers:{Origin:from,'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({nonce,code:'owner'}).toString()});
   assert.equal((await consent('https://evil.invalid')).status,403);
+  assert.equal((await consent('null')).status,403);
+  assert.equal((await call('/consent',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({nonce,code:'owner'}).toString()})).status,403);
   const allowed=await consent(origin);assert.equal(allowed.status,303);
   const callback=new URL(allowed.headers.get('location'));assert.equal(callback.searchParams.get('state'),'exact-state');const code=callback.searchParams.get('code');
   await assert.rejects(provider.challengeForAuthorizationCode({...c,client_id:'other-client'},code));
