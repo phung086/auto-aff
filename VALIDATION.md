@@ -8,6 +8,7 @@ Ngày08/10/2026. Phân biệt local tests và tích hợp tài khoản thật.
 - Broker concurrency/dedupe, input khác cùng key, reload/persistence, expiry/cancel, kết quả idempotent, URL AI bị chặn, analyze giữ link.
 - Device token/Host guard; pairing chỉ loopback/token header/không redirect.
 - MCP SDK initialize/list/call qua in-memory và HTTP stateless; schema/output/pagination. OAuth consent, PKCE sai, code một lần, revoke.
+- OAuth hotfix: consent HTTP POST trả 303 về callback, Origin khác bị từ chối; CSP chỉ thêm origin của callback HTTPS đã đăng ký. Kiểm thử local cùng Chrome xác minh form self chặn callback khác origin, policy có callback cho phép tải trang đích. Chưa thay thế nghiệm thu OAuth tài khoản thật.
 - Report sai link/ngày/số âm bị chặn, dedupe, backup giữ snapshot khi campaign đổi.
 - HTTPS protected-resource metadata trả200; MCP chưa xác thực trả401. Chưa chứng minh ChatGPT account đã kết nối.
 - Chrome cá nhân điều khiển được qua tiện ích ChatGPT chính thức, Plus đăng nhập sẵn. Form custom MCP đã tự nhận metadata OAuth, DCR, scope compose và resource đúng endpoint. Gói plugin riêng tư đã lưu trong tài khoản, nhưng upload gói không chứng minh kết nối MCP hoạt động.

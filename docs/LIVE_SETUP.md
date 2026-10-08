@@ -10,7 +10,11 @@ Ngày 08/10/2026. Tài liệu này phân biệt ba kết nối để người ph
 
 Gói LinkDesk riêng tư đã lưu trong tài khoản qua Plugin Creator. UI hiện mở gói theo luồng Desktop. Đây là bằng chứng lưu gói, không phải bằng chứng ChatGPT web có tools. Không tạo bản sao gói để chữa lỗi xác thực. Không đổi sang “Không xác thực” để né consent.
 
-Kiểm tra trực tiếp ngày 08/10 trên cùng hồ sơ Chrome đã đăng nhập: trang chi tiết custom MCP LinkDesk AI vẫn hiện nút Kết nối. Đã mở lại OAuth mới để tránh yêu cầu cũ hết hạn; chủ tài khoản cần nhập mã và consent. Device API summary tại lúc kiểm tra có total 0, pending 0. Health field `chatgptVerified: false` hiện là giá trị cố định trong code; không dùng nó làm bằng chứng account chưa kết nối. Cần kiểm tra UI ChatGPT và một tool/task thực sự.
+Kiểm tra trực tiếp ngày 08/10 trên cùng hồ sơ Chrome đã đăng nhập: trang chi tiết custom MCP LinkDesk AI vẫn hiện nút Kết nối. Device API summary tại lúc kiểm tra có total 0, pending 0. Health field `chatgptVerified: false` hiện là giá trị cố định trong code; không dùng nó làm bằng chứng account chưa kết nối. Cần kiểm tra UI ChatGPT và một tool/task thực sự.
+
+Lần consent thật gặp ERR_BLOCKED_BY_CLIENT khi trở về callback. CSP của trang authorize chỉ có form-action self, chặn redirect khác origin trên Chrome. Đã sửa để cho phép thêm đúng origin callback HTTPS thuộc client đã đăng ký, dùng redirect 303 sau POST và giữ Origin/nonce/PKCE/client/resource checks. Kiểm thử local trên cùng Chrome tái hiện form self bị chặn, thêm callback chạy được; 28 Node tests qua với consent POST và Origin sai bị từ chối. Chưa coi đây là bằng chứng consent thật hoàn tất.
+
+Broker đã restart để áp dụng sửa; Quick Tunnel cấp hostname mới, owner code trong file cũng đổi. Chrome pairing giữ nguyên. Kết nối dùng URL cũ không còn hoạt động. UI quản lý hiện không cho sửa endpoint, nên chuẩn bị custom MCP thay thế tên **LinkDesk AI 0.2**. Luôn lấy URL hiện tại từ health/terminal. Không bấm kết nối vào bản LinkDesk AI cũ hoặc dùng owner code đã sao chép trước restart. Chưa xóa bản cũ để tránh xóa cấu hình tài khoản ngoài yêu cầu.
 
 ## Resume theo thứ tự
 

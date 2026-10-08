@@ -30,7 +30,7 @@ export async function createApps({store,deviceToken,ownerCode,publicOrigin}) {
   remote.use((req,res,next)=>{if(req.get('host')!==origin.host)return res.sendStatus(403);res.set('Cache-Control','no-store');next();});
   const provider=new OwnerOAuth(ownerCode,`${origin.origin}/mcp`);
   remote.use(mcpAuthRouter({provider,issuerUrl:origin,resourceServerUrl:new URL('/mcp',origin),scopesSupported:['compose'],resourceName:'LinkDesk Composer'}));
-  remote.post('/consent',express.urlencoded({extended:false,limit:'4kb'}),(req,res)=>{try{if(req.get('origin')!==origin.origin)return res.sendStatus(403);res.redirect(provider.consent(req.body.nonce,req.body.code));}catch{res.status(400).send('Kết nối không thành công. Kiểm tra mã và bắt đầu lại trong ChatGPT.');}});
+  remote.post('/consent',express.urlencoded({extended:false,limit:'4kb'}),(req,res)=>{try{if(req.get('origin')!==origin.origin)return res.sendStatus(403);res.redirect(303,provider.consent(req.body.nonce,req.body.code));}catch{res.status(400).send('Kết nối không thành công. Kiểm tra mã và bắt đầu lại trong ChatGPT.');}});
   remote.post('/mcp',requireBearerAuth({verifier:provider,requiredScopes:['compose'],resourceMetadataUrl:`${origin.origin}/.well-known/oauth-protected-resource/mcp`}),express.json({limit:'64kb'}),async(req,res)=>{
     const server=createMcp(store),transport=new StreamableHTTPServerTransport({sessionIdGenerator:undefined,enableJsonResponse:true,allowedHosts:[origin.host],allowedOrigins:[origin.origin],enableDnsRebindingProtection:true});
     res.on('close',()=>{transport.close().catch(()=>{});server.close().catch(()=>{});});

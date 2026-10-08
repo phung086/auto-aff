@@ -75,8 +75,12 @@ test('OAuth requires owner consent, PKCE, resource/client binding and one-use co
   const registered=await call('/register',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({redirect_uris:['https://chatgpt.com/callback'],token_endpoint_auth_method:'none',grant_types:['authorization_code'],response_types:['code'],client_name:'Test client'})});assert.equal(registered.status,201);const c=await registered.json();
   const verifier='a'.repeat(43),challenge=createHash('sha256').update(verifier).digest('base64url');
   const authorize=await call('/authorize?'+new URLSearchParams({client_id:c.client_id,redirect_uri:c.redirect_uris[0],response_type:'code',code_challenge:challenge,code_challenge_method:'S256',scope:'compose',resource:origin+'/mcp',state:'exact-state'}));assert.equal(authorize.status,200);
+  assert.match(authorize.headers.get('content-security-policy'),/form-action 'self' https:\/\/chatgpt\.com;/);
   const html=await authorize.text(),nonce=html.match(/name="nonce" value="([^"]+)"/)[1];assert.throws(()=>provider.consent(nonce,'wrong'));
-  const callback=new URL(provider.consent(nonce,'owner'));assert.equal(callback.searchParams.get('state'),'exact-state');const code=callback.searchParams.get('code');
+  const consent=from=>call('/consent',{method:'POST',headers:{Origin:from,'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({nonce,code:'owner'}).toString()});
+  assert.equal((await consent('https://evil.invalid')).status,403);
+  const allowed=await consent(origin);assert.equal(allowed.status,303);
+  const callback=new URL(allowed.headers.get('location'));assert.equal(callback.searchParams.get('state'),'exact-state');const code=callback.searchParams.get('code');
   await assert.rejects(provider.challengeForAuthorizationCode({...c,client_id:'other-client'},code));
   await assert.rejects(provider.exchangeAuthorizationCode(c,code,undefined,'https://evil.invalid/callback',new URL(origin+'/mcp')));
   await assert.rejects(provider.exchangeAuthorizationCode(c,code,undefined,c.redirect_uris[0],new URL('https://evil.invalid/mcp')));
