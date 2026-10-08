@@ -1,16 +1,18 @@
 {
-  "planVersion": "1.0",
+  "planVersion": "2.0",
   "updated": "2026-10-09",
   "release": "0.2.0",
   "repository": "https://github.com/phung086/auto-aff",
   "exactDefaultUrl": "https://agentshop247.com/?ref=AS362560C5A713",
   "nextTickets": [
-    "L014",
-    "L011",
     "L013",
     "L012",
+    "L014",
+    "L011",
+    "L022",
+    "L071",
     "L060",
-    "L040"
+    "L070"
   ],
   "ngrokOption": {
     "status": "live-analyze-confirmed",
@@ -60,11 +62,11 @@
     },
     {
       "id": "M1",
-      "status": "implemented-awaiting-live",
+      "status": "worker-inference-live-extension-compose-gate-open",
       "dependsOn": [
         "M0"
       ],
-      "acceptance": "ChatGPT OAuth tools + actual analyze and compose"
+      "acceptance": "Worker analyze/compose real; extension saved analysis seen; compose UI, lease and live STOP/quota/refresh pending"
     },
     {
       "id": "M2",
@@ -105,7 +107,7 @@
       "dependsOn": [
         "M0"
       ],
-      "acceptance": "stable HTTPS/OAuth + Windows launcher + rollback; fixed config alone is insufficient"
+      "acceptance": "Permission-gated provider/platform contracts, VN affiliate reports, no unverified public publisher"
     },
     {
       "id": "M7",
@@ -139,5 +141,29 @@
     "manualAnalysisRecovery": "live-broker-tested-owner-reports-saved-campaign-ui",
     "extensionAnalysisSavedUiVerified": true,
     "extensionComposeUiVerified": false
+  },
+  "developmentProgram": {
+    "version": "2.0",
+    "status": "docs-defined-not-runtime-implemented",
+    "discovery": "source-first; no manual per-post URL; draft-only by default",
+    "protocol": "docs/COWORK_PROTOCOL.md",
+    "tickets": "docs/IMPLEMENTATION_TICKETS.md",
+    "research": "docs/PLATFORM_RESEARCH.md",
+    "registry": "docs/WORK_REGISTRY.json",
+    "loop": "docs/DEVELOPMENT_LOOP.md",
+    "scheduling": "ACTIVE six-hour heartbeat in current Codex task; execution requires app/host/quota",
+    "livePublishingEnabledByPlan": false,
+    "accountRotationAllowed": false,
+    "disclosureRequired": true,
+    "gates": [
+      "G0-AI-recovery-lease",
+      "G1-source-discovery-drafts",
+      "G2-cap1-live-evidence",
+      "G3-supervision",
+      "G4-accounts-reports",
+      "G5-platform-permissions"
+    ],
+    "automationId": "ph-t-tri-n-linkdesk-theo-super-plan",
+    "runtimeImplementationVerified": false
   }
 }

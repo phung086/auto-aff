@@ -1,5 +1,11 @@
 # Kiểm chứng LinkDesk 0.2.0
 
+## Kế hoạch 2.0 — 09/10/2026
+
+Thay đổi docs-only trong worktree/branch `codex/affiliate-super-plan`, base4efd045. Không thay code runtime, restart broker/ngrok/Chrome, gửi Facebook hay đọc secrets. `npm run check` qua; kiểm tra riêng JSON plan/registry, local links Markdown/HTML, ticket ID không trùng/nextTickets có trong BACKLOG, fenced blocks và exactDefaultUrl nguyên chuỗi qua; `git diff --check` qua. Không chạy lại44 tests vì không đổi logic;44 là baseline trước lượt này. Các gate compose UI/polling/STOP/quota/refresh/Facebook vẫn mở.
+
+SUPER_PLAN Markdown/HTML đã đồng bộ G0–G5; COWORK_PROTOCOL là giao thức chưa có CLI điều phối khóa; discovery/multiaccount/Shopee/TikTok là planned/permission-gated. Tài liệu Meta hiện fetch lỗi/429 được ghi rõ trong PLATFORM_RESEARCH, không giả đã xác minh API. Heartbeat phát triển mỗi6 giờ đã tạo ACTIVE trong Codex, ID `ph-t-tri-n-linkdesk-theo-super-plan`; không bật publisher hoặc service Windows. Automation chạy còn phụ thuộc máy/app/hạn mức.
+
 Ngày08/10/2026. Phân biệt local tests và tích hợp tài khoản thật.
 
 ## Đã kiểm chứng

@@ -1,14 +1,22 @@
 # Bàn giao LinkDesk / auto-aff
 
-08/10/2026 · release0.2.0 · https://github.com/phung086/auto-aff.
-Đọc AGENTS → SUPER_PLAN → BACKLOG → ARCHITECTURE → VALIDATION; nhánh AI mới đọc AUTO_AI_SETUP. npm ci, npm test, npm run check; package allowlist không runtime/secret.
+09/10/2026 · release0.2.0 · https://github.com/phung086/auto-aff.
+Đọc AGENTS → SUPER_PLAN → COWORK_PROTOCOL → BACKLOG/IMPLEMENTATION_TICKETS → ARCHITECTURE → VALIDATION; AI worker đọc AUTO_AI_SETUP. npm ci, npm test, npm run check; package allowlist không runtime/secret.
+
+## Bàn giao kế hoạch 2.0
+
+Nhánh docs `codex/affiliate-super-plan`, worktree riêng `work/LinkDesk-plan`, base4efd045 và dependency PR #1. Không đổi code/runtime, không restart broker/tunnel/Chrome hoặc gửi Facebook. SUPER_PLAN hiện có pipeline discovery theo nguồn đã chọn (không cần URL từng bài), G0–G5, multiaccount/report/Shopee/TikTok gates. DISCOVERY_SPEC/PLATFORM_RESEARCH/IMPLEMENTATION_TICKETS mô tả contract, acceptance/rollback. COWORK_PROTOCOL/WORK_REGISTRY phân file/branch/khóa; giao thức phối hợp mới là docs, chưa có điều phối khóa tự động. DEVELOPMENT_LOOP quy định heartbeat mỗi6 giờ, tối đa một ticket đủ dependency/lượt, quiet khi không đổi; automation không cấp quyền publisher. Docs-status do coordinator cập nhật.
+
+Tiếp theo L013 task lease; L071 source scope và L070 contract có thể độc lập ở nhóm file riêng. G0 live vẫn cần compose về Chrome/STOP/quota/refresh. Adapter Facebook/TikTok/Shopee mới đều planned/permission-gated, không gọi production ready.
+
+Heartbeat phát triển mỗi6 giờ đã tạo ACTIVE trong Codex (ID `ph-t-tri-n-linkdesk-theo-super-plan`); không tự đăng quảng cáo. Check/JSON/docs links/ticket IDs/exact URL/diff whitespace qua; runtime tests44 là baseline không rerun ở lượt docs-only. Xem VALIDATION.
 
 ## Trạng thái thật mới nhất
 
 - Ngrok3.39.8 dùng account config sẵn có, inspector upstream127.0.0.1:8790; broker health và metadata HTTPS đúng ngrok. connection.json private mode external. Không còn chờ dừng broker Cloudflare cũ; không đọc authtoken. Domain gắn tài khoản, không cần Cloudflare/tên miền riêng.
-- **LinkDesk ngrok** đã tạo trong Chrome cá nhân, chủ tài khoản consent. UI Primary connected. Trò chuyện **Xử lý campaign task** xử lý task analyze thật từ extension; broker xác nhận completed, campaign giữ đúng URL mặc định. Screenshot ngoài Git outputs/LinkDesk-ngrok-analyze-completed.png. Chưa có bằng chứng extension đã lưu campaign; chưa compose thật về extension.
+- **LinkDesk ngrok** đã tạo trong Chrome cá nhân, chủ tài khoản consent. UI Primary connected. Trò chuyện **Xử lý campaign task** xử lý task analyze thật từ extension; broker xác nhận completed, campaign giữ đúng URL mặc định. Screenshot ngoài Git outputs/LinkDesk-ngrok-analyze-completed.png. Ảnh chủ máy sau recovery đã thấy campaign lưu đúng URL; task-to-card mapping/polling và compose về extension còn gate.
 - Bốn custom MCP cũ LinkDesk AI, 0.2, 0.2.0, hiện tại đã gỡ cài đặt qua UI; có thể thêm lại. Gói portable LinkDesk cũ cũng đã gỡ bằng công cụ quản lý plugin; danh mục ChatGPT sau reload chỉ còn LinkDesk ngrok. Không xóa vĩnh viễn apps/source/data.
-- Worker localhost8791 áp dụng PR #1 trên nhánh cục bộ codex/test-worker-oauth; PR draft, chưa merge. Ngày09/10 chủ tài khoản consent, callback/model qua; GPT-6.1-Sol tự hoàn tất analyze và compose thật, exact URL và completedResult qua, cap2 tự dừng. Restart giữ account/budget0, đọc model không cần đăng nhập lại. **Ảnh chủ máy xác nhận danh sách chiến dịch đã lưu và exact URL; compose về UI, refresh/quota/STOP thật và Windows startup còn chờ.** Đã bật phiên chờ tối đa10 yêu cầu mới. 40 tests/check và lock/CSRF qua. Xem WORKER_OAUTH_VERIFICATION.
+- Worker localhost8791 áp dụng PR #1 trên nhánh cục bộ codex/test-worker-oauth; PR draft, chưa merge. Ngày09/10 chủ tài khoản consent, callback/model qua; GPT-6.1-Sol tự hoàn tất analyze và compose thật, exact URL và completedResult qua, cap2 tự dừng. Restart giữ account/budget0, đọc model không cần đăng nhập lại. **Ảnh chủ máy xác nhận danh sách chiến dịch đã lưu và exact URL; compose về UI, refresh/quota/STOP thật và Windows startup còn chờ.** Đã thử budget/cap có giới hạn; trạng thái runtime phải kiểm tra lại, không coi ngân sách thử là quyền vĩnh viễn. Baseline mới44 tests/check; lock/CSRF qua. Xem WORKER_OAUTH_VERIFICATION.
 
 ## Việc kế tiếp
 

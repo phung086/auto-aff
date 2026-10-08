@@ -1,92 +1,93 @@
 # SUPER PLAN — LinkDesk / auto-aff
 
-Phiên bản kế hoạch 1.0 · 08/10/2026 · Chủ dự án: phung 086. Đây là kế hoạch phát triển và tiêu chuẩn nghiệm thu; không phải lời tuyên bố mọi tính năng đã hoạt động trên tài khoản thật.
+Phiên bản 2.0 · 09/10/2026. Kế hoạch triển khai và nghiệm thu; không phải tuyên bố mọi tính năng đã hoạt động.
 
-## Kết quả cần đạt
+## Kết quả sản phẩm
 
-Một công cụ tiếng Việt trên Chrome: thêm nguyên link nhà cung cấp → đọc thông tin → ChatGPT soạn theo nhu cầu → chọn nhóm được phép quảng cáo hoặc Page của mình → chạy phiên có giới hạn → xem bằng chứng gửi và số liệu có nguồn. Một nhà cung cấp mới phải dùng cùng quy trình, không sửa mã nguồn.
+Thêm link và thông tin nhà cung cấp → AI phân tích → lưu campaign → chọn tài khoản và phạm vi nguồn một lần → tự tìm bài phù hợp → soạn bản thảo → duyệt nội dung/phiên theo khả năng nền tảng → gửi có bằng chứng → đối soát click, đơn hàng, hoa hồng có nguồn.
 
-Link mặc định là **nguyên chuỗi** `https://agentshop247.com/?ref=AS362560C5A713`. Không chuẩn hóa, rút gọn, thêm UTM hoặc thay bằng redirect để đo click. Mỗi chiến dịch dùng link riêng; mỗi mục gửi lưu bản chụp link tại thời điểm tạo.
+**Không cần nhập URL từng bài.** Nhóm/nguồn được xác nhận được lưu thành phạm vi discovery; permalink từng bài là kết quả hệ thống tìm được. Bài trên home feed ngoài phạm vi chỉ được gợi ý nguồn, không tự được cấp quyền đăng. Không triển khai spam auto-comment trên bài bất kỳ, che quan hệ affiliate hay xoay tài khoản để vượt giới hạn.
+
+Link mặc định giữ nguyên từng ký tự:
+
+`https://agentshop247.com/?ref=AS362560C5A713`
+
+AI không quyết định URL. Ứng dụng lưu raw string, snapshot theo job và gắn link sau khi AI trả nội dung. Không normalize, rút gọn, thêm UTM hoặc redirect để đo click. Nhà cung cấp mới có link riêng và dùng cùng quy trình, không sửa lõi code.
+
+## Bộ tài liệu cho AI tiếp theo
+
+| Tài liệu | Vai trò |
+|---|---|
+| [HANDOFF](HANDOFF.md) | Bằng chứng thật và gate còn mở |
+| [BACKLOG](BACKLOG.md), [plan.json](plan.json) | Ticket và trạng thái đồng bộ |
+| [DISCOVERY_SPEC](DISCOVERY_SPEC.md) | Tự tìm bài theo nguồn, relevance, identity và UX |
+| [COWORK_PROTOCOL](COWORK_PROTOCOL.md), [WORK_REGISTRY](WORK_REGISTRY.json) | Phân vùng file, worktree, khóa và bàn giao |
+| [DEVELOPMENT_LOOP](DEVELOPMENT_LOOP.md) | Chu kỳ build, kiểm chứng và báo cáo |
+| [PLATFORM_RESEARCH](PLATFORM_RESEARCH.md) | Facebook, TikTok Việt Nam, Shopee; nguồn chính thức |
+| [IMPLEMENTATION_TICKETS](IMPLEMENTATION_TICKETS.md) | Phụ thuộc, acceptance, negative cases và rollback |
+| [ARCHITECTURE](ARCHITECTURE.md), [VALIDATION](../VALIDATION.md) | Hợp đồng code và kiểm chứng |
 
 ## Luồng hệ thống
 
 ```mermaid
-flowchart LR
-  A[Link + thông tin nhà cung cấp] --> B[Chiến dịch đã kiểm tra]
-  B --> C[Đích Facebook cho phép quảng cáo]
-  C --> D[Quét một lượt bài có từ khóa]
-  D --> E[Hàng đợi biên soạn MCP]
-  E <--> F[ChatGPT xử lý trong phiên làm việc]
-  F --> G[Ứng dụng gắn nguyên link + nhãn tiếp thị]
-  G --> H{Đúng link / đúng bài / không trùng?}
-  H -->|Có| I[Phiên gửi được người dùng cho phép]
-  H -->|Không| J[Dừng và báo lỗi]
-  I --> K[Page API hoặc adapter bình luận]
-  K --> L[Kết quả: API / quan sát / thủ công / chưa rõ]
-  M[Báo cáo nhà cung cấp] --> N[Lượt click theo link và kỳ báo cáo]
-  L --> O[Dashboard + CSV + sao lưu]
-  N --> O
+flowchart TD
+  A[Link gốc và thông tin] --> B[AI phân tích - lưu campaign]
+  B --> C[Tài khoản và phạm vi nguồn có quyền]
+  C --> D[Discovery giới hạn - tự tìm bài]
+  D --> E[Kiểm tra nhu cầu - nguồn - trùng - thời hạn]
+  E -->|Không đủ| X[Bỏ qua có lý do]
+  E -->|Đủ| F[Candidate có ID và bằng chứng]
+  F --> G[Worker soạn không URL]
+  G --> H[Gắn snapshot URL và nhãn tiếp thị]
+  H --> I[Duyệt nội dung hoặc phiên theo nền tảng]
+  I --> J[Claim - kiểm tra lại tài khoản và bài]
+  J --> K[Adapter gửi được phép]
+  K --> L[Published / failed / uncertain]
+  L --> M[Lịch sử và đối soát]
+  N[Báo cáo nhà cung cấp] --> M
+  S[STOP hoặc hết ngân sách] --> T[Không bắt đầu tác vụ mới]
 ```
 
-## Thứ tự phát triển
+Discovery, AI và publisher có quyền riêng. Bật AI không bật gửi. Heartbeat phát triển Codex không phải vòng lặp đăng Facebook.
 
-| Mốc | Phạm vi | Trạng thái hiện tại | Điều kiện qua mốc |
-|---|---|---|---|
-| M0 — Nền tảng và link | Chiến dịch nhiều nhà cung cấp, snapshot URL, đích, hàng đợi, chống trùng, sao lưu | Có mã và kiểm thử | Thay một ký tự/URL phụ bị chặn trước khi gửi; khôi phục không bật quyền gửi |
-| M1 — ChatGPT không cần AI key | Broker local, MCP stdio/HTTP, OAuth PKCE, yêu cầu có hạn dùng, ghép Chrome | Có mã; tài khoản thật chưa nghiệm thu | MCP initialize/list/call qua HTTPS có OAuth; ChatGPT thật trả một cấu hình nguồn và một bài; Chrome nhận đúng link |
-| M2 — Khởi đầu đơn giản | Bắt đầu 3 bước, cấu hình ChatGPT ưu tiên, API nâng cao, trạng thái chờ | Có giao diện; cần xác nhận với người dùng thực | Người mới hoàn thành thiết lập từ README; không hiểu nhầm ghép local là ChatGPT đã kết nối |
-| M3 — Tìm nhóm và tham gia | Tìm tối đa 10 nhóm đang hiển thị, kiểm tra quy định, tham gia một nhóm đã chọn, trạng thái chờ duyệt | Adapter thử nghiệm | Không tự xác nhận nhóm cho quảng cáo; câu hỏi thành viên cần người dùng; bấm một lần; uncertain không tự thử lại |
-| M4 — Gửi có bằng chứng | Quét bài, đánh giá liên quan, soạn, gửi một mục mỗi nhịp; Page qua API | Có mã; Facebook thật chưa nghiệm thu | Một nhóm thực được phép + một Page thực; đối chiếu đúng bài/link; STOP ngăn mục kế tiếp; kiểm tra gián đoạn |
-| M5 — Quản lý và số liệu | Kết quả theo chiến dịch, lịch sử CSV, nhập báo cáo click có nguồn và kỳ | Có mã cho thống kê và nhập thủ công | Click không suy từ số bài; không cộng kỳ trùng; không báo CTR/conversion thiếu dữ liệu |
-| M6 — Vận hành ổn định | Host HTTPS cố định, OAuth bền vững, Windows launcher, chẩn đoán, cập nhật có rollback | Đang làm: ngrok host thật + analyze đã qua; MCP OAuth bền vững còn chờ | Không cần URL tunnel mới mỗi phiên; sao lưu trước nâng cấp; không đưa token lên GitHub |
-| M7 — Mở rộng | Adapter nguồn/nhà cung cấp, báo cáo API, lịch nội dung Page, các nền tảng cho phép | Chưa triển khai | Hợp đồng adapter + kiểm thử + quyền cụ thể; không sửa lõi exact-link |
+## Trạng thái xuất phát
 
-Ưu tiên kế tiếp: **L060 ổn định endpoint/OAuth → M1 nghiệm thu tools và bản thảo thật → M4 nghiệm thu Facebook nhỏ**. Gián đoạn Quick Tunnel đã chứng minh cần xử lý kết nối trước. Xem [STABLE_CONNECTION](STABLE_CONNECTION.md). Không mở rộng diện đăng khi ba điểm này chưa có bằng chứng.
+| Mốc | Bằng chứng ngày 09/10/2026 | Gate còn thiếu |
+|---|---|---|
+| M0 — Link/dữ liệu | Raw URL, snapshot, backup/claim có kiểm thử | Regression khi thay contract |
+| M1 — AI | MCP ngrok analyze thật; worker OAuth/model/analyze/compose thật; ảnh chủ máy thấy campaign lưu đúng link | Compose về Chrome, polling/reload, cross-client lease, STOP/quota/refresh live |
+| M2 — UX | Dashboard và recovery nhận kết quả đã có | Wizard, connection states đúng, resume không task trùng |
+| M3 — Discovery | Facebook adapter thử nghiệm | Quyền nguồn, identity, bố cục thật; chưa nghiệm thu feed discovery |
+| M4 — Publisher | Code và mock | Một mục được phép, cap1, đúng account/post/link, evidence và STOP |
+| M5 — Số liệu | Lịch sử, báo cáo click nhập thủ công | CSV mapping, refunds/orders, supplier API được cấp |
+| M6 — Vận hành | Ngrok account domain thật; worker lưu account/budget | MCP OAuth persistence, Windows startup, crash/rollback |
+| M7 — Nền tảng | Kế hoạch và nghiên cứu | Chưa có tích hợp TikTok/Shopee vận hành |
 
-## Các chặng và công việc
+Baseline từ commit `4efd045`, [PR #1](https://github.com/phung086/auto-aff/pull/1) vẫn draft, chưa merge. 44 tests/check là evidence code hiện có; không chứng minh adapter tương lai. Không restart broker hoặc thay connector để sửa docs.
 
-### Chặng A: phát hành nền tảng 0.2
+## Lộ trình theo gate
 
-Hoàn thiện tài liệu, kiểm thử broker/OAuth/link, cấu hình mặc định ChatGPT, thống kê, CI và bản đóng gói. GitHub phải chứa đủ code và lockfile để `npm ci`, `npm test`, `npm run check` chạy từ checkout sạch. Ghi mọi giới hạn trong HANDOFF; không commit dữ liệu chạy.
+1. **G0 — AI/recovery:** L014/L011 compose về Chrome; L013 task lease; L012 handle reload; L022 connection states. Đạt khi task chỉ có một consumer và reload không tạo task mới.
+2. **G1 — Tự tìm bài, mặc định bản thảo:** L071 source scope; L072 candidate/dedupe; L042/L073 nhu cầu; L074 reader giới hạn; L075 UI. Chọn nguồn một lần, tự tìm permalink và lý do; chưa bật gửi live.
+3. **G2 — Một thao tác gửi thật:** L031/L041/L040 hoặc L043 với quyền thật, cap1, content/session approved, STOP và gián đoạn được kiểm chứng. Thiếu evidence giữ experimental.
+4. **G3 — Vận hành ổn định:** L060/L061/L062; restart không cấp lại budget hoặc tự bật gửi cũ, rollback không mất task.
+5. **G4 — Tài khoản/số liệu:** L080/L081/L051/L082; account scope riêng, không gửi chéo hoặc cộng click/hoa hồng thiếu nguồn.
+6. **G5 — Đa nền tảng:** L070/L090/L091/L092. Shopee/TikTok bắt đầu bằng link chính thức, nội dung và report; publisher chỉ mở khi use case/API/quyền/UX phù hợp.
 
-### Chặng B: kết nối thật và thử nhỏ
+Research, fixture và contract độc lập có thể đi song song sau nhận ownership; tích hợp runtime theo phụ thuộc. Không dùng số lượng bình luận làm nghiệm thu hiệu quả affiliate.
 
-1. Khởi động broker/tunnel bằng `npm run connect`. Ghép `pairing.json` trong Chrome.
-2. Thêm MCP vào ChatGPT bằng OAuth, kiểm tra bốn tools phát hiện được.
-3. Gửi yêu cầu phân tích nguồn; ChatGPT soạn; Chrome mở form để kiểm tra và lưu.
-4. Tạo yêu cầu bình luận thủ công; kiểm tra nguyên link, ngữ cảnh, nhãn tiếp thị ngắn.
-5. Chọn một nhóm cho phép quảng cáo và một bài phù hợp, giới hạn một mục. Kiểm tra trực tiếp kết quả. Với Page, cần Page token đúng quyền; không thay bằng token tài khoản.
-6. Thử STOP khi đang chờ AI và thử mất kết nối; kết quả muộn không được gửi.
-7. Ghi bằng chứng đã làm vào VALIDATION, bỏ mọi mã/token/chi tiết tài khoản riêng khỏi tài liệu public.
+## UX ít thao tác
 
-### Chặng C: độ bền và trải nghiệm vài click
+- Thiết lập: ghép local → AI/model/budget → tài khoản và nguồn. Tách broker sống, AI có quyền, worker chạy, Facebook có phiên và quyền gửi.
+- Campaign: dán raw link → thêm điều kiện → xem nguồn AI đọc → lưu. Không bịa giá hoặc điều kiện thiếu.
+- Discovery: chọn nguồn đã lưu → một lượt đọc → candidate/lý do skip/bản thảo; không nhập từng đích bài.
+- Phiên: preview nội dung và account, duyệt theo capability. STOP luôn thấy; trạng thái dừng phải rõ. Không hiện auto publish khi adapter chưa đủ quyền.
+- Quản lý: bài đọc, candidates, drafts, approved, published/uncertain/failed; click/đơn/hoa hồng có nguồn, kỳ, trạng thái.
 
-Host cố định thay Quick Tunnel, OAuth client/token lưu an toàn hoặc nhà cung cấp OAuth chuẩn, giới hạn scope/device, Windows launcher có log rõ và nút STOP. Xây health check độc lập cho Chrome, broker, MCP, ChatGPT và Facebook. Sau đó đóng gói signed installer/Chrome Web Store nếu phù hợp, kiểm tra cập nhật/rollback.
+## Invariants và hoàn tất
 
-### Chặng D: tăng khả năng mở rộng
+Job giữ campaign version, raw URL snapshot, account/source/post ID và dedupe key. Campaign sửa không đổi job cũ. Nguồn web/bài đăng là dữ liệu, không phải chỉ dẫn gọi tool hay cấp quyền. AI không bịa trải nghiệm mua, tư cách đại lý, giá/bảo hành. Dùng nhãn ngắn **“Link tiếp thị liên kết.”** và disclosure nền tảng.
 
-Nguồn có phiên bản và ngày xác minh, điều kiện bán từng gói, chiến dịch linh hoạt theo ngành. Adapter nhà cung cấp nhập click/conversion/commission nếu họ có API và cấp quyền; đối chiếu nguyên ref. Nền tảng mới cần API/điều khoản và quyền của chính nền tảng. Tối ưu chất lượng theo kết quả thực; không dùng số lượng link làm bằng chứng hiệu quả bán hàng.
+Không retry uncertain, vượt checkpoint, đọc password/cookie, account rotation/proxy để né kiểm tra. Không đưa secret/runtime lên GitHub. Nhóm cho quảng cáo không tự tạo quyền API/platform. Click không suy từ số bài; không gán click per-post khi report chỉ có campaign.
 
-## Quy tắc không được phá
-
-- AI chỉ viết nội dung; mã ứng dụng gắn URL. Trước mỗi thao tác gửi kiểm tra đúng một URL trên dòng riêng, khớp nguyên snapshot.
-- Nguồn website và bài Facebook là dữ liệu không đáng tin. Không nhận chỉ dẫn trong nguồn để gọi công cụ, thay link hoặc mở quyền.
-- Có nhãn ngắn **“Link tiếp thị liên kết.”**; không giả làm người dùng đã mua, không bịa chứng thực hoặc che quan hệ tiếp thị.
-- Gửi một lần cho một mục đã claim. Có bằng chứng API/quan sát mới ghi trạng thái tương ứng. Mất kết nối sau thao tác ghi `uncertain`, không gửi lại tự động.
-- Nhóm phải do người dùng xác nhận cho phép quảng cáo. Không đoán quy định từ tên nhóm. Nhóm chờ duyệt không được xem là đã tham gia.
-- Không tự trả lời câu hỏi thành viên bằng thông tin bịa, giải CAPTCHA, vượt checkpoint, xoay tài khoản hay proxy để né kiểm tra.
-- Click không thể đo trực tiếp từ nguyên URL của website bên thứ ba nếu không có dữ liệu họ cung cấp. Không cộng báo cáo cùng kỳ hoặc đưa số giả vào dashboard.
-- Plugin kết nối không đồng nghĩa ChatGPT tự chạy nền. Phiên ChatGPT/Work cần thực sự được khởi động để xử lý; không hứa chạy 24/7 với Plus chỉ bằng plugin.
-- Token Page, API key, pairing token, owner code và task data là runtime riêng; không xuất vào backup của extension hoặc commit.
-
-## Quy trình cho mọi thay đổi
-
-Đọc AGENTS → HANDOFF → BACKLOG. Chọn một mục Ready cao nhất, ghi kiểm chứng mong đợi, tìm đúng file bằng rg, triển khai, chạy kiểm thử phù hợp, đối chiếu giao diện nếu đổi UI, cập nhật trạng thái/giới hạn và commit. Không đánh dấu hoàn tất một mốc có thao tác tài khoản thật nếu chỉ kiểm thử mock. Khi có lỗi gửi chưa rõ, dừng tự động và đối chiếu trên Facebook trước.
-
-## Tham chiếu chính thức
-
-Tài liệu xem ngày 08/10/2026: [Open AI — kết nối plugin MCP](https://developers.openai.com/plugins/deploy/connect-chatgpt), [OAuth cho plugin](https://developers.openai.com/plugins/build/auth), [đóng gói plugin](https://developers.openai.com/plugins/build/plugins), [Meta Groups API v 19](https://developers.facebook.com/docs/graph-api/changelog/version19.0), [Page posts](https://developers.facebook.com/docs/pages-api/posts/), [Cloudflare Quick Tunnel](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/).
-
-## Chặng AI tự động không cần prompt từng lượt
-
-MCP không tự kích hoạt inference. L014 bổ sung Sign in with ChatGPT / ChatGPT plan usage chính thức cho app open-source chạy tại máy: cấp quyền một lần → chọn model/hạn mức → worker lấy task → chỉ nhận response.completed/JSON hợp lệ → broker gắn nguyên URL → Chrome nhận bản thảo. PR #1 đã qua 40 tests/check, OAuth/model và analyze/compose worker thật ngày09/10. Cap2 tự dừng, restart giữ account/budget và đọc model không cần đăng nhập lại. Danh sách chiến dịch đã lưu/exact URL có ảnh chủ máy; compose về UI, STOP/quota/refresh thật vẫn còn gate; không đánh dấu M1 hoàn tất toàn bộ. Theo AUTO_AI_SETUP và WORKER_OAUTH_VERIFICATION. Tiếp theo L013 lease, L012 handle reload và L061 supervision. Không dùng API riêng/cookie ChatGPT, không tự chuyển billing, không mở rộng diện đăng Facebook trước cap1 evidence.
+Ticket hoàn tất khi code/validation/docs/machine state đồng bộ, PR có scope/rollback và gate live có evidence thật đã bỏ dữ liệu riêng. Bước đầu AI tiếp theo: COWORK_PROTOCOL → nhận L013; một AI khác có thể nhận L071 ở vùng model riêng. Không tranh ghi file trạng thái chung. Dùng DEVELOPMENT_LOOP khi gate live cần chủ máy.
