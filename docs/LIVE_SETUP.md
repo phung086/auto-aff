@@ -6,7 +6,7 @@ Ngày 08/10/2026. Tài liệu này phân biệt ba kết nối để người ph
 |---|---|---|
 | ChatGPT cho Chrome chính thức | Cho phép người dùng/agent làm việc trên profile đang đăng nhập | Đã kết nối; Plus đăng nhập sẵn |
 | Kết nối MCP LinkDesk AI trong ChatGPT web | ChatGPT đọc tác vụ và ghi nội dung về broker | Người dùng đã duyệt và tạo; trang OAuth của broker mở, chờ chủ tài khoản nhập mã và consent |
-| Extension LinkDesk 0.2.0 | Quản lý campaign, ghép broker và thực hiện phiên Facebook | Gói mã nguồn đã có; cần cài thủ công vì browser automation không được mở chrome://extensions |
+| Extension LinkDesk 0.2.0 | Quản lý campaign, ghép broker và thực hiện phiên Facebook | Người dùng đã cài thủ công; ảnh cung cấp cho thấy version 0.2.0 đang bật. Chưa xác minh ghép broker và nhận nội dung AI |
 
 Gói LinkDesk riêng tư đã lưu trong tài khoản qua Plugin Creator. UI hiện mở gói theo luồng Desktop. Đây là bằng chứng lưu gói, không phải bằng chứng ChatGPT web có tools. Không tạo bản sao gói để chữa lỗi xác thực. Không đổi sang “Không xác thực” để né consent.
 
