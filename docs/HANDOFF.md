@@ -14,7 +14,7 @@ SUPER_PLAN có sơ đồ Mermaid và HTML; plan.json ghi mốc. AGENTS và BACKL
 
 ## Bằng chứng và điểm còn thiếu
 
-Local tests và HTTPS metadata/auth rejection có kiểm chứng; xem VALIDATION. Chrome cá nhân đã kết nối qua tiện ích ChatGPT chính thức, tài khoản Plus đang đăng nhập. Đã lưu gói LinkDesk riêng tư trong tài khoản; UI gói này mở theo luồng Desktop. Form custom MCP trên ChatGPT web đã điền tên LinkDesk AI, HTTPS endpoint và OAuth; UI nhận đúng DCR, scope compose và các endpoint. Đang chờ duyệt quyền trước khi tạo kết nối. Chưa xác minh ChatGPT thật gọi bốn tools và Chrome nhận kết quả. Không đọc/đổi cookies/profile hoặc vượt challenge.
+Local tests và HTTPS metadata/auth rejection có kiểm chứng; xem VALIDATION. Chrome cá nhân đã kết nối qua tiện ích ChatGPT chính thức, tài khoản Plus đang đăng nhập. Đã lưu gói LinkDesk riêng tư trong tài khoản; UI gói này mở theo luồng Desktop. Custom MCP LinkDesk AI trên web nhận đúng OAuth/DCR/compose; người dùng đã duyệt và tạo, đang chờ nhập mã tại trang OAuth của broker. Chưa xác minh ChatGPT thật gọi bốn tools và Chrome nhận kết quả. Browser automation không được mở chrome://extensions: người dùng cài unpacked thủ công. Không đọc/đổi cookies/profile hoặc vượt challenge. Cấu hình hiện là Quick Tunnel vào broker tại máy, xem DEPLOYMENT.
 
 Chưa cài extension vào Chrome người dùng, chưa thử Facebook join/comment/Page thật, chưa có Page token hoặc supplier API click/conversion. Quick Tunnel tạm; không ghi URL tạm vào manifest Git. Memory OAuth sessions cần kết nối lại sau restart. Plugin không tự tạo AI chạy nền24/7.
 

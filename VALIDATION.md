@@ -18,7 +18,7 @@ Gate release: **28 kiểm thử đã qua**, `npm run check` đã qua; GitHub Act
 
 ## Chưa nghiệm thu
 
-OAuth consent và bốn tools trong ChatGPT thật, analyze/compose trả về extension Chrome, Facebook join/comment/Page, Page quyền/token và supplier API click/conversion/commission. Chrome đã kết nối; form MCP đang chờ duyệt quyền. Extension LinkDesk chưa được cài vào profile này. Không vượt challenge hoặc đọc cookie.
+OAuth consent và bốn tools trong ChatGPT thật, analyze/compose trả về extension Chrome, Facebook join/comment/Page, Page quyền/token và supplier API click/conversion/commission. Chrome đã kết nối; người dùng đã tạo custom MCP, trang OAuth của broker đang chờ nhập mã và consent. Extension LinkDesk cần cài thủ công do browser policy chặn chrome://extensions. Không vượt challenge hoặc đọc cookie.
 
 ## Giới hạn
 

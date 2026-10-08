@@ -43,7 +43,7 @@ Thống kê tách API/quan sát/thủ công/chưa rõ. Click lấy từ báo cá
 
 Có kiểm thử local cho link, reducer, Page API mock, runner, broker/MCP SDK, OAuth PKCE và reports. Xem VALIDATION. **Chưa nghiệm thu ChatGPT Plus thật, Chrome profile người dùng, Facebook comment/join/Page thật.** Đừng coi preview hoặc mock là chứng minh đã đăng.
 
-Chrome Plus đã đăng nhập và form MCP đã nhận đúng OAuth/DCR; consent, cài LinkDesk và nhận kết quả biên soạn còn chờ. AI phát triển kế tiếp đọc [trạng thái cấu hình thật](docs/LIVE_SETUP.md) để tiếp tục đúng bước, tránh tạo lại gói plugin hoặc tuyên bố tích hợp hoàn tất sớm.
+Chrome Plus đã đăng nhập và người dùng đã tạo custom MCP với OAuth/DCR; consent, cài LinkDesk và nhận kết quả biên soạn còn chờ. AI phát triển kế tiếp đọc [trạng thái cấu hình thật](docs/LIVE_SETUP.md) để tiếp tục đúng bước, tránh tạo lại gói plugin hoặc tuyên bố tích hợp hoàn tất sớm. [Triển khai và tunnel](docs/DEPLOYMENT.md) giải thích backend đang chạy tại máy và các bước M6 để dùng hostname cố định/cloud.
 
 ## Phát triển
 
