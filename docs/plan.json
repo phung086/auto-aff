@@ -118,7 +118,7 @@
   ],
   "automaticAI": {
     "ticket": "L014",
-    "status": "worker-inference-live-extension-ui-pending",
+    "status": "worker-inference-live-saved-campaign-ui-seen",
     "provider": "official Sign in with ChatGPT plan usage",
     "entrypoint": "npm run ai:worker",
     "port": 8791,
@@ -128,7 +128,7 @@
     "extensionUiVerified": false,
     "liveModel": "gpt-6.1-sol",
     "restartAccountAndBudgetVerified": true,
-    "blocker": "Extension Chrome receive/save UI, real expiry refresh/quota/STOP and Windows startup remain unverified",
+    "blocker": "Automatic polling/task-to-card mapping, compose return UI, real expiry refresh/quota/STOP and Windows startup remain unverified",
     "verificationReport": "docs/WORKER_OAUTH_VERIFICATION.md",
     "testedCodeCommit": "155ff644a682262707ed67a9d114b9c37b46b8e6",
     "runbook": "docs/AUTO_AI_SETUP.md",
@@ -136,6 +136,8 @@
     "analysisLengthRepairLimit": 1,
     "failureStatusEndpoint": "http://127.0.0.1:8791/status",
     "extensionCreatedAnalysisCompleted": true,
-    "manualAnalysisRecovery": "implemented-live-broker-tested-extension-ui-pending"
+    "manualAnalysisRecovery": "live-broker-tested-owner-reports-saved-campaign-ui",
+    "extensionAnalysisSavedUiVerified": true,
+    "extensionComposeUiVerified": false
   }
 }

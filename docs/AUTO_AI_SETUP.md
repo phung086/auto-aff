@@ -1,6 +1,6 @@
 # AI tự động dùng gói ChatGPT
 
-09/10/2026. Bản vá PR #1 đã chạy trên Windows và Chrome thật: POST /auth/start, consent, callback và danh sách model đã qua. Worker GPT-6.1-Sol tự hoàn tất một analyze và một compose, giữ nguyên link; giới hạn2 tự dừng. Restart giữ đăng nhập và budget0, đọc model được mà không cấp quyền lại. 40 tests/check qua. **UI extension nhận/lưu vẫn cần đối chiếu; chưa Windows startup/Facebook thật.** Xem [bằng chứng kiểm tra](WORKER_OAUTH_VERIFICATION.md).
+09/10/2026. Bản vá PR #1 đã chạy trên Windows và Chrome thật: POST /auth/start, consent, callback và danh sách model đã qua. Worker GPT-6.1-Sol tự hoàn tất một analyze và một compose, giữ nguyên link; giới hạn2 tự dừng. Restart giữ đăng nhập và budget0, đọc model được mà không cấp quyền lại. 44 tests/check qua. **Ảnh chủ máy xác nhận danh sách chiến dịch đã lưu với exact URL sau recovery; compose về UI, Windows startup và Facebook thật còn chờ.** Xem [bằng chứng kiểm tra](WORKER_OAUTH_VERIFICATION.md).
 
 ## Hai quyền khác nhau
 

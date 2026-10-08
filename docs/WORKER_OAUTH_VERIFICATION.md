@@ -53,3 +53,7 @@ Sau khi restart riêng worker bản sửa, xử lý lại **chính ID tác vụ 
 Chủ máy báo UI vẫn không chuyển sau khi task completed. Chưa xác định vì sao tab cũ không nhận được response; không suy từ broker completed rằng UI đã nhận. Bổ sung nút **Nhận kết quả đã có** trong AI & nguồn: đọc tối đa20 completed tasks, chọn analyze khớp nguyên link và đưa cấu hình vào form để chủ máy kiểm tra/lưu; không enqueue hoặc gọi model. Hàm recovery đã đọc đúng task78d3938f từ broker thật, product69 ký tự/exact URL. 44 tests/check qua. Đây là khôi phục thủ công có giới hạn, chưa thay thế L012 lưu handle bền vững.
 
 Nguồn extension và gói outputs/LinkDesk-0.2.0/linkdesk đã cập nhật. Chủ máy reload LinkDesk tại chrome://extensions, mở lại dashboard; nếu session pairing mất thì chọn pairing.json của broker đang chạy, rồi bấm Nhận kết quả đã có. Reload không xóa chiến dịch đã lưu ở storage.local. Không phải cài lại ChatGPT/ngrok, không cần đăng nhập OAuth lại. Giao diện extension mới và việc lưu vẫn cần chủ máy xác nhận vì browser tool không truy cập trang chrome-extension.
+
+## Xác nhận ảnh giao diện từ chủ máy
+
+Ngày09/10 chủ máy báo sau khi bấm Nhận kết quả và gửi ảnh dashboard Chrome extension. Cột phải có hai chiến dịch AgentShop247 đã lưu, mỗi thẻ hiển thị nguyên URL ref=AS362560C5A713; form bên trái trống với tiêu đề Thêm chiến dịch. Đây là bằng chứng danh sách chiến dịch đã lưu/exact URL trên UI thật. Không khẳng định từng thẻ ứng với task nào hoặc polling tự nhận đã hoạt động chỉ từ ảnh; compose về UI và Facebook vẫn chưa nghiệm thu. Ảnh riêng không đưa lên GitHub.
