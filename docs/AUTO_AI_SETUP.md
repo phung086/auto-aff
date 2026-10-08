@@ -17,7 +17,14 @@
 5. Extension giữ **ChatGPT qua plugin MCP / hàng đợi**. Nhập link/nguồn như trước. Khi worker đã được cấp quyền và bật, worker xử lý task mà không cần prompt từng lượt.
 6. Có thể đóng trang cấu hình; broker và worker vẫn phải chạy. Chrome cần hoạt động để nhận kết quả/thực hiện phiên đã cho phép. Chưa có Windows startup service.
 
-Nếu Chrome báo ERR_BLOCKED_BY_CLIENT: đăng nhập chưa qua, không phải đã kết nối. Chủ máy cần kiểm tra chính sách trình duyệt/tiện ích chặn với người quản lý máy; không tự vô hiệu hóa bảo vệ. Sau khi truy cập trở lại phải nghiệm thu OAuth/model/inference thật.
+Nếu Chrome báo ERR_BLOCKED_BY_CLIENT: đăng nhập chưa qua, không phải đã kết nối. Mã mới dùng POST /auth/start và Referrer-Policy: strict-origin để tránh lỗi Origin: null / 403 từng tái hiện ở dự án. **Đổi đường dẫn không chứng minh hay bảo đảm hết ERR_BLOCKED_BY_CLIENT**: lỗi này vẫn có thể do tiện ích trình duyệt hoặc chính sách máy chặn trước khi gửi. Chủ máy hoặc quản trị viên kiểm tra Network/Console và nhật ký chính sách Chrome, phân biệt (a) request không xuất hiện ở server, (b) server trả 403, (c) redirect OAuth bị chặn. Không tắt bảo vệ hoặc đổi cookie. Chỉ sau khi truy cập trở lại mới nghiệm thu OAuth/model/inference thật.
+
+### Chẩn đoán login sau bản vá
+
+1. Khởi động worker bằng `npm run ai:worker`; mở trang localhost 8791. Bấm Continue with ChatGPT **một lần**.
+2. Nếu còn ERR_BLOCKED_BY_CLIENT, mở DevTools → Network để xem request `POST /auth/start` bị chặn ở client hay nhận mã HTTP thực sự. Kiểm tra `chrome://policy` và tiện ích theo quy trình quản trị được phép; không tắt extension bảo mật để lách chính sách.
+3. Nếu HTTP 403, kiểm tra `Origin: http://127.0.0.1:8791` trong yêu cầu và Host `127.0.0.1:8791`. Không nới kiểm tra Origin/CSRF để sửa lỗi. Nếu thấy trang OpenAI, tiếp tục authorize và callback; kiểm tra model sau đó.
+4. Chưa có kết quả live về OAuth hoặc inference từ bản vá này. Không coi thay đổi trong GitHub là đã cập nhật tiến trình worker đang chạy tại máy chủ.
 
 ## Vận hành và bảo vệ dữ liệu
 
