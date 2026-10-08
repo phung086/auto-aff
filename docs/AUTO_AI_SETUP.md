@@ -1,6 +1,6 @@
 # AI tự động dùng gói ChatGPT
 
-08/10/2026. Worker tại máy đã có code và 40 tests/check; **chưa nghiệm thu inference bằng gói ChatGPT thật**. Chrome hiện báo ERR_BLOCKED_BY_CLIENT khi POST trang đăng nhập local, chủ máy thử cũng bị. Không tắt bảo vệ, đổi cookie hoặc dùng API riêng của ChatGPT để vượt lỗi.
+09/10/2026. Bản vá PR #1 (`155ff644`) đã chạy trên Windows và Chrome thật: POST /auth/start thành công, mở được OpenAI, chọn tài khoản và đến trang cấp quyền dùng gói ChatGPT. Lỗi ERR_BLOCKED_BY_CLIENT không còn xuất hiện trong lượt này. 40 tests/check qua; **chưa nghiệm thu callback, model hoặc inference thật**, đang chờ chủ tài khoản xác nhận cấp quyền. Xem [bằng chứng kiểm tra](WORKER_OAUTH_VERIFICATION.md).
 
 ## Hai quyền khác nhau
 
@@ -24,7 +24,7 @@ Nếu Chrome báo ERR_BLOCKED_BY_CLIENT: đăng nhập chưa qua, không phải 
 1. Khởi động worker bằng `npm run ai:worker`; mở trang localhost 8791. Bấm Continue with ChatGPT **một lần**.
 2. Nếu còn ERR_BLOCKED_BY_CLIENT, mở DevTools → Network để xem request `POST /auth/start` bị chặn ở client hay nhận mã HTTP thực sự. Kiểm tra `chrome://policy` và tiện ích theo quy trình quản trị được phép; không tắt extension bảo mật để lách chính sách.
 3. Nếu HTTP 403, kiểm tra `Origin: http://127.0.0.1:8791` trong yêu cầu và Host `127.0.0.1:8791`. Không nới kiểm tra Origin/CSRF để sửa lỗi. Nếu thấy trang OpenAI, tiếp tục authorize và callback; kiểm tra model sau đó.
-4. Chưa có kết quả live về OAuth hoặc inference từ bản vá này. Không coi thay đổi trong GitHub là đã cập nhật tiến trình worker đang chạy tại máy chủ.
+4. Bản vá đã được áp dụng cho worker trên máy và tới trang cấp quyền OpenAI. Callback, model và inference vẫn cần kiểm tra sau khi chủ tài khoản cấp quyền; không coi trang consent là đã đăng nhập hoàn tất.
 
 ## Vận hành và bảo vệ dữ liệu
 

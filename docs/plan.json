@@ -1,6 +1,6 @@
 {
   "planVersion": "1.0",
-  "updated": "2026-10-08",
+  "updated": "2026-10-09",
   "release": "0.2.0",
   "repository": "https://github.com/phung086/auto-aff",
   "exactDefaultUrl": "https://agentshop247.com/?ref=AS362560C5A713",
@@ -118,14 +118,16 @@
   ],
   "automaticAI": {
     "ticket": "L014",
-    "status": "implemented-tested-login-blocked",
+    "status": "chrome-consent-reached-callback-pending",
     "provider": "official Sign in with ChatGPT plan usage",
     "entrypoint": "npm run ai:worker",
     "port": 8791,
     "apiKeyRequired": false,
     "manualPromptRequiredAfterActivation": false,
     "actualInferenceVerified": false,
-    "blocker": "Chrome ERR_BLOCKED_BY_CLIENT when submitting local login; user confirms same",
+    "blocker": "Owner must grant ChatGPT plan access on OpenAI consent page; callback/models/inference not yet verified",
+    "verificationReport": "docs/WORKER_OAUTH_VERIFICATION.md",
+    "testedCodeCommit": "155ff644a682262707ed67a9d114b9c37b46b8e6",
     "runbook": "docs/AUTO_AI_SETUP.md",
     "testsPassed": 40
   }

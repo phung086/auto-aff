@@ -30,7 +30,7 @@ Ngày 08/10/2026 đã kiểm tra trực tiếp trong cùng Chrome: trang chi ti�
 
 Ngrok origin đã hoạt động: metadata HTTPS200, tài khoản LinkDesk ngrok Primary connected, ChatGPT hoàn tất analyze thật từ extension; broker completed và giữ exact URL. Chưa compose về extension.
 
-Worker ChatGPT plan mới: 40 tests/check qua (SSE completion/failure, malformed result/URL/ID, OAuth state/client/account, refresh serialize/permission, STOP/cancel/error). Worker localhost8791 chạy thật nhưng OAuth/inference chưa có: Chrome ERR_BLOCKED_BY_CLIENT khi POST login; chủ máy thử cũng bị. Không bypass bảo vệ hoặc tuyên bố AI auto live.
+Worker ChatGPT plan: ngày09/10 áp dụng PR #1 155ff644, npm ci/40 tests/check qua. Chrome thật POST /auth/start thành công, chọn tài khoản và tới trang cấp quyền OpenAI; ERR_BLOCKED_BY_CLIENT không còn trong lượt này. Origin null/sai CSRF vẫn403; startup bind lỗi dọn lock mới, lock có sẵn giữ nguyên. Chủ tài khoản còn phải xác nhận consent; callback/model/inference chưa nghiệm thu. Xem docs/WORKER_OAUTH_VERIFICATION.md; không tuyên bố AI auto live.
 
 Còn nghiệm thu compose về extension Chrome, Facebook join/comment/Page, Page quyền/token và supplier API click/conversion/commission. Consent đã có bằng chứng UI; kết nối công cụ sau gián đoạn chưa khôi phục. Ảnh người dùng cung cấp cho thấy extension LinkDesk 0.2.0 đã cài và đang bật. Extension đã ghép; broker nhận analyze thật, UI nhận/lưu và compose còn chờ. Không vượt challenge hoặc đọc cookie.
 
