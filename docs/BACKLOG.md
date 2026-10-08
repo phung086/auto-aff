@@ -11,6 +11,7 @@ Ready nghĩa là có thể triển khai tiếp. Awaiting live nghĩa là code c�
 | L013 | M1 / P1 | Ready | Lease xử lý task/worker; nhiều phiên ChatGPT không ghi đè; pending pagination ổn định |
 | L020 | M2 / P0 | Done-code | Home 3 steps, AIChatGPT mặc định, API nâng cao, báo cáo có nguồn, trạng thái chờ |
 | L021 | M2 / P1 | Ready | Setup wizard/launcher Windows, tự khám phá file ghép không truyền secret ra chat, error recovery dễ hiểu |
+| L022 | M2 / P1 | Ready | Phân biệt trạng thái local health, quyền MCP và kết quả đã nhận; health hiện hardcode chatgptVerified=false. Không suy luận tài khoản từ field này; thêm bằng chứng tool/task và UI rõ |
 | L030 | M3 / P1 | Done-code experimental | Tìm nhóm đang hiển thị và join một nhóm đã xác nhận quy định; pending/manual/uncertain |
 | L031 | M3 / P0 | Awaiting live | Xác minh bố cục Facebook thật trong Chrome; ngăn bấm nhầm/bấm lại khi restart |
 | L040 | M4 / P0 | Awaiting live | Một bình luận target cụ thể, cap 1, exact URL, kiểm tra status và STOP; không mở rộng trước nghiệm thu |

@@ -6,9 +6,11 @@ Ngày 08/10/2026. Tài liệu này phân biệt ba kết nối để người ph
 |---|---|---|
 | ChatGPT cho Chrome chính thức | Cho phép người dùng/agent làm việc trên profile đang đăng nhập | Đã kết nối; Plus đăng nhập sẵn |
 | Kết nối MCP LinkDesk AI trong ChatGPT web | ChatGPT đọc tác vụ và ghi nội dung về broker | Người dùng đã duyệt và tạo; trang OAuth của broker mở, chờ chủ tài khoản nhập mã và consent |
-| Extension LinkDesk 0.2.0 | Quản lý campaign, ghép broker và thực hiện phiên Facebook | Người dùng đã cài thủ công; ảnh cung cấp cho thấy version 0.2.0 đang bật. Chưa xác minh ghép broker và nhận nội dung AI |
+| Extension LinkDesk 0.2.0 | Quản lý campaign, ghép broker và thực hiện phiên Facebook | Người dùng đã cài thủ công; ảnh version 0.2.0 đang bật và ảnh sau nhập pairing/health cho thấy cầu nối phản hồi, có HTTPS MCP URL. Chưa nhận nội dung AI |
 
 Gói LinkDesk riêng tư đã lưu trong tài khoản qua Plugin Creator. UI hiện mở gói theo luồng Desktop. Đây là bằng chứng lưu gói, không phải bằng chứng ChatGPT web có tools. Không tạo bản sao gói để chữa lỗi xác thực. Không đổi sang “Không xác thực” để né consent.
+
+Kiểm tra trực tiếp ngày 08/10 trên cùng hồ sơ Chrome đã đăng nhập: trang chi tiết custom MCP LinkDesk AI vẫn hiện nút Kết nối. Đã mở lại OAuth mới để tránh yêu cầu cũ hết hạn; chủ tài khoản cần nhập mã và consent. Device API summary tại lúc kiểm tra có total 0, pending 0. Health field `chatgptVerified: false` hiện là giá trị cố định trong code; không dùng nó làm bằng chứng account chưa kết nối. Cần kiểm tra UI ChatGPT và một tool/task thực sự.
 
 ## Resume theo thứ tự
 
