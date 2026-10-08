@@ -21,6 +21,7 @@ AI không quyết định URL. Ứng dụng lưu raw string, snapshot theo job v
 | [HANDOFF](HANDOFF.md) | Bằng chứng thật và gate còn mở |
 | [BACKLOG](BACKLOG.md), [plan.json](plan.json) | Ticket và trạng thái đồng bộ |
 | [DISCOVERY_SPEC](DISCOVERY_SPEC.md) | Tự tìm bài theo nguồn, relevance, identity và UX |
+| [KEYWORD_DISCOVERY](KEYWORD_DISCOVERY.md) | Catalog AI/model/alias, context và chọn campaign; profile/18 acceptance cases |
 | [COWORK_PROTOCOL](COWORK_PROTOCOL.md), [WORK_REGISTRY](WORK_REGISTRY.json) | Phân vùng file, worktree, khóa và bàn giao |
 | [DEVELOPMENT_LOOP](DEVELOPMENT_LOOP.md) | Chu kỳ build, kiểm chứng và báo cáo |
 | [PLATFORM_RESEARCH](PLATFORM_RESEARCH.md) | Facebook, TikTok Việt Nam, Shopee; nguồn chính thức |

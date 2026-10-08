@@ -164,6 +164,24 @@
       "G5-platform-permissions"
     ],
     "automationId": "ph-t-tri-n-linkdesk-theo-super-plan",
-    "runtimeImplementationVerified": false
+    "runtimeImplementationVerified": false,
+    "keywordDiscovery": {
+      "status": "design-specified-not-runtime-implemented",
+      "ticket": "L073",
+      "spec": "docs/KEYWORD_DISCOVERY.md",
+      "profile": "docs/examples/keyword-profile.json",
+      "acceptanceExamples": "docs/examples/keyword-cases.json",
+      "exampleCount": 18,
+      "pipeline": [
+        "keyword-alias-match",
+        "ai-context",
+        "intent-and-source-permissions",
+        "compatible-campaign",
+        "draft",
+        "preview-approval"
+      ],
+      "keywordMatchGrantsPublishPermission": false,
+      "classifierVerified": false
+    }
   }
 }

@@ -23,9 +23,11 @@ Dedupe key: platform/account/post/campaign; thêm khóa platform/post/campaign p
 
 ## Pipeline
 
+Chi tiết lớp từ khóa/alias/ngữ cảnh và routing campaign ở [KEYWORD_DISCOVERY](KEYWORD_DISCOVERY.md), cùng profile và acceptance examples trong `docs/examples/`. Danh sách gồm AI, Claude, Codex, Antigravity, Gemini, Grok, Cursor/Cussor, ChatGPT, API và các entity mở rộng. Match chỉ tìm candidate; không tự cấp quyền publish.
+
 1. Kiểm tra account/scope còn hiệu lực, không suy quyền từ tên nhóm hoặc AI.
 2. Đọc cửa sổ giới hạn bằng adapter được phép. Đề xuất 20 bài/10 phút/5 drafts mỗi lượt; đây là giới hạn sản phẩm, không phải quota Facebook.
-3. Loại trùng, quá cũ, đóng bình luận, thiếu identity/permalink, ngoài scope; hiển thị reason code.
+3. Match từ khóa/alias theo ranh giới Unicode, kiểm tra nghĩa AI và loại trùng, quá cũ, đóng bình luận, thiếu identity/permalink, ngoài scope; hiển thị reason code. Generic ai/API hoặc Cursor CSS không tự khớp chủ đề.
 4. Đánh giá nhu cầu: hỏi nơi mua/công cụ/tài nguyên liên quan mới vào draft. Demo không hỏi gợi ý → skip; ngữ cảnh thiếu → review.
 5. AI trả decision/reasonCodes/evidence và nội dung không URL. Score chỉ để xếp hạng, không cấp quyền.
 6. App validate schema/length, gắn raw snapshot URL + disclosure rồi preview.

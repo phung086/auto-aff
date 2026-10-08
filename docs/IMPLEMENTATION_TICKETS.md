@@ -17,9 +17,9 @@
 |---|---|---|---|
 | L071 | M0; model | SourceScope/account capability/rules/expiry; restore không cấp publish/token. Tên nhóm không tạo quyền | Additive migration, scope mới disabled |
 | L072 | L071/L013; discovery | Candidate ID/cursor/dedupe; đọc cùng bài hai lượt chỉ một candidate; thiếu identity không publish | Discovery flag off, queue giữ nguyên |
-| L073 | L072/L042; discovery/AI contract | Reason/evidence, hỏi mua được draft, demo không hỏi skip; injection không đổi link/quyền; ít nhất12 fixtures và confusion counts | Deterministic/review-only khi AI lỗi |
+| L073 | L072/L042; discovery/AI contract | KEYWORD_DISCOVERY: entity/alias Unicode, generic ai/API, Cursor CSS/Gemini hoàng đạo; context/intent/campaign router và reason evidence. 18 acceptance examples chưa chạy classifier; triển khai test/confusion counts, không keyword→publish | Deterministic/review-only khi AI lỗi |
 | L074 | L072 + platform permission gate; discovery | Bounded reader/cursor/STOP/layout-change; 20 bài/10 phút/5 drafts là limit đề xuất; live chỉ có quyền đọc | Reader disabled, fallback bản thảo |
-| L075 | L012/L022/L073; UI | Source chọn một lần, permalink tự tìm, reasons/progress/preview/STOP/error recovery; không nhập từng post URL | Hide experimental tab, giữ campaign/job |
+| L075 | L012/L022/L073; UI | Source chọn một lần, keyword chips/alias/test đoạn văn, permalink tự tìm, reasons/preview/STOP/recovery; keyword/entity theo campaign và không nhập từng post URL | Hide experimental tab, giữ campaign/job |
 
 ## G2–G4 — Gửi, account, vận hành, số liệu
 

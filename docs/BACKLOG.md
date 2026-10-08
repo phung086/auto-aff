@@ -28,7 +28,7 @@ Ready nghĩa là có thể triển khai tiếp. Awaiting live nghĩa là code c�
 | L070 | M7 / P1 | Ready contract-only | Provider/platform capabilities/version/market/permissions; adapter unknown disabled; publisher phụ thuộc G0/quyền thật |
 | L071 | G1 / P1 | Ready | SourceScope/account capabilities/rules evidence/expiry; chọn nguồn một lần, không nhập URL từng bài; schema additive, restore không bật gửi |
 | L072 | G1 / P1 | Planned, depends L071/L013 | Candidate identity/cursor/dedupe liên lượt và liên tài khoản; thiếu identity không publish |
-| L073 | G1 / P1 | Planned, depends L072/L042 | Relevance/reason/evidence; demo không hỏi mua skip; prompt injection không đổi quyền/link |
+| L073 | G1 / P1 | Design specified, depends L072/L042 | KEYWORD_DISCOVERY + profile/18 acceptance examples: entity/alias/context/intent/campaign router; demo không hỏi mua skip; injection không đổi link/quyền; classifier chưa triển khai |
 | L074 | G1 / P1 | Planned, permission gate | Bounded source reader + STOP/resume/layout detection; chưa xác minh quyền Facebook/read live |
 | L075 | G1 / P1 | Planned, depends L012/L022/L073 | UX Discovery nguồn lưu sẵn, permalink tự tìm, preview/skip/progress/STOP/error recovery |
 | L080 | G4 / P1 | Planned, depends L071 | AccountRef/private credentialRef, scope và approval account binding, không gửi chéo |

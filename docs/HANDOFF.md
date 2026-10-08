@@ -5,6 +5,8 @@
 
 ## Bàn giao kế hoạch 2.0
 
+Bổ sung thiết kế theo từ khóa người dùng: KEYWORD_DISCOVERY và examples/keyword-profile.json, keyword-cases.json. Pipeline reader → entity/alias matcher → context AI → nhu cầu/quyền → campaign router → draft → preview/approval → publisher riêng. Cursor/Cussor alias, generic ai/API, nghĩa khác và 18 acceptance cases đã đặc tả; chưa nối runtime hoặc chạy classifier thật. Không đổi quyền source/publisher. Owner root giữ docs-status lock local trong lượt sửa và thả sau commit/push; checkout runtime không bị đổi.
+
 Nhánh docs `codex/affiliate-super-plan`, worktree riêng `work/LinkDesk-plan`, base4efd045 và dependency PR #1. Không đổi code/runtime, không restart broker/tunnel/Chrome hoặc gửi Facebook. SUPER_PLAN hiện có pipeline discovery theo nguồn đã chọn (không cần URL từng bài), G0–G5, multiaccount/report/Shopee/TikTok gates. DISCOVERY_SPEC/PLATFORM_RESEARCH/IMPLEMENTATION_TICKETS mô tả contract, acceptance/rollback. COWORK_PROTOCOL/WORK_REGISTRY phân file/branch/khóa; giao thức phối hợp mới là docs, chưa có điều phối khóa tự động. DEVELOPMENT_LOOP quy định heartbeat mỗi6 giờ, tối đa một ticket đủ dependency/lượt, quiet khi không đổi; automation không cấp quyền publisher. Docs-status do coordinator cập nhật.
 
 Tiếp theo L013 task lease; L071 source scope và L070 contract có thể độc lập ở nhóm file riêng. G0 live vẫn cần compose về Chrome/STOP/quota/refresh. Adapter Facebook/TikTok/Shopee mới đều planned/permission-gated, không gọi production ready.
