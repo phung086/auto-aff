@@ -1,0 +1,21 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "linkdesk",
+  "version": "0.2.0",
+  "description": "Biên soạn nội dung tiếng Việt cho hàng đợi affiliate tại máy qua MCP, giữ nguyên link trong ứng dụng.",
+  "author": { "name": "phung086" },
+  "repository": "https://github.com/phung086/auto-aff",
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "LinkDesk",
+        "shortDescription": "Biên soạn affiliate tại máy",
+        "longDescription": "Đọc yêu cầu từ Chrome và lưu kết quả biên soạn; ứng dụng gắn nguyên link. Không có công cụ MCP đăng Facebook. Cần broker local đang chạy.",
+        "developerName": "phung086",
+        "category": "Productivity",
+        "capabilities": ["Read", "Write"],
+        "defaultPrompt": "Xử lý tối đa 10 yêu cầu LinkDesk đang chờ. Chỉ viết nội dung không URL; ứng dụng tự gắn link."
+      }
+    }
+  }
+}

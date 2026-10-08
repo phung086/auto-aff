@@ -1,0 +1,122 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-10-07T12:19:10.278173+00:00",
+  "title": "Design System: LinkDesk",
+  "extensions": {
+    "shadows": [
+      {
+        "name": "toast",
+        "value": "0 8px 28px #202b2826",
+        "purpose": "Toast only; work surfaces are flat."
+      }
+    ],
+    "motion": [
+      {
+        "name": "view-arrival",
+        "value": ".22s ease-out",
+        "purpose": "Brightness .98 to 1 and translateY(3px) to 0; disabled by reduced-motion preference."
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "header-wrap",
+        "value": "1160px"
+      },
+      {
+        "name": "compact-workspace",
+        "value": "1060px"
+      },
+      {
+        "name": "stacked-workspace",
+        "value": "760px"
+      }
+    ],
+    "focus": {
+      "outline": "3px solid var(--focus)",
+      "outlineOffset": "3px",
+      "restoreFileLabel": ".button-row:has(#import-json:focus-visible) .file-label"
+    },
+    "dialogBackdrop": "#20332973",
+    "provenance": {
+      "mode": "scan",
+      "source": "extension/style.css",
+      "language": "implementation-derived, provisional",
+      "seed": "922c22fd",
+      "approvedComp": false
+    }
+  },
+  "components": [
+    {
+      "name": "Primary button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Extracted from extension/style.css.",
+      "html": "<button class=\"ds-primary\">Bắt đầu tự động</button>",
+      "css": ".ds-primary{font:600 12px/1.65 BeVietnam,\"Segoe UI\",sans-serif;display:inline-flex;align-items:center;justify-content:center;min-height:42px;border:0;border-radius:6px;padding:10px 17px;background:var(--accent,#245a43);color:#fff;cursor:pointer}.ds-primary:hover{background:var(--accent-hover,#164630)}.ds-primary:disabled{opacity:.55;cursor:not-allowed}.ds-primary:focus-visible{outline:3px solid var(--focus,#276c9f);outline-offset:3px}"
+    },
+    {
+      "name": "Secondary button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Extracted from extension/style.css.",
+      "html": "<button class=\"ds-secondary\">Dừng phiên</button>",
+      "css": ".ds-secondary{font:600 12px/1.65 BeVietnam,\"Segoe UI\",sans-serif;display:inline-flex;align-items:center;justify-content:center;min-height:42px;border:0;border-radius:6px;padding:10px 17px;background:#e9ece7;color:var(--ink,#202b28);cursor:pointer}.ds-secondary:hover{background:#dce4da}.ds-secondary:disabled{opacity:.55;cursor:not-allowed}.ds-secondary:focus-visible{outline:3px solid var(--focus,#276c9f);outline-offset:3px}"
+    },
+    {
+      "name": "Text field",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Extracted from extension/style.css.",
+      "html": "<input class=\"ds-input\" aria-label=\"Tên chiến dịch\" placeholder=\"Tên chiến dịch\">",
+      "css": ".ds-input{font:14px/1.65 BeVietnam,\"Segoe UI\",sans-serif;box-sizing:border-box;width:100%;min-height:42px;border:1px solid #b8c3ba;border-radius:6px;padding:10px 11px;background:var(--surface,#fff);color:var(--ink,#202b28);caret-color:var(--accent,#245a43)}.ds-input::placeholder{color:#646e68}.ds-input:focus{border-color:var(--accent,#245a43)}.ds-input:focus-visible{outline:3px solid var(--focus,#276c9f);outline-offset:3px}"
+    },
+    {
+      "name": "Selected navigation",
+      "kind": "nav",
+      "refersTo": "nav-active",
+      "description": "Extracted from extension/style.css.",
+      "html": "<button class=\"ds-nav\" aria-current=\"page\">Tự động hóa</button>",
+      "css": ".ds-nav{font:600 14px/1.65 BeVietnam,\"Segoe UI\",sans-serif;cursor:pointer;border:0;border-radius:6px;padding:9px 11px;background:var(--tint,#eaf1e8);color:var(--accent,#245a43)}.ds-nav:hover{background:var(--tint,#eaf1e8);color:var(--accent,#245a43)}.ds-nav:focus-visible{outline:3px solid var(--focus,#276c9f);outline-offset:3px}"
+    },
+    {
+      "name": "Ready status",
+      "kind": "chip",
+      "refersTo": "tag-ready",
+      "description": "Extracted from extension/style.css.",
+      "html": "<span class=\"ds-tag\">Đã duyệt</span>",
+      "css": ".ds-tag{font:600 12px/1.65 BeVietnam,\"Segoe UI\",sans-serif;display:inline-block;padding:4px 9px;border-radius:4px;white-space:nowrap;background:#dfeee0;color:#285331}"
+    },
+    {
+      "name": "Composer surface",
+      "kind": "card",
+      "refersTo": "compose",
+      "description": "Extracted from extension/style.css.",
+      "html": "<div class=\"ds-compose\">Chuẩn bị nội dung</div>",
+      "css": ".ds-compose{font:14px/1.65 BeVietnam,\"Segoe UI\",sans-serif;color:var(--ink,#202b28);background:var(--surface,#fff);padding:24px;border-radius:var(--radius,8px)}"
+    },
+    {
+      "name": "Exact URL panel",
+      "kind": "custom",
+      "refersTo": "exact-link",
+      "description": "Extracted from extension/style.css.",
+      "html": "<div class=\"ds-exact\">https://agentshop247.com/?ref=AS362560C5A713</div>",
+      "css": ".ds-exact{font:12px/1.65 BeVietnam,\"Segoe UI\",sans-serif;overflow-wrap:anywhere;background:var(--tint,#eaf1e8);color:var(--accent,#245a43);padding:12px;margin-top:10px;border-radius:6px}"
+    }
+  ],
+  "narrative": {
+    "northStar": "",
+    "overview": "This records the implemented interface in `extension/style.css` and `dashboard.html`. Its descriptive language is provisional and implementation-derived. The user requested continuation of the working tool; no visual world or comp was explicitly approved. Original seed `922c22fd` is provenance only.\n\nThe interface is a local workbench for campaigns, exact referral links, destinations and publishing outcomes. Flat white work areas sit on a pale green ground. Labels and statuses explain the next action, while a restrained green accent identifies primary controls and the active view.",
+    "keyCharacteristics": [],
+    "rules": [],
+    "dos": [
+      "Do reuse the actual palette, type and control styles for additional views.",
+      "Do preserve the exact referral string in storage and generated content; wrapping is presentation only.",
+      "Do keep preview/simulated data visibly identified and publishing outcomes explicit.",
+      "Do preserve keyboard focus and accessible names when changing views or dialogs."
+    ],
+    "donts": [
+      "Don't imply real AI/Facebook integration has been verified through local preview screenshots.",
+      "Don't present this extracted implementation direction as a user-approved visual identity."
+    ]
+  }
+}

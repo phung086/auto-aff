@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "LinkDesk — Trợ lý affiliate Facebook",
+  "version": "0.2.0",
+  "description": "Chuẩn bị bình luận và đăng bài đã duyệt lên Facebook Page của bạn.",
+  "permissions": [
+    "storage",
+    "activeTab",
+    "scripting",
+    "alarms",
+    "clipboardWrite"
+  ],
+  "host_permissions": [
+    "https://graph.facebook.com/*",
+    "https://api.openai.com/*",
+    "https://www.facebook.com/*",
+    "https://m.facebook.com/*",
+    "https://web.facebook.com/*",
+    "https://facebook.com/*",
+    "http://127.0.0.1:8787/*"
+  ],
+  "optional_host_permissions": [
+    "https://*/*",
+    "http://*/*"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "LinkDesk"
+  },
+  "options_ui": {
+    "page": "dashboard.html",
+    "open_in_tab": true
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'"
+  }
+}

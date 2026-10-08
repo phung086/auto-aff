@@ -1,0 +1,12 @@
+node_modules/
+.linkdesk-data/
+.env
+.env.*
+*.log
+coverage/
+dist/
+*.zip
+qa/screenshots/
+connection.json
+pairing.json
+owner-code.txt

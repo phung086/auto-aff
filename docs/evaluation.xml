@@ -1,0 +1,12 @@
+<evaluation>
+  <qa_pair><question>Với dataset mô phỏng cố định, lấy summary rồi phân trang tất cả pending với limit2. Có bao nhiêu yêu cầu bình luận cần biên soạn đang chờ?</question><answer>4</answer></qa_pair>
+  <qa_pair><question>Phân trang completed và đối chiếu từng task bằng ID. Bao nhiêu nội dung trả về được đánh giá phù hợp, không tính tác vụ phân tích nguồn?</question><answer>2</answer></qa_pair>
+  <qa_pair><question>Đọc summary và các trang pending, xác định yêu cầu nguồn duy nhất chưa hoàn tất. Nhà cung cấp của yêu cầu đó là tên nào?</question><answer>Supplier B</answer></qa_pair>
+  <qa_pair><question>Phân trang completed rồi đọc các mục có nội dung không phù hợp. Mã key duy nhất của compose bị đánh giá relevant=false là gì?</question><answer>fixture:8</answer></qa_pair>
+  <qa_pair><question>Đối chiếu list pending và get từng yêu cầu Page, chỉ đếm compose dùng nguyên ref mặc định AgentShop247. Có bao nhiêu?</question><answer>1</answer></qa_pair>
+  <qa_pair><question>Đọc completed và phân biệt phân tích nguồn với soạn nội dung. Yêu cầu nguồn đã hoàn tất duy nhất có key nào?</question><answer>fixture:9</answer></qa_pair>
+  <qa_pair><question>Đọc summary, cancelled và expired, kiểm tra loại tác vụ trong từng ID. Tổng số yêu cầu compose không còn được nhận kết quả do hủy/hết hạn là bao nhiêu?</question><answer>2</answer></qa_pair>
+  <qa_pair><question>Phân trang pending và completed, đối chiếu các compose của Supplier B. Tổng số yêu cầu loại này ở hai trạng thái đó là bao nhiêu?</question><answer>4</answer></qa_pair>
+  <qa_pair><question>Phân trang mọi pending, đọc timestamp bằng get từng ID. Yêu cầu compose Page đang chờ mới nhất có key nào?</question><answer>fixture:12</answer></qa_pair>
+  <qa_pair><question>Phân trang completed, đọc các compose có relevant=true, tìm Page đã hoàn tất. Nguyên link campaign của mục này là gì, giữ cả encoding?</question><answer>https://example.com/?ref=B&amp;x=%2f</answer></qa_pair>
+</evaluation>

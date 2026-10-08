@@ -1,0 +1,39 @@
+# Kết nối ChatGPT Plus không cần AI API key
+
+ChatGPT thực hiện suy luận và gọi MCP. Cầu nối không đọc cookie tài khoản, không giả mạo chatgpt.com và không dùng private ChatGPT API.
+
+## Thiết lập tại máy
+
+1. Cài Node22+ từ nguồn chính thức. Checkout/download repo và chạy `npm ci`.
+2. Cài extension unpacked thư mục `extension` trong Chrome. Đăng nhập Facebook bằng chính profile đó.
+3. Cài cloudflared từ [Cloudflare](https://developers.cloudflare.com/tunnel/downloads/), chạy `npm run connect`. Có thể đặt `LINKDESK_CLOUDFLARED` là đường dẫn executable chính thức tại máy.
+4. Giữ terminal đang chạy. `.linkdesk-data/pairing.json` dùng ghép Chrome; `.linkdesk-data/owner-code.txt` dùng cho phép OAuth. Không đưa hai file lên GitHub hoặc gửi vào chat.
+5. LinkDesk → AI & nguồn → Chọn pairing.json → Kiểm tra cầu nối. Địa chỉ HTTPS MCP kết thúc bằng `/mcp`, hiện trong terminal/UI. Ghép lại sau khi đóng toàn bộ Chrome vì device token chỉ lưu trong phiên.
+
+`npm start` chạy broker cục bộ. `npm run mcp:stdio` là proxy MCP cho client local, nối cùng broker đang chạy; không tạo một kho task thứ hai. ChatGPT web cần endpoint HTTPS hoặc tunnel được tài khoản hỗ trợ; không nhập localhost vào form web.
+
+## Thiết lập trong ChatGPT
+
+Theo [hướng dẫn chính thức](https://developers.openai.com/plugins/deploy/connect-chatgpt): Plugins → nút+ → Add custom MCP server. Đặt tên LinkDesk, mô tả “Biên soạn cho hàng đợi affiliate tại máy”. Nhập HTTPS URL có `/mcp`, chọn OAuth, review quyền/risk notice và Create as a plugin. Khi trang consent LinkDesk mở, nhập mã owner-code tại máy. Quyền chỉ đọc yêu cầu và ghi kết quả biên soạn.
+
+Kết quả phải có bốn tools: `linkdesk_list_tasks`, `linkdesk_get_task`, `linkdesk_submit_result`, `linkdesk_queue_summary`. Mở chat mới, @plugin LinkDesk, nhắn: “Xử lý tối đa10 yêu cầu LinkDesk đang chờ. Bỏ qua bài không có nhu cầu trực tiếp. Chỉ viết nội dung không URL; gửi kết quả đúng ID.”
+
+Ghép Chrome và kết nối ChatGPT là hai bước riêng. Xác minh Chrome nhận kết quả trước khi chạy gửi Facebook.
+
+## Vận hành và giới hạn
+
+ChatGPT cần phiên thực sự xử lý task. Broker giữ hàng đợi nhưng không tự mở phiên ChatGPT. Task hết hạn30 phút; quá hạn cần yêu cầu mới. Runner kiểm tra một nhịp mỗi phút; STOP hủy task đang chờ. Không thêm shortener/UTM để đo click.
+
+Quick Tunnel đổi URL khi restart; auth provider xóa token khi restart. Access token24h, không refresh. Cần kết nối lại plugin khi endpoint/token đổi. Đây là cấu hình cá nhân thử nghiệm; M6 phát triển host cố định, OAuth bền vững và launcher.
+
+## Chẩn đoán
+
+- Local không phản hồi: khởi động broker, kiểm tra port8787, pairing file đúng máy và phiên Chrome. Không bỏ Bearer để sửa lỗi.
+- ChatGPT không kết nối: kiểm tra HTTPS metadata, Host đúng origin, OAuth URL `/mcp` và tunnel đang chạy; URL cũ không dùng lại.
+- Pending lâu: mở plugin trong ChatGPT và yêu cầu xử lý. “Đã ghép” không đồng nghĩa AI đang chạy.
+- PKCE/callback sai: bắt đầu lại từ ChatGPT, không bỏ kiểm tra callback/resource.
+- Facebook checkpoint/câu hỏi thành viên: xử lý trực tiếp; adapter dừng.
+
+## Gói plugin
+
+Root `plugin.json`, `mcp.json` và `skills/` tạo gói portable local. `npm run package` xuất thư mục `dist/linkdesk`, cần `npm ci` trước khi chạy. Gói stdio kết nối broker đã khởi động. ChatGPT web dùng custom MCP HTTPS; technical ID của plugin thật chỉ có sau khi đăng ký. Không bịa ID trong `.app.json`. Chưa nộp lên public plugin directory.

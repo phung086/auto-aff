@@ -1,0 +1,18 @@
+{
+  "planVersion": "1.0",
+  "updated": "2026-10-08",
+  "release": "0.2.0",
+  "repository": "https://github.com/phung086/auto-aff",
+  "exactDefaultUrl": "https://agentshop247.com/?ref=AS362560C5A713",
+  "nextTickets": ["L011", "L040", "L012", "L060"],
+  "milestones": [
+    {"id":"M0","status":"implemented-tested","dependsOn":[],"acceptance":"raw URL + send/restore invariants"},
+    {"id":"M1","status":"implemented-awaiting-live","dependsOn":["M0"],"acceptance":"ChatGPT OAuth tools + actual analyze and compose"},
+    {"id":"M2","status":"implemented-awaiting-user-validation","dependsOn":["M1"],"acceptance":"three-step activation without false connected state"},
+    {"id":"M3","status":"experimental-awaiting-live","dependsOn":["M2"],"acceptance":"known advertising permissions + one join + honest membership states"},
+    {"id":"M4","status":"experimental-awaiting-live","dependsOn":["M1","M3"],"acceptance":"cap1 actual Facebook exact link + stop/recovery evidence"},
+    {"id":"M5","status":"implemented-manual-reports","dependsOn":["M0"],"acceptance":"status attribution + click source/date/raw link; no fabricated totals"},
+    {"id":"M6","status":"planned","dependsOn":["M1","M4"],"acceptance":"stable HTTPS/OAuth + Windows launcher + rollback"},
+    {"id":"M7","status":"planned","dependsOn":["M6"],"acceptance":"adapter contracts and provider data permissions"}
+  ]
+}
