@@ -28,6 +28,8 @@ Launcher `scripts/connect.mjs` đọc `.linkdesk-data/connection.json`; mode nam
 
 ## Việc tiếp theo
 
+Người dùng đề xuất ngrok thay Cloudflare. Đã xác minh tài liệu hiện hành: Free có dev domain gắn tài khoản, không cần mua tên miền; máy đã cài ngrok 3.39.8. Chế độ external hiện hỗ trợ luồng này; runbook NGROK_SETUP ghi port 8790 và kiểm chứng OAuth. Chưa biết domain/tài khoản thật, không đọc authtoken hoặc đổi broker đang chạy. Tiếp tục lấy domain công khai từ chủ tài khoản, chuyển endpoint đồng bộ rồi nghiệm thu tools/draft.
+
 1. **L011/L060:** broker đã khôi phục; không chạy thêm broker. Khôi phục endpoint ChatGPT đang dùng sau thay hostname, rồi xử lý một analyze và một compose từ extension; kiểm tra nguyên URL. Consent từng thành công không chứng minh tools đang truy cập được. Ghi evidence không chứa token.
 2. **L040/L031:** người dùng chọn nhóm cho phép quảng cáo và bài cụ thể, cap1. Kiểm tra membership/target và kết quả; câu hỏi thành viên cần người dùng. L043 nếu có Page token đúng quyền.
 3. **L012:** lưu handle manual qua reload; cancel/disconnect rõ. **L060:** host cố định/OAuth bền vững trước mở rộng.

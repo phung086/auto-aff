@@ -4,6 +4,8 @@ Không dùng Quick Tunnel cho luồng lâu dài. URL `trycloudflare.com` là t�
 
 ## Chọn hạ tầng
 
+**Ngrok là lựa chọn không cần mua domain:** tài khoản Free hiện được cấp một dev domain cố định. Code external đã dùng được với ngrok, không cần Cloudflare. Xem [NGROK_SETUP](NGROK_SETUP.md). Máy đã có ngrok 3.39.8; chưa có bằng chứng tài khoản/domain ngrok hoặc ChatGPT qua ngrok. Phần domain/provider bên dưới là các lựa chọn bổ sung.
+
 Chủ dự án hiện chưa có Cloudflare hoặc tên miền (08/10/2026). Chưa provision host cố định. Không lấy tên miền ví dụ bên dưới làm địa chỉ đã deploy.
 
 1. **Cloudflare Named Tunnel + tên miền riêng:** hợp với thiết kế local hiện tại. Tạo tài khoản Cloudflare, thêm một tên miền do chủ dự án sở hữu, tạo tunnel và Published application route. Hostname ví dụ `mcp.example.com`; Service URL chỉ `http://127.0.0.1:8790`. Không route 8787 hoặc 8765. Broker vẫn ở máy cá nhân; URL giữ nguyên khi tunnel restart, máy tắt thì không phục vụ được. Domain, DNS và token do chủ tài khoản cấp; không tự mua hoặc đổi DNS không liên quan.
