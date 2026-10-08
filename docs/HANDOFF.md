@@ -28,6 +28,8 @@ Launcher `scripts/connect.mjs` đọc `.linkdesk-data/connection.json`; mode nam
 
 ## Việc tiếp theo
 
+Lần chạy ngrok thật mới nhất: dùng cấu hình tài khoản sẵn có, không đọc/extract authtoken; ngrok đã chạy nền, local inspector trả HTTPS dev domain và upstream đúng 127.0.0.1:8790. Đã lưu mode external/publicOrigin ở connection.json private. Broker cũ vẫn bind origin Cloudflare: truy cập qua ngrok bị Host guard trả 403, đúng cơ chế bảo vệ, không sửa guard để bỏ qua. Lệnh dừng broker/launcher cũ bị kiểm duyệt thực thi tự động từ chối với thông báo blocked by policy; đang chờ người dùng tự dừng hai tiến trình LinkDesk đã xác minh (PID là dữ liệu phiên, lấy lại từ cổng trước khi dùng). Sau đó khởi động connect.mjs bản mới, kiểm tra health/metadata ngrok, OAuth và task thật. Chưa tuyên bố toàn luồng đã nối.
+
 Người dùng đề xuất ngrok thay Cloudflare. Đã xác minh tài liệu hiện hành: Free có dev domain gắn tài khoản, không cần mua tên miền; máy đã cài ngrok 3.39.8. Chế độ external hiện hỗ trợ luồng này; runbook NGROK_SETUP ghi port 8790 và kiểm chứng OAuth. Chưa biết domain/tài khoản thật, không đọc authtoken hoặc đổi broker đang chạy. Tiếp tục lấy domain công khai từ chủ tài khoản, chuyển endpoint đồng bộ rồi nghiệm thu tools/draft.
 
 1. **L011/L060:** broker đã khôi phục; không chạy thêm broker. Khôi phục endpoint ChatGPT đang dùng sau thay hostname, rồi xử lý một analyze và một compose từ extension; kiểm tra nguyên URL. Consent từng thành công không chứng minh tools đang truy cập được. Ghi evidence không chứa token.
