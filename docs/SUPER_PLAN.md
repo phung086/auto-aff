@@ -38,7 +38,7 @@ flowchart LR
 | M3 — Tìm nhóm và tham gia | Tìm tối đa 10 nhóm đang hiển thị, kiểm tra quy định, tham gia một nhóm đã chọn, trạng thái chờ duyệt | Adapter thử nghiệm | Không tự xác nhận nhóm cho quảng cáo; câu hỏi thành viên cần người dùng; bấm một lần; uncertain không tự thử lại |
 | M4 — Gửi có bằng chứng | Quét bài, đánh giá liên quan, soạn, gửi một mục mỗi nhịp; Page qua API | Có mã; Facebook thật chưa nghiệm thu | Một nhóm thực được phép + một Page thực; đối chiếu đúng bài/link; STOP ngăn mục kế tiếp; kiểm tra gián đoạn |
 | M5 — Quản lý và số liệu | Kết quả theo chiến dịch, lịch sử CSV, nhập báo cáo click có nguồn và kỳ | Có mã cho thống kê và nhập thủ công | Click không suy từ số bài; không cộng kỳ trùng; không báo CTR/conversion thiếu dữ liệu |
-| M6 — Vận hành ổn định | Host HTTPS cố định, OAuth bền vững, Windows launcher, chẩn đoán, cập nhật có rollback | Đang làm: named/external config có code; chưa host thật/OAuth bền vững | Không cần URL tunnel mới mỗi phiên; sao lưu trước nâng cấp; không đưa token lên GitHub |
+| M6 — Vận hành ổn định | Host HTTPS cố định, OAuth bền vững, Windows launcher, chẩn đoán, cập nhật có rollback | Đang làm: ngrok host thật + analyze đã qua; MCP OAuth bền vững còn chờ | Không cần URL tunnel mới mỗi phiên; sao lưu trước nâng cấp; không đưa token lên GitHub |
 | M7 — Mở rộng | Adapter nguồn/nhà cung cấp, báo cáo API, lịch nội dung Page, các nền tảng cho phép | Chưa triển khai | Hợp đồng adapter + kiểm thử + quyền cụ thể; không sửa lõi exact-link |
 
 Ưu tiên kế tiếp: **L060 ổn định endpoint/OAuth → M1 nghiệm thu tools và bản thảo thật → M4 nghiệm thu Facebook nhỏ**. Gián đoạn Quick Tunnel đã chứng minh cần xử lý kết nối trước. Xem [STABLE_CONNECTION](STABLE_CONNECTION.md). Không mở rộng diện đăng khi ba điểm này chưa có bằng chứng.
@@ -86,3 +86,7 @@ Nguồn có phiên bản và ngày xác minh, điều kiện bán từng gói, c
 ## Tham chiếu chính thức
 
 Tài liệu xem ngày 08/10/2026: [Open AI — kết nối plugin MCP](https://developers.openai.com/plugins/deploy/connect-chatgpt), [OAuth cho plugin](https://developers.openai.com/plugins/build/auth), [đóng gói plugin](https://developers.openai.com/plugins/build/plugins), [Meta Groups API v 19](https://developers.facebook.com/docs/graph-api/changelog/version19.0), [Page posts](https://developers.facebook.com/docs/pages-api/posts/), [Cloudflare Quick Tunnel](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/).
+
+## Chặng AI tự động không cần prompt từng lượt
+
+MCP không tự kích hoạt inference. L014 bổ sung Sign in with ChatGPT / ChatGPT plan usage chính thức cho app open-source chạy tại máy: cấp quyền một lần → chọn model/hạn mức → worker lấy task → chỉ nhận response.completed/JSON hợp lệ → broker gắn nguyên URL → Chrome nhận bản thảo. Code/tests đã có, login local bị Chrome ERR_BLOCKED_BY_CLIENT; chưa đánh dấu tự chạy thật. Theo AUTO_AI_SETUP để nghiệm thu analyze/compose, STOP/quota, restart/refresh. Sau đó L013 lease và L061 supervision. Không dùng API riêng/cookie ChatGPT, không tự chuyển billing, không mở rộng diện đăng Facebook trước cap1 evidence.

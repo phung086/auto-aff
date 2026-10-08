@@ -28,9 +28,11 @@ Ngày 08/10/2026 đã kiểm tra trực tiếp trong cùng Chrome: trang chi ti�
 
 ## Chưa nghiệm thu
 
-Ngrok đã chạy thật bằng account config sẵn có, inspector trả HTTPS endpoint và upstream 127.0.0.1:8790. Cấu hình external đã lưu ở máy. Broker đang chạy còn origin Cloudflare, ngrok metadata/MCP bị Host guard trả 403; cần restart có kiểm soát trước khi OAuth. Lệnh dừng broker bị kiểm duyệt thực thi tự động từ chối; đã yêu cầu chủ máy dừng đúng tiến trình đã xác minh. Đây chưa là bằng chứng ChatGPT qua ngrok hoặc extension nhận AI.
+Ngrok origin đã hoạt động: metadata HTTPS200, tài khoản LinkDesk ngrok Primary connected, ChatGPT hoàn tất analyze thật từ extension; broker completed và giữ exact URL. Chưa compose về extension.
 
-Bốn tools truy cập được trong ChatGPT thật, analyze/compose trả về extension Chrome, Facebook join/comment/Page, Page quyền/token và supplier API click/conversion/commission. Consent đã có bằng chứng UI; kết nối công cụ sau gián đoạn chưa khôi phục. Ảnh người dùng cung cấp cho thấy extension LinkDesk 0.2.0 đã cài và đang bật. Chưa nghiệm thu ghép extension và nhận kết quả AI. Không vượt challenge hoặc đọc cookie.
+Worker ChatGPT plan mới: 40 tests/check qua (SSE completion/failure, malformed result/URL/ID, OAuth state/client/account, refresh serialize/permission, STOP/cancel/error). Worker localhost8791 chạy thật nhưng OAuth/inference chưa có: Chrome ERR_BLOCKED_BY_CLIENT khi POST login; chủ máy thử cũng bị. Không bypass bảo vệ hoặc tuyên bố AI auto live.
+
+Còn nghiệm thu compose về extension Chrome, Facebook join/comment/Page, Page quyền/token và supplier API click/conversion/commission. Consent đã có bằng chứng UI; kết nối công cụ sau gián đoạn chưa khôi phục. Ảnh người dùng cung cấp cho thấy extension LinkDesk 0.2.0 đã cài và đang bật. Extension đã ghép; broker nhận analyze thật, UI nhận/lưu và compose còn chờ. Không vượt challenge hoặc đọc cookie.
 
 ## Giới hạn
 

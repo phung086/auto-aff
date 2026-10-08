@@ -6,8 +6,9 @@ Ready nghĩa là có thể triển khai tiếp. Awaiting live nghĩa là code c�
 |---|---|---|---|
 | L001 | M0 / P0 | Done-code | Exact link, snapshot jobs, URL phụ, backup reset quyền; regression bắt buộc |
 | L010 | M1 / P0 | Done-code | Broker durable/idempotent/expiry, schema, MCP tools, OAuth PKCE, loopback pairing |
-| L011 | M1 / P0 | Awaiting tools/live | OAuth tài khoản thật đã hiện Tài khoản đã kết nối trong Chrome. ChatGPT gọi plugin báo Connection failed; broker đã dừng và được khôi phục với hostname Quick Tunnel mới, khác URL app đã kết nối. Cần khôi phục kết nối endpoint và nghiệm thu analyze 1 task, compose 1 task về extension. 31 tests/check đã qua; không cần AI key |
+| L011 | M1 / P0 | Analyze live / compose pending | LinkDesk ngrok Primary connected; ChatGPT Plus đã xử lý analyze thật từ extension, broker completed và giữ exact URL. Còn compose về Chrome và đối chiếu nhận/lưu UI. 40 tests/check qua |
 | L012 | M1 / P1 | Ready | Lưu handle manual pending để refresh dashboard không mất yêu cầu; cancel khi đóng/ngắt; không tạo task trùng |
+| L014 | M1 / P0 | Code tested / login blocked | Worker dùng ChatGPT plan OAuth chính thức, không API key/prompt từng lượt; STOP/budget/refresh/SSE/contract có tests. Chrome ERR_BLOCKED_BY_CLIENT khi POST login, chủ máy thử cũng bị; chờ OAuth và inference thật. Xem AUTO_AI_SETUP |
 | L013 | M1 / P1 | Ready | Lease xử lý task/worker; nhiều phiên ChatGPT không ghi đè; pending pagination ổn định |
 | L020 | M2 / P0 | Done-code | Home 3 steps, AIChatGPT mặc định, API nâng cao, báo cáo có nguồn, trạng thái chờ |
 | L021 | M2 / P1 | Ready | Setup wizard/launcher Windows, tự khám phá file ghép không truyền secret ra chat, error recovery dễ hiểu |
@@ -21,7 +22,7 @@ Ready nghĩa là có thể triển khai tiếp. Awaiting live nghĩa là code c�
 | L050 | M5 / P1 | Done-code | Status theo campaign, lịch sử CSV, báo cáo click nhập tay; không cộng kỳ trùng |
 | L051 | M5 / P1 | Ready | Adapter CSV nhà cung cấp: preview mapping columns, exact link/ref, dedupe source+period, bằng chứng import |
 | L052 | M5 / P2 | Pending supplier | Nhà cung cấp cấp API click/conversion/commission + định nghĩa metric; không suy đoán endpoint |
-| L060 | M6 / P0 | In progress | Owner code persist; launcher hỗ trợ named/external URL cố định, token-file và cấu hình sai không fallback. Chủ dự án chưa có Cloudflare/domain, chưa provision host thật. Còn OAuth client/token persistence, refresh/revoke và nghiệm thu restart; xem STABLE_CONNECTION |
+| L060 | M6 / P0 | In progress | Ngrok account domain thật + metadata/OAuth/analyze đã hoạt động. Còn MCP OAuth client/token persistence/refresh/revoke và restart evidence |
 | L061 | M6 / P1 | Ready | Windows background launcher, shutdown orderly, safe update/backup/rollback; ký bản phân phối |
 | L062 | M6 / P1 | Ready | Retention/delete task data có backup, không full-file corruption, test disk/full/crash; single-process lock |
 | L070 | M7 / P2 | Planned | Source adapter contracts/version, nhiều industry prompts, platform adapter API có quyền |

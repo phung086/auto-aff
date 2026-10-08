@@ -22,12 +22,12 @@ AI không viết URL. Ứng dụng gắn nguyên link đã lưu và kiểm tra t
 
 1. Cài Node 22+ từ nguồn chính thức. Download/checkout repo, chạy `npm ci`.
 2. Chrome → `chrome://extensions` → Developer mode → Load unpacked → chọn thư mục `extension` chứa manifest.json. Đăng nhập Facebook bằng profile đó.
-3. Cài cloudflared từ [Cloudflare](https://developers.cloudflare.com/tunnel/downloads/) rồi chạy `npm run connect`. Hoặc `npm start` chỉ để dùng broker cục bộ.
+3. Dùng ngrok đã cài theo [NGROK_SETUP](docs/NGROK_SETUP.md), lưu mode external rồi chạy `npm run connect`. Cloudflare là lựa chọn bổ sung; `npm start` chỉ dùng broker local.
 4. Mở LinkDesk → **AI & nguồn** → chọn file `.linkdesk-data/pairing.json` do broker tạo. Kiểm tra cầu nối để lấy địa chỉ HTTPS MCP.
 5. ChatGPT → Plugins → Add custom MCP server → địa chỉ HTTPS `/mcp`, OAuth. Cho phép bằng mã trong `.linkdesk-data/owner-code.txt` tại máy. Xem [hướng dẫn chi tiết](docs/PLUGIN_SETUP.md).
 6. Mở plugin LinkDesk trong ChatGPT và yêu cầu xử lý các yêu cầu đang chờ. Trong Chrome, kiểm tra chiến dịch/link, thêm nhóm được phép quảng cáo hoặc Page của mình, chọn đích/cap và cho phép phiên chạy.
 
-Giữ Chrome, broker và tunnel đang chạy. **Plugin không tự khởi động một AI chạy nền 24/7.** ChatGPT cần phiên làm việc xử lý hàng đợi. Quick Tunnel dùng để thử nghiệm, địa chỉ đổi khi restart. Code đã hỗ trợ named/external tunnel với URL cố định; xem [cấu hình địa chỉ cố định](docs/STABLE_CONNECTION.md). Chưa provision tên miền/tunnel thật hoặc OAuth bền vững/Windows service.
+Giữ Chrome, broker và tunnel đang chạy. Ngrok account dev domain đã kết nối thật; Quick Tunnel vẫn chỉ thử nghiệm. MCP không tự bật AI. Đã thêm `npm run ai:worker` dùng Sign in with ChatGPT để tự soạn không cần prompt từng lượt; xem [AI tự động](docs/AUTO_AI_SETUP.md). Worker có code/tests nhưng login local hiện bị Chrome ERR_BLOCKED_BY_CLIENT, chưa inference thật; MCP OAuth persistence và Windows service còn chờ.
 
 ## Tính năng hiện có
 
@@ -41,9 +41,9 @@ Thống kê tách API/quan sát/thủ công/chưa rõ. Click lấy từ báo cá
 
 ## Kiểm chứng hiện tại
 
-Có kiểm thử local cho link, reducer, Page API mock, runner, broker/MCP SDK, OAuth PKCE và reports. Xem VALIDATION. **Chưa nghiệm thu ChatGPT Plus thật, Chrome profile người dùng, Facebook comment/join/Page thật.** Đừng coi preview hoặc mock là chứng minh đã đăng.
+Có kiểm thử local cho link, reducer, Page API mock, runner, broker/MCP SDK, OAuth PKCE và reports. Xem VALIDATION. **ChatGPT Plus qua ngrok đã hoàn tất một analyze thật từ extension; còn compose về Chrome và Facebook comment/join/Page thật.** Đừng coi preview hoặc mock là chứng minh đã đăng.
 
-Chrome Plus đã đăng nhập và người dùng đã tạo custom MCP với OAuth/DCR; consent, cài LinkDesk và nhận kết quả biên soạn còn chờ. AI phát triển kế tiếp đọc [trạng thái cấu hình thật](docs/LIVE_SETUP.md) để tiếp tục đúng bước, tránh tạo lại gói plugin hoặc tuyên bố tích hợp hoàn tất sớm. [Triển khai và tunnel](docs/DEPLOYMENT.md) giải thích backend đang chạy tại máy và các bước M6 để dùng hostname cố định/cloud.
+Chrome Plus và LinkDesk extension đã cài/ghép; custom MCP LinkDesk ngrok đã consent và ghi kết quả analyze thật. Plan worker có quyền inference riêng còn chờ đăng nhập, xem AUTO_AI_SETUP. AI phát triển kế tiếp đọc [trạng thái cấu hình thật](docs/LIVE_SETUP.md) để tiếp tục đúng bước, tránh tạo lại gói plugin hoặc tuyên bố tích hợp hoàn tất sớm. [Triển khai và tunnel](docs/DEPLOYMENT.md) giải thích backend đang chạy tại máy và các bước M6 để dùng hostname cố định/cloud.
 
 ## Phát triển
 

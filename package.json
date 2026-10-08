@@ -7,6 +7,7 @@
     "test": "node --test tests/*.test.mjs",
     "start": "node server/index.mjs",
     "connect": "node scripts/connect.mjs",
+    "ai:worker": "node scripts/ai-worker.mjs",
     "mcp:stdio": "node server/index.mjs --stdio",
     "check": "node scripts/check.mjs",
     "package": "node scripts/package.mjs"
@@ -14,6 +15,7 @@
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.32.1",
     "express": "^5.2.1",
+    "jose": "^6.2.12",
     "zod": "^4.6.5"
   },
   "engines": {

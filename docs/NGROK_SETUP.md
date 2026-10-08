@@ -35,3 +35,7 @@ Theo ngrok, browser HTML trên Free có trang Visit Site; người dùng có th�
 URL cố định không sửa việc OAuth client/token mất sau broker restart hoặc hết hạn 24 giờ không refresh. L060 còn persistence/refresh/revoke, L061 còn tự khởi động/giám sát broker và ngrok. ChatGPT Plus vẫn cần phiên active xử lý queue. Chưa nghiệm thu 24/7 hoặc auto publish Facebook.
 
 Tài liệu: [ngrok Free](https://ngrok.com/docs/pricing-limits/free-plan-limits), [CLI](https://ngrok.com/docs/gateway/agent/cli). Nếu đổi domain, cập nhật publicOrigin và ChatGPT đồng bộ; không đổi affiliate URL.
+
+## Bằng chứng mới nhất 08/10/2026
+
+Ngrok account domain đang chạy, broker health và HTTPS OAuth metadata cùng origin ngrok. Chủ tài khoản đã consent LinkDesk ngrok, ChatGPT Plus xử lý analyze thật từ extension và broker completed, exact URL giữ nguyên. Các custom MCP Cloudflare cũ/portable đã gỡ cài đặt; chỉ giữ bản ngrok. Chưa compose về Chrome, chưa MCP OAuth restart persistence. Worker plan OAuth là quyền riêng theo AUTO_AI_SETUP; localhost8791 login hiện bị Chrome ERR_BLOCKED_BY_CLIENT.

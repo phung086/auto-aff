@@ -1,49 +1,33 @@
-# Bàn giao cho AI / người phát triển kế tiếp
+# Bàn giao LinkDesk / auto-aff
 
-Ngày08/10/2026 · release0.2.0 · repo https://github.com/phung086/auto-aff.
+08/10/2026 · release0.2.0 · https://github.com/phung086/auto-aff.
+Đọc AGENTS → SUPER_PLAN → BACKLOG → ARCHITECTURE → VALIDATION; nhánh AI mới đọc AUTO_AI_SETUP. npm ci, npm test, npm run check; package allowlist không runtime/secret.
 
-## Bắt đầu
+## Trạng thái thật mới nhất
 
-Đọc AGENTS và SUPER_PLAN, rồi BACKLOG. Chạy `npm ci`, `npm test`, `npm run check`; preview `python preview.py`. Node22+ cần cho broker; ChatGPT mặc định không cần AI API key.
+- Ngrok3.39.8 dùng account config sẵn có, inspector upstream127.0.0.1:8790; broker health và metadata HTTPS đúng ngrok. connection.json private mode external. Không còn chờ dừng broker Cloudflare cũ; không đọc authtoken. Domain gắn tài khoản, không cần Cloudflare/tên miền riêng.
+- **LinkDesk ngrok** đã tạo trong Chrome cá nhân, chủ tài khoản consent. UI Primary connected. Trò chuyện **Xử lý campaign task** xử lý task analyze thật từ extension; broker xác nhận completed, campaign giữ đúng URL mặc định. Screenshot ngoài Git outputs/LinkDesk-ngrok-analyze-completed.png. Chưa có bằng chứng extension đã lưu campaign; chưa compose thật về extension.
+- Bốn custom MCP cũ LinkDesk AI, 0.2, 0.2.0, hiện tại đã gỡ cài đặt qua UI; có thể thêm lại. Gói portable LinkDesk cũ cũng đã gỡ bằng công cụ quản lý plugin; danh mục ChatGPT sau reload chỉ còn LinkDesk ngrok. Không xóa vĩnh viễn apps/source/data.
+- Worker mới npm run ai:worker tại localhost8791 dùng Sign in with ChatGPT / ChatGPT plan usage chính thức. State/nonce/PKCE/JWKS, account riêng, refresh, SSE completion, contracts, STOP/ngân sách có code; 40 tests và check qua. **Chưa worker login/inference thật**: Chrome ERR_BLOCKED_BY_CLIENT khi POST /login; chủ máy thử cũng bị. Không tắt bảo vệ hay API riêng. MCP connected không đồng nghĩa worker authorized.
 
-## Đã có code
+## Việc kế tiếp
 
-Extension: campaign nhiều nhà cung cấp, raw link snapshot, đích, hàng đợi/approve, chống trùng/uncertain, cap/session/STOP, source read, manual fallback, Page API, comment adapter thử nghiệm, CSV/backup.0.2 thêm broker durable, MCP SDK/OAuth, ghép Chrome, analyze/compose task, runner chờ ChatGPT, Home/statistics, báo cáo click nhập thủ công, tìm nhóm và join một lần có trạng thái. CI và package allowlist đã có.
+1. Dọn cài đặt đã hoàn tất, chỉ giữ LinkDesk ngrok. Không tạo thêm bản trùng. Custom MCP gỡ trên web; portable cũ gỡ qua công cụ quản lý plugin và đã xác minh danh mục web.
+2. Chủ máy/người quản lý Chrome giải quyết truy cập worker login bị chặn. Giữ localhost8791; không đọc token/profile hay hỏi API key. Chủ tài khoản tự cấp quyền plan tại OpenAI khi truy cập được, theo AUTO_AI_SETUP.
+3. Analyze và compose bằng worker thật, Chrome nhận kết quả. Chỉ dùng một phương thức biên soạn cho cùng hàng đợi; cross-client lease chưa có (L013).
+4. L012 manual handle reload; L060 OAuth MCP persistence/refresh; L061 supervision/startup. **MCP OAuth vẫn memory/24h/no refresh**; plan worker có persistence/refresh riêng.
+5. L040/031/043 target cụ thể cho phép quảng cáo, cap1, Facebook evidence; không gửi thử hoặc coi mọi demo là nhu cầu mua.
 
-SUPER_PLAN có sơ đồ Mermaid và HTML; plan.json ghi mốc. AGENTS và BACKLOG quy định thứ tự phát triển. Không đánh dấu mốc live hoàn tất chỉ bằng mock.
+## Hợp đồng và giới hạn
 
-## Bằng chứng và điểm còn thiếu
+Exact URL https://agentshop247.com/?ref=AS362560C5A713; không normalize. AI không xuất URL; broker/extension gắn snapshot + nhãn Link tiếp thị liên kết. Không fake review/giá/official claims.
 
-Local tests và HTTPS metadata/auth rejection có kiểm chứng; xem VALIDATION. Chrome cá nhân đã kết nối qua tiện ích ChatGPT chính thức, tài khoản Plus đang đăng nhập. Đã lưu gói LinkDesk riêng tư trong tài khoản; UI gói này mở theo luồng Desktop. Custom MCP LinkDesk AI trên web nhận đúng OAuth/DCR/compose; người dùng đã duyệt và tạo, đang chờ nhập mã tại trang OAuth của broker. Chưa xác minh ChatGPT thật gọi bốn tools và Chrome nhận kết quả. Browser automation không được mở chrome://extensions: người dùng cài unpacked thủ công. Không đọc/đổi cookies/profile hoặc vượt challenge. Cấu hình hiện là Quick Tunnel vào broker tại máy, xem DEPLOYMENT.
+Device API127.0.0.1:8787 cần pairing Bearer; MCP8790 OAuth compose chỉ list/get/submit/summary, không publish; worker8791 loopback không tunnel, dùng cùng broker. Một broker/data directory; task expire30 phút, cap5000. Manual handle mất qua reload nên không refresh khi chờ.
 
-Người dùng đã cài extension Chrome thủ công; ảnh version 0.2.0 và pairing/health cho thấy cầu nối phản hồi. Chưa nhận bản thảo AI. Đã sửa ba lỗi OAuth/startup: CSP callback/redirect 303, no-referrer làm Origin null, và owner code trong file khác mã bộ nhớ của broker. Lỗi startup cũ ghi mã trước bind cổng và xử lý callback Express 5 như bind thành công ngay cả khi lỗi. Hiện owner code được lưu/dùng lại, chỉ tạo sau bind thành công; lỗi startup đóng socket và không ghi đè mã. 31 tests/check qua. Cầu nối thật đã xác minh DCR/OAuth/PKCE và SDK list 4 tools bằng client riêng, token test đã revoke; chưa chứng minh ChatGPT account consent. Broker hiện chạy bản mới ở tiến trình nền Windows, dùng Quick Tunnel mới và cùng owner code, pairing giữ nguyên. Custom MCP hiện tại **LinkDesk AI hiện tại**, OAuth/DCR/compose; còn chờ chủ tài khoản nhập mã/consent. Những kết nối dùng hostname cũ chưa bị xóa. Chi tiết trong LIVE_SETUP. Chưa nghiệm thu Chrome nhận AI hoặc Facebook thật, chưa supplier API click/conversion. Không ghi URL tạm/secret vào manifest Git. Memory OAuth client/token cần kết nối lại sau restart. Plugin không tự tạo AI chạy nền 24/7.
+Worker giới hạn1–50/phiên, persist ngân sách/enable, restart không cấp thêm; error/quota/STOP dừng. Lock chưa tự hồi crash, chưa Windows service. Facebook DOM thử nghiệm, uncertain không retry; click là báo cáo có nguồn, không suy từ bài.
 
-## Trạng thái tài khoản mới nhất
+## Sự cố đã sửa
 
-Consent tài khoản thật đã hoàn tất: trang chi tiết và Quản lý của **LinkDesk AI hiện tại** trên cùng Chrome hiện **Tài khoản đã kết nối**, Primary. Những mô tả chờ consent ở phần lịch sử bên trên đã được thay thế bởi bằng chứng này. Cuộc trò chuyện **Kiểm tra LinkDesk AI** báo `Connection failed`; kiểm tra máy thấy broker đã dừng. Đã khôi phục broker/tunnel ở tiến trình nền, nhưng hostname Quick Tunnel mới khác URL app đang giữ, OAuth client/token trước restart cũng mất. Chưa nghiệm thu tool/task. UI Quản lý không có sửa URL; ưu tiên khôi phục endpoint được hỗ trợ/host ổn định, tránh tiếp tục tạo app trùng và bắt người dùng nhập mã lặp lại khi endpoint chưa đúng. Người dùng cần bấm tạo task trong extension vì browser automation từ chối `chrome-extension://`.
+OAuth Origin null từ no-referrer, CSP callback và303 đã sửa. Express5 startup bind thất bại từng gây mismatch mã file/memory; nay persisted owner code, đợi listening/error, bind thất bại không ghi đè, socket cleanup có tests. Runtime đã chuyển ngrok đúng. Không chạy broker thứ hai hay restart khi OAuth chưa persist.
 
-## Cấu hình URL cố định đã có code
-
-Launcher `scripts/connect.mjs` đọc `.linkdesk-data/connection.json`; mode named chạy Cloudflare token-file, mode external dùng tunnel service đã cài, mode quick chỉ thử nghiệm. `scripts/connection-config.mjs` từ chối URL tạm/localhost/path/credentials và không fallback khi file cấu hình sai. Token không nằm trong argv/log hoặc artifact. 35 tests/check đã qua. Xem STABLE_CONNECTION để setup/kiểm chứng. Chủ dự án chưa có Cloudflare/tên miền; chưa provision hostname thật. OAuth client/token memory/24h/không refresh vẫn là blocker riêng. Ưu tiên L060 trước mở rộng Facebook, không đánh dấu M6 hoàn tất vì mới có code cấu hình.
-
-## Việc tiếp theo
-
-Lần chạy ngrok thật mới nhất: dùng cấu hình tài khoản sẵn có, không đọc/extract authtoken; ngrok đã chạy nền, local inspector trả HTTPS dev domain và upstream đúng 127.0.0.1:8790. Đã lưu mode external/publicOrigin ở connection.json private. Broker cũ vẫn bind origin Cloudflare: truy cập qua ngrok bị Host guard trả 403, đúng cơ chế bảo vệ, không sửa guard để bỏ qua. Lệnh dừng broker/launcher cũ bị kiểm duyệt thực thi tự động từ chối với thông báo blocked by policy; đang chờ người dùng tự dừng hai tiến trình LinkDesk đã xác minh (PID là dữ liệu phiên, lấy lại từ cổng trước khi dùng). Sau đó khởi động connect.mjs bản mới, kiểm tra health/metadata ngrok, OAuth và task thật. Chưa tuyên bố toàn luồng đã nối.
-
-Người dùng đề xuất ngrok thay Cloudflare. Đã xác minh tài liệu hiện hành: Free có dev domain gắn tài khoản, không cần mua tên miền; máy đã cài ngrok 3.39.8. Chế độ external hiện hỗ trợ luồng này; runbook NGROK_SETUP ghi port 8790 và kiểm chứng OAuth. Chưa biết domain/tài khoản thật, không đọc authtoken hoặc đổi broker đang chạy. Tiếp tục lấy domain công khai từ chủ tài khoản, chuyển endpoint đồng bộ rồi nghiệm thu tools/draft.
-
-1. **L011/L060:** broker đã khôi phục; không chạy thêm broker. Khôi phục endpoint ChatGPT đang dùng sau thay hostname, rồi xử lý một analyze và một compose từ extension; kiểm tra nguyên URL. Consent từng thành công không chứng minh tools đang truy cập được. Ghi evidence không chứa token.
-2. **L040/L031:** người dùng chọn nhóm cho phép quảng cáo và bài cụ thể, cap1. Kiểm tra membership/target và kết quả; câu hỏi thành viên cần người dùng. L043 nếu có Page token đúng quyền.
-3. **L012:** lưu handle manual qua reload; cancel/disconnect rõ. **L060:** host cố định/OAuth bền vững trước mở rộng.
-
-Xem [LIVE_SETUP](LIVE_SETUP.md) để tiếp tục đúng bước còn thiếu. Không tạo lại gói plugin tài khoản nếu chỉ cần thêm kết nối MCP. Nếu đang chờ OAuth hoặc cài extension, tiếp tục L012/L060 và giữ live ticket mở. Không dùng private ChatGPT API làm đường tắt.
-
-## Bẫy kỹ thuật
-
-Git từng thừa kế repo home, nay có .git riêng; kiểm tra toplevel trước stage. `.linkdesk-data` riêng tư, không commit/logtoken. URL không normalize; regex URL phụ case-insensitive. Job/report giữ snapshot dù campaign đổi. Restore nhận legacy disclosure0.1, nội dung mới dùng nhãn ngắn.
-
-Stdio proxy nối broker đang chạy; không hai TaskStore cùng directory. Cap5000task, chưa retention/lock. Join requesting/uncertain không retry. DOM evidence không ổn định như API. MCP không có publish tool; Chrome giữ quyền gửi.
-
-## Kết thúc ticket
-
-Code, kiểm thử hành vi và docs/status/evidence đồng bộ. Artifact allowlist không có secrets/node_modules/runtime. Final nêu bằng chứng, giới hạn và bước kế tiếp. Screenshot local không chứng minh đã đăng Facebook.
+Trước commit xác nhận toplevel source repo, không home Git. Chỉ stage code/docs; artifacts không runtime/secrets/log/node_modules. Live evidence và phần chờ phải ghi rõ, tests không chứng minh 24/7.

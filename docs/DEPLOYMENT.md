@@ -2,11 +2,11 @@
 
 ## Cấu hình hiện tại: máy cá nhân và Quick Tunnel
 
-LinkDesk 0.2.0 chạy broker Node trên máy của người dùng. `npm run connect` khởi động cloudflared và broker, tạo HTTPS endpoint tạm để ChatGPT gọi MCP. Đây là kết nối thử nghiệm; chưa triển khai backend lên Cloudflare Workers hoặc một máy chủ cloud chạy độc lập.
+LinkDesk 0.2.0 chạy broker Node trên máy của người dùng. `npm run connect` hỗ trợ ngrok external, named và quick; cấu hình máy hiện dùng ngrok account domain và broker local. Đây là kết nối thử nghiệm; chưa triển khai backend lên Cloudflare Workers hoặc một máy chủ cloud chạy độc lập.
 
 ```mermaid
 flowchart LR
-  A[ChatGPT Plus] -->|HTTPS và OAuth| T[Cloudflare Quick Tunnel]
+  A[ChatGPT Plus] -->|HTTPS và OAuth| T[Ngrok hoặc HTTPS tunnel]
   T -->|Chỉ port 8790| B[Broker Node trên máy cá nhân]
   C[Extension LinkDesk trong Chrome] -->|Loopback 8787 và device Bearer| B
   B --> D[TaskStore tại máy]
@@ -24,7 +24,7 @@ Owner code hiện lưu bền vững ở owner-code.txt và dùng lại khi resta
 1. **Hostname cố định:** code `npm run connect` đã hỗ trợ named tunnel và external tunnel qua cấu hình private; xem [STABLE_CONNECTION](STABLE_CONNECTION.md). Chủ dự án chưa có tài khoản/domain nên chưa triển khai named tunnel thật. Broker vẫn ở máy cá nhân; máy tắt thì tác vụ ngừng. Còn launcher service và lưu/revoke/refresh OAuth bền vững. Chỉ route OAuth/MCP, giữ device API loopback.
 2. **Backend chạy trên cloud:** cần host tương thích Node, storage bền vững, OAuth/revoke/retention/lock và một thiết kế ghép Chrome từ xa. Extension hiện chỉ nhận device API `127.0.0.1:8787`; không chỉ thay URL để trỏ lên cloud. Nếu chọn Workers, phải port handler và TaskStore sang runtime/storage phù hợp rồi kiểm thử lại. Không công khai device token hoặc tắt xác thực để làm kết nối chạy.
 
-Hai phương án đều cần phiên ChatGPT thực sự xử lý queue. Đưa backend lên cloud không tự tạo AI daemon từ gói Plus, và thao tác Facebook vẫn phụ thuộc Chrome đang hoạt động.
+Với MCP, hai phương án đều cần phiên ChatGPT thực sự xử lý queue; worker plan OAuth riêng có thể tự soạn khi được cấp quyền/bật, xem AUTO_AI_SETUP (chưa inference live). Đưa backend lên cloud không tự tạo AI daemon từ gói Plus, và thao tác Facebook vẫn phụ thuộc Chrome đang hoạt động.
 
 ## Nghiệm thu trước production
 

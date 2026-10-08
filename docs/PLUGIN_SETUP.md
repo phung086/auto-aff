@@ -38,3 +38,7 @@ Quick Tunnel đổi URL khi restart; auth provider xóa client/token khi restart
 ## Gói plugin
 
 Root `plugin.json`, `mcp.json` và `skills/` tạo gói portable local. `npm run package` xuất thư mục `dist/linkdesk`, cần `npm ci` trước khi chạy. Gói stdio kết nối broker đã khởi động. Gói cloud riêng tư có thể hiện trong tài khoản nhưng mở theo luồng Desktop; upload gói không tự đăng ký hay xác thực kết nối MCP web. ChatGPT web dùng custom MCP HTTPS; technical ID của kết nối chỉ có sau khi đăng ký. Không bịa ID trong `.app.json`. Chưa nộp lên public plugin directory. Trạng thái thử nghiệm và cách tiếp tục ở [LIVE_SETUP](LIVE_SETUP.md).
+
+## Biên soạn không cần nhập prompt từng lượt
+
+Dùng worker plan OAuth riêng theo [AUTO_AI_SETUP](AUTO_AI_SETUP.md). MCP vẫn là đường biên soạn qua phiên ChatGPT; khi worker đã cấp quyền/bật, nó xử lý cùng hàng đợi tại máy. Worker login/inference thật chưa nghiệm thu; không coi cài plugin là AI daemon.
