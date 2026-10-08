@@ -1,6 +1,6 @@
 {
   "planVersion": "1.0",
-  "updated": "2026-10-08",
+  "updated": "2026-10-09",
   "release": "0.2.0",
   "repository": "https://github.com/phung086/auto-aff",
   "exactDefaultUrl": "https://agentshop247.com/?ref=AS362560C5A713",
@@ -38,7 +38,7 @@
       "service supervision",
       "actual compose returned to Chrome"
     ],
-    "testsPassed": 40
+    "testsPassed": 44
   },
   "oauthEvidence": {
     "consentHeaders": "strict-origin and registered HTTPS callback CSP",
@@ -118,15 +118,26 @@
   ],
   "automaticAI": {
     "ticket": "L014",
-    "status": "implemented-tested-login-blocked",
+    "status": "worker-inference-live-saved-campaign-ui-seen",
     "provider": "official Sign in with ChatGPT plan usage",
     "entrypoint": "npm run ai:worker",
     "port": 8791,
     "apiKeyRequired": false,
     "manualPromptRequiredAfterActivation": false,
-    "actualInferenceVerified": false,
-    "blocker": "Chrome ERR_BLOCKED_BY_CLIENT when submitting local login; user confirms same",
+    "actualInferenceVerified": true,
+    "extensionUiVerified": false,
+    "liveModel": "gpt-6.1-sol",
+    "restartAccountAndBudgetVerified": true,
+    "blocker": "Automatic polling/task-to-card mapping, compose return UI, real expiry refresh/quota/STOP and Windows startup remain unverified",
+    "verificationReport": "docs/WORKER_OAUTH_VERIFICATION.md",
+    "testedCodeCommit": "155ff644a682262707ed67a9d114b9c37b46b8e6",
     "runbook": "docs/AUTO_AI_SETUP.md",
-    "testsPassed": 40
+    "testsPassed": 44,
+    "analysisLengthRepairLimit": 1,
+    "failureStatusEndpoint": "http://127.0.0.1:8791/status",
+    "extensionCreatedAnalysisCompleted": true,
+    "manualAnalysisRecovery": "live-broker-tested-owner-reports-saved-campaign-ui",
+    "extensionAnalysisSavedUiVerified": true,
+    "extensionComposeUiVerified": false
   }
 }

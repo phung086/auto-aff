@@ -72,9 +72,10 @@ async function waitForTask(result) {
   if (!result.pending) return result;
   if (pendingManual) throw new Error('Một yêu cầu khác đang chờ. Hãy xử lý yêu cầu đó trước.');
   pendingManual = true;
-  const node = $('task-status'); node.hidden = false; node.textContent = 'Đang chờ ChatGPT. Mở plugin LinkDesk và yêu cầu xử lý hàng đợi. Giữ bảng quản lý mở để nhận kết quả.';
+  const node = $('task-status'); node.hidden = false; node.textContent = 'Đang chờ biên soạn. Worker đang bật sẽ tự xử lý; nếu dùng plugin thủ công, mở LinkDesk trong ChatGPT. Giữ bảng quản lý mở để nhận kết quả.';
   notify('Đã đưa yêu cầu vào hàng đợi ChatGPT.');
-  try { const end = Date.now() + 30*60*1000; while (Date.now() < end) { await new Promise(resolve => setTimeout(resolve,4000)); const next = await request({type:'GET_TASK',id:result.taskId}); if (!next.pending) {node.textContent='Đã nhận kết quả biên soạn qua MCP.'; return next;} } throw new Error('Yêu cầu hết hạn. Tạo yêu cầu mới.'); }
+  try { const end = Date.now() + 30*60*1000; while (Date.now() < end) { await new Promise(resolve => setTimeout(resolve,4000)); const next = await request({type:'GET_TASK',id:result.taskId}); if (!next.pending) {node.textContent='Đã nhận kết quả biên soạn.'; return next;} if(next.workerMessage)node.textContent=next.workerMessage; } throw new Error('Yêu cầu hết hạn. Tạo yêu cầu mới.'); }
+  catch(e){node.textContent=e.message;throw e;}
   finally { pendingManual = false; }
 }
 document.querySelectorAll('[data-view]').forEach(b => b.addEventListener('click', () => showView(b.dataset.view)));
@@ -122,6 +123,12 @@ $('campaign-form').addEventListener('submit', event => { event.preventDefault();
 function resetCampaign() { $('campaign-form').reset(); $('campaign-id').value = ''; $('campaign-form-title').textContent = 'Thêm chiến dịch'; }
 $('campaign-reset').addEventListener('click', resetCampaign);
 function populateCampaign(c) { for (const key of ['id', 'name', 'product', 'benefit', 'link', 'keywords', 'source']) $(`campaign-${key}`).value = c[key] || ''; $('campaign-form-title').textContent = c.id ? 'Sửa chiến dịch' : 'Lưu cấu hình từ AI'; }
+$('source-recover').addEventListener('click',event=>run(event.currentTarget,async()=>{
+  if(pendingManual)throw new Error('Yêu cầu đang được theo dõi. Nếu trang đã treo, tải lại dashboard rồi nhận kết quả đã có.');
+  const link=httpUrl($('source-link').value),result=await request({type:'RECOVER_ANALYSIS',link});
+  if(result.campaign?.link!==link)throw new Error('Link kết quả không khớp.');
+  populateCampaign(result.campaign);showView('campaigns');notify('Đã nhận cấu hình có sẵn. Kiểm tra nguồn/thông tin rồi bấm Lưu chiến dịch. Không gọi AI lại.');
+}));
 $('campaign-list').addEventListener('click', event => { const b = event.target.closest('[data-edit-campaign]'); if (!b) return; const c = state.campaigns.find(x => x.id === b.dataset.editCampaign); populateCampaign(c); $('campaign-name').focus(); });
 function destinationFields() { const group = $('destination-kind').value === 'group'; $('group-fields').hidden = !group; $('page-fields').hidden = group; $('destination-url').required = group; $('destination-allows').required = group; $('destination-page').required = !group; }
 $('destination-kind').addEventListener('change', destinationFields);

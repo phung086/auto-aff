@@ -12,7 +12,27 @@ import { createMcp } from '../server/mcp.mjs';
 import { createHash } from 'node:crypto';
 import { request as httpRequest } from 'node:http';
 import { emptyState, reducer, importState, AFFILIATE_URL, DISCLOSURE } from '../extension/model.mjs';
-import { brokerRequest, completedResult } from '../extension/composer.mjs';
+import { brokerRequest, completedResult, localWorkerStatus, pendingWorkerState, recoverAnalysis } from '../extension/composer.mjs';
+
+test('analysis recovery reads existing results for exact link without enqueueing or accepting a changed link',async()=>{
+  const link='https://agentshop247.com/?ref=AS362560C5A713',config={url:'http://127.0.0.1:8787',token:'T'.repeat(43)};
+  const make=(id,url)=>({id,kind:'analyze',status:'completed',link:url,result:{campaign:{name:'AI',link:url}}});
+  let calls=0;const fetcher=async(u,o)=>{calls++;assert.equal(o.method,'GET');assert.ok(u.endsWith('/tasks?status=completed&offset=0&limit=20'));return Response.json({tasks:[make('old',link),make('new',link),make('other',link+'x')]});};
+  const result=await recoverAnalysis(config,link,fetcher);assert.equal(calls,1);assert.equal(result.taskId,'new');assert.equal(result.campaign.link,link);
+  await assert.rejects(recoverAnalysis(config,link+'wrong',fetcher),/Chưa tìm thấy/);
+  await assert.rejects(recoverAnalysis(config,link,async()=>Response.json({tasks:[{...make('bad',link),result:{campaign:{link:link+'x'}}}]})),/không khớp/);
+});
+
+test('pending extension task surfaces its worker failure and ignores unrelated failures',async()=>{
+  const task={id:'own'};
+  assert.throws(()=>pendingWorkerState(task,{enabled:false,busy:false,failure:{taskId:'own',message:'AI vượt giới hạn'}}),/vượt giới hạn/);
+  assert.equal(pendingWorkerState(task,{enabled:false,busy:false,failure:{taskId:'other',message:'Other'}}).pending,true);
+  assert.equal(pendingWorkerState(task,null).pending,true);
+  assert.equal(pendingWorkerState(task,{enabled:true,busy:true,message:'Đang phân tích.'}).workerMessage,'Đang phân tích.');
+  let called;const status=await localWorkerStatus(async(url,options)=>{called={url,options};return Response.json({enabled:true,busy:false,message:'Đang chờ.'});});
+  assert.equal(status.enabled,true);assert.equal(called.url,'http://127.0.0.1:8791/status');assert.equal(called.options.redirect,'error');
+  await assert.rejects(localWorkerStatus(async()=>Response.json({enabled:'yes'})),/không hợp lệ/);
+});
 
 const campaign={...emptyState().campaigns[0]};delete campaign.id;
 const compose=key=>({key,kind:'compose',campaign,context:'Tôi cần công cụ AI hỗ trợ lập trình',postKind:'comment'});

@@ -1,6 +1,6 @@
 # AI tự động dùng gói ChatGPT
 
-08/10/2026. Worker tại máy đã có code và 40 tests/check; **chưa nghiệm thu inference bằng gói ChatGPT thật**. Chrome hiện báo ERR_BLOCKED_BY_CLIENT khi POST trang đăng nhập local, chủ máy thử cũng bị. Không tắt bảo vệ, đổi cookie hoặc dùng API riêng của ChatGPT để vượt lỗi.
+09/10/2026. Bản vá PR #1 đã chạy trên Windows và Chrome thật: POST /auth/start, consent, callback và danh sách model đã qua. Worker GPT-6.1-Sol tự hoàn tất một analyze và một compose, giữ nguyên link; giới hạn2 tự dừng. Restart giữ đăng nhập và budget0, đọc model được mà không cấp quyền lại. 44 tests/check qua. **Ảnh chủ máy xác nhận danh sách chiến dịch đã lưu với exact URL sau recovery; compose về UI, Windows startup và Facebook thật còn chờ.** Xem [bằng chứng kiểm tra](WORKER_OAUTH_VERIFICATION.md).
 
 ## Hai quyền khác nhau
 
@@ -17,11 +17,20 @@
 5. Extension giữ **ChatGPT qua plugin MCP / hàng đợi**. Nhập link/nguồn như trước. Khi worker đã được cấp quyền và bật, worker xử lý task mà không cần prompt từng lượt.
 6. Có thể đóng trang cấu hình; broker và worker vẫn phải chạy. Chrome cần hoạt động để nhận kết quả/thực hiện phiên đã cho phép. Chưa có Windows startup service.
 
-Nếu Chrome báo ERR_BLOCKED_BY_CLIENT: đăng nhập chưa qua, không phải đã kết nối. Chủ máy cần kiểm tra chính sách trình duyệt/tiện ích chặn với người quản lý máy; không tự vô hiệu hóa bảo vệ. Sau khi truy cập trở lại phải nghiệm thu OAuth/model/inference thật.
+Nếu Chrome báo ERR_BLOCKED_BY_CLIENT: đăng nhập chưa qua, không phải đã kết nối. Mã mới dùng POST /auth/start và Referrer-Policy: strict-origin để tránh lỗi Origin: null / 403 từng tái hiện ở dự án. **Đổi đường dẫn không chứng minh hay bảo đảm hết ERR_BLOCKED_BY_CLIENT**: lỗi này vẫn có thể do tiện ích trình duyệt hoặc chính sách máy chặn trước khi gửi. Chủ máy hoặc quản trị viên kiểm tra Network/Console và nhật ký chính sách Chrome, phân biệt (a) request không xuất hiện ở server, (b) server trả 403, (c) redirect OAuth bị chặn. Không tắt bảo vệ hoặc đổi cookie. Chỉ sau khi truy cập trở lại mới nghiệm thu OAuth/model/inference thật.
+
+### Chẩn đoán login sau bản vá
+
+1. Khởi động worker bằng `npm run ai:worker`; mở trang localhost 8791. Bấm Continue with ChatGPT **một lần**.
+2. Nếu còn ERR_BLOCKED_BY_CLIENT, mở DevTools → Network để xem request `POST /auth/start` bị chặn ở client hay nhận mã HTTP thực sự. Kiểm tra `chrome://policy` và tiện ích theo quy trình quản trị được phép; không tắt extension bảo mật để lách chính sách.
+3. Nếu HTTP 403, kiểm tra `Origin: http://127.0.0.1:8791` trong yêu cầu và Host `127.0.0.1:8791`. Không nới kiểm tra Origin/CSRF để sửa lỗi. Nếu thấy trang OpenAI, tiếp tục authorize và callback; kiểm tra model sau đó.
+4. Trên máy chủ dự án, callback, model và hai inference thật đã qua sau consent. Trên máy mới vẫn phải hoàn tất toàn bộ luồng; không coi trang consent là đã đăng nhập hoàn tất.
 
 ## Vận hành và bảo vệ dữ liệu
 
 Worker poll4 giây, một request/lần, inference timeout120 giây. Trừ số yêu cầu **trước** inference và persist; restart không tự nạp ngân sách. Lỗi/quota hoặc hết ngân sách dừng, không retry vô hạn hay chuyển API trả phí. STOP hủy request và chặn submit muộn. Ngắt tài khoản cố revoke OpenAI rồi xóa tokens tại máy, UI báo nếu chưa xác nhận revoke từ xa.
+
+Ngoại lệ có giới hạn: nếu phân tích campaign đúng cấu trúc nhưng vượt độ dài name/product/benefit/keywords, worker yêu cầu viết lại tối đa1 lần nếu còn budget và task còn pending. Lượt này cũng tiêu thụ một yêu cầu. Không tự viết lại lỗi URL/ID/HTTP/quota hoặc cắt nội dung để ép qua schema. Nếu vẫn lỗi, worker dừng và extension bản mới hiện lỗi cho đúng task; mở localhost8791 để kiểm tra rồi chủ động bắt đầu phiên mới.
 
 `server/chatgpt-plan.mjs`: state/nonce/PKCE, jose JWT/JWKS + issuer/audience/expiry, identity binding khi tái xác thực, scope plan, refresh serialize và rotating refresh token. Mỗi client/account record riêng; host ID ổn định. Tokens chỉ trong `.linkdesk-data/chatgpt/accounts.json`, không browser/log/Git. Thư mục Windows bỏ quyền kế thừa và cấp SID người dùng hiện tại; Unix0700/0600. Không đọc credentials/Codex auth/cookies của ứng dụng khác.
 

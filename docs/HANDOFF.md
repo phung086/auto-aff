@@ -8,13 +8,15 @@
 - Ngrok3.39.8 dùng account config sẵn có, inspector upstream127.0.0.1:8790; broker health và metadata HTTPS đúng ngrok. connection.json private mode external. Không còn chờ dừng broker Cloudflare cũ; không đọc authtoken. Domain gắn tài khoản, không cần Cloudflare/tên miền riêng.
 - **LinkDesk ngrok** đã tạo trong Chrome cá nhân, chủ tài khoản consent. UI Primary connected. Trò chuyện **Xử lý campaign task** xử lý task analyze thật từ extension; broker xác nhận completed, campaign giữ đúng URL mặc định. Screenshot ngoài Git outputs/LinkDesk-ngrok-analyze-completed.png. Chưa có bằng chứng extension đã lưu campaign; chưa compose thật về extension.
 - Bốn custom MCP cũ LinkDesk AI, 0.2, 0.2.0, hiện tại đã gỡ cài đặt qua UI; có thể thêm lại. Gói portable LinkDesk cũ cũng đã gỡ bằng công cụ quản lý plugin; danh mục ChatGPT sau reload chỉ còn LinkDesk ngrok. Không xóa vĩnh viễn apps/source/data.
-- Worker mới npm run ai:worker tại localhost8791 dùng Sign in with ChatGPT / ChatGPT plan usage chính thức. State/nonce/PKCE/JWKS, account riêng, refresh, SSE completion, contracts, STOP/ngân sách có code; 40 tests và check qua. **Chưa worker login/inference thật**: Chrome ERR_BLOCKED_BY_CLIENT khi POST /login; chủ máy thử cũng bị. Không tắt bảo vệ hay API riêng. MCP connected không đồng nghĩa worker authorized.
+- Worker localhost8791 áp dụng PR #1 trên nhánh cục bộ codex/test-worker-oauth; PR draft, chưa merge. Ngày09/10 chủ tài khoản consent, callback/model qua; GPT-6.1-Sol tự hoàn tất analyze và compose thật, exact URL và completedResult qua, cap2 tự dừng. Restart giữ account/budget0, đọc model không cần đăng nhập lại. **Ảnh chủ máy xác nhận danh sách chiến dịch đã lưu và exact URL; compose về UI, refresh/quota/STOP thật và Windows startup còn chờ.** Đã bật phiên chờ tối đa10 yêu cầu mới. 40 tests/check và lock/CSRF qua. Xem WORKER_OAUTH_VERIFICATION.
 
 ## Việc kế tiếp
 
+Sự cố mới09/10: analyze từ nút extension đã tới broker nhưng AI trả product>300 làm worker dừng và dashboard chờ. Đã sửa prompt giới hạn ký tự, một lượt viết lại có tính budget, trạng thái lỗi loopback/GET_TASK. Chính task78d3938f đã completed, product69 ký tự/exact URL qua; Ảnh chủ máy sau nút recovery cho thấy danh sách chiến dịch đã lưu/exact URL; chưa gán chắc từng thẻ với task ID. 44 tests/check. Reload extension bản mới sau khi nhận/lưu, không restart broker. Xem WORKER_OAUTH_VERIFICATION.
+
 1. Dọn cài đặt đã hoàn tất, chỉ giữ LinkDesk ngrok. Không tạo thêm bản trùng. Custom MCP gỡ trên web; portable cũ gỡ qua công cụ quản lý plugin và đã xác minh danh mục web.
-2. Chủ máy/người quản lý Chrome giải quyết truy cập worker login bị chặn. Giữ localhost8791; không đọc token/profile hay hỏi API key. Chủ tài khoản tự cấp quyền plan tại OpenAI khi truy cập được, theo AUTO_AI_SETUP.
-3. Analyze và compose bằng worker thật, Chrome nhận kết quả. Chỉ dùng một phương thức biên soạn cho cùng hàng đợi; cross-client lease chưa có (L013).
+2. OAuth/model/analyze/compose worker đã qua. Chủ máy kiểm tra nút Đọc link trong AI & nguồn để chứng minh giao diện extension nhận/lưu; công cụ browser không truy cập trang chrome-extension. Không cần API key/prompt ChatGPT khi worker bật.
+3. Thử compose do extension tạo và nhận kết quả trong Chrome. Chỉ dùng một phương thức biên soạn cho cùng hàng đợi; cross-client lease chưa có (L013). Refresh/quota/STOP giữa inference thật chưa qua.
 4. L012 manual handle reload; L060 OAuth MCP persistence/refresh; L061 supervision/startup. **MCP OAuth vẫn memory/24h/no refresh**; plan worker có persistence/refresh riêng.
 5. L040/031/043 target cụ thể cho phép quảng cáo, cap1, Facebook evidence; không gửi thử hoặc coi mọi demo là nhu cầu mua.
 
