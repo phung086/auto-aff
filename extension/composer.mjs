@@ -5,7 +5,7 @@ export function pairingConfig(raw) {
 }
 export async function brokerRequest(config, path, data, fetcher = fetch) {
   const connection = pairingConfig(config);
-  if (!/^\/(health|tasks(?:\/[a-f0-9-]{36}(?:\/cancel)?)?)$/.test(path)) throw new Error('Đường dẫn kết nối không hợp lệ.');
+  if (!/^\/(health|tasks(?:\/[a-f0-9-]{36}(?:\/cancel)?)?)$/.test(path)&&path!=='/tasks?status=completed&offset=0&limit=20') throw new Error('Đường dẫn kết nối không hợp lệ.');
   const controller = new AbortController(), timer = setTimeout(() => controller.abort(), 10000);
   try {
     const response = await fetcher(connection.url + path, { method: data === undefined ? 'GET' : 'POST', headers: { Authorization: `Bearer ${connection.token}`, 'Content-Type': 'application/json' }, ...(data !== undefined ? { body: JSON.stringify(data) } : {}), signal: controller.signal, redirect: 'error' });
@@ -16,6 +16,24 @@ export async function brokerRequest(config, path, data, fetcher = fetch) {
   finally { clearTimeout(timer); }
 }
 export const campaignPayload = c => ({name:c.name,product:c.product,benefit:c.benefit,keywords:c.keywords || '',link:httpUrl(c.link),source:c.source || ''});
+export async function recoverAnalysis(config,link,fetcher=fetch) {
+  const original=httpUrl(link),{tasks}=await brokerRequest(config,'/tasks?status=completed&offset=0&limit=20',undefined,fetcher);
+  if(!Array.isArray(tasks))throw new Error('Không đọc được danh sách kết quả.');
+  const task=[...tasks].reverse().find(t=>t.kind==='analyze'&&t.status==='completed'&&t.link===original);
+  if(!task)throw new Error('Chưa tìm thấy cấu hình đã hoàn tất cho nguyên link này trong 20 kết quả kiểm tra.');
+  return {...completedResult(task),taskId:task.id};
+}
+export async function localWorkerStatus(fetcher=fetch) {
+  const response=await fetcher('http://127.0.0.1:8791/status',{signal:AbortSignal.timeout(2000),redirect:'error'});
+  if(!response.ok)throw new Error('Không đọc được trạng thái worker.');
+  const value=await response.json();
+  if(typeof value.enabled!=='boolean'||typeof value.busy!=='boolean'||typeof value.message!=='string')throw new Error('Trạng thái worker không hợp lệ.');
+  return value;
+}
+export function pendingWorkerState(task,status) {
+  if(status&&!status.enabled&&!status.busy&&status.failure?.taskId===task.id)throw new Error(String(status.failure.message).slice(0,220));
+  return {pending:true,...(status?{workerMessage:status.enabled?status.message:'Worker đang dừng. Mở AI tự động tại 127.0.0.1:8791 để kiểm tra; hoặc xử lý qua plugin ChatGPT.'}:{})};
+}
 export function completedResult(task) {
   if (['expired','cancelled'].includes(task.status)) throw new Error('Yêu cầu ChatGPT đã hết hạn hoặc bị hủy. Tạo yêu cầu mới.');
   if (task.status !== 'completed') return null;

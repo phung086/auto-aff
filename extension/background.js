@@ -2,7 +2,7 @@ import { emptyState, reducer, importState, assertLink, httpUrl, postTarget, canF
 import { graphRequest } from './facebook.mjs';
 import { analyzeSource, generateBody } from './ai.mjs';
 import { readBrowserPage, scanGroup, prepareAutoComment, submitAutoComment, discoverGroups, requestGroupJoin } from './browser.mjs';
-import { brokerRequest, pairingConfig, campaignPayload, completedResult } from './composer.mjs';
+import { brokerRequest, pairingConfig, campaignPayload, completedResult, localWorkerStatus, pendingWorkerState, recoverAnalysis } from './composer.mjs';
 
 let serial = Promise.resolve(), tickBusy = false;
 const activeJobs = new Set();
@@ -200,8 +200,9 @@ async function handle(message) {
   if (message.type === 'CONFIRM_MEMBERSHIP') { await update(s=>{if(s.runner.running)throw new Error('Dừng phiên trước khi sửa trạng thái nhóm.');const d=s.destinations.find(x=>x.id===message.id);if(!d||d.kind!=='group')throw new Error('Không tìm thấy nhóm.');d.membership={status:'confirmed',at:new Date().toISOString(),message:'Bạn xác nhận đã kiểm tra tư cách thành viên trên Facebook.'};});return {}; }
   if (message.type === 'COMPOSER_CONNECT') { const config = pairingConfig(message.config); const health = await brokerRequest(config, '/health'); if (health.version !== '0.2.0') throw new Error('Phiên bản cầu nối không khớp.'); await chrome.storage.session.set({composer:config}); return {composerPaired:true,mcpUrl:health.mcpUrl}; }
   if (message.type === 'COMPOSER_HEALTH') { const session = await sessions(); return await brokerRequest(session.composer, '/health'); }
+  if (message.type === 'RECOVER_ANALYSIS') { const session=await sessions();return recoverAnalysis(session.composer,message.link); }
   if (message.type === 'COMPOSER_DISCONNECT') { await update(s=>{s.runner.running=false;s.runner.message='Đã ngắt cầu nối ChatGPT.';}); await cancelRunnerTask(); await chrome.storage.session.remove('composer'); return {}; }
-  if (message.type === 'GET_TASK') { const session = await sessions(); const task = await brokerRequest(session.composer, `/tasks/${message.id}`); return {pending:task.status==='pending',...(completedResult(task)||{})}; }
+  if (message.type === 'GET_TASK') { const session = await sessions(); const task = await brokerRequest(session.composer, `/tasks/${message.id}`); const result=completedResult(task); if(result)return {pending:false,...result}; return pendingWorkerState(task,await localWorkerStatus().catch(()=>null)); }
   if (message.type === 'ACTION') { await update(s => { if (s.runner.running && ['SAVE_CAMPAIGN', 'SAVE_DESTINATION', 'SAVE_SETTINGS'].includes(message.action?.type)) throw new Error('Dừng phiên tự động trước khi sửa cấu hình.'); Object.assign(s, reducer(s, message.action)); }); return { state: await readState() }; }
   if (message.type === 'CONNECT') {
     const state = await readState(), token = typeof message.token === 'string' ? message.token.trim() : '';

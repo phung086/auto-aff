@@ -34,4 +34,6 @@ Report: campaignId/raw link/source/period/clicks/importedAt. Không gán click t
 
 ## Worker dùng gói ChatGPT
 
+AI campaign có giới hạn ký tự giống contracts; lỗi độ dài có tối đa1 lượt viết lại trong budget, không truncate. LastFailure persist cùng worker config. /status8791 chỉ là trạng thái không credentials/source; extension GET_TASK đọc khi pending để báo lỗi đúng ID và kết thúc spinner. Không cần restart broker để thêm trạng thái; broker vẫn không có tool publish mới.
+
 server/chatgpt-plan.mjs quản lý OAuth OpenAI direct plan + credentials owner-only + refresh; server/plan-worker.mjs chỉ soạn qua public Responses API SSE. scripts/ai-worker.mjs là UI/worker loopback8791, không tunnel. Một worker lock, budget persist, timeout/STOP/error dừng; cùng Device API nhưng không thêm tool publish. Không giả token hoặc dùng cookie ChatGPT. PR #1 đổi form thành POST /auth/start và strict-origin, giữ Origin/CSRF guard; cleanup lock khi bind lỗi. OAuth/model và analyze/compose thật qua ngày09/10; cap2 tự dừng, restart giữ account/budget. UI extension nhận/lưu và refresh/quota/STOP thật còn chờ. Xem AUTO_AI_SETUP và WORKER_OAUTH_VERIFICATION. Lease với nhiều MCP clients vẫn L013.

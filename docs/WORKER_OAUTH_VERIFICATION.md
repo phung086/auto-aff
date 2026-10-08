@@ -37,3 +37,19 @@ Worker giới hạn2 yêu cầu tự dừng khi còn0. Sau đó restart riêng w
 Đã bật phiên vận hành giới hạn10 yêu cầu mới, chờ hàng đợi; broker và ngrok giữ nguyên. Không cấu hình Windows startup. Screenshot ngoài Git: `outputs/LinkDesk-worker-enabled-live.png`. Bản thảo thật trong runtime riêng, không commit token/task store/ảnh tài khoản.
 
 L014: OAuth/model/analyze/compose worker thật đã có bằng chứng. Gate UI extension nhận/lưu còn chờ chủ máy kiểm tra nút Đọc link; L011/M1 không đánh dấu hoàn tất toàn bộ. Tiếp theo L013 lease, L012 handle refresh, L060 MCP OAuth bền vững và L061 startup; Facebook cap1 cần target và bằng chứng riêng.
+
+## Sự cố tác vụ do extension tạo và bản sửa
+
+Tác vụ analyze `78d3938f-cc36-4b40-8a37-600df5f8eec8` do nút Đọc link trong extension tạo. Worker dừng với Zod too_big ở campaign.product, giới hạn300 ký tự; broker còn pending và dashboard cũ tiếp tục chờ. Đây là lỗi nội dung/hợp đồng, không phải OAuth hoặc ngrok.
+
+Bản sửa giữ giới hạn hợp đồng, thêm số ký tự cụ thể trong prompt, yêu cầu product ngắn và chuyển chi tiết sang benefit. Chỉ lỗi độ dài ở trường campaign được viết lại tự động tối đa một lần; mỗi inference vẫn trừ ngân sách, STOP/cancel chặn lượt kế tiếp, không retry HTTP/quota/URL/ID sai. Kết quả không bị cắt chữ âm thầm. Nếu còn sai, lưu lastFailure với ID và thông báo ngắn rồi dừng.
+
+GET /status loopback8791 chỉ trả enabled/busy/remaining/message/failure, không token/account/nguồn. GET_TASK của extension mới đọc trạng thái này khi task pending; lỗi đúng task được đưa ra dashboard và nút được mở lại. Worker không có/mất kết nối vẫn cho phép MCP thủ công; không xem lỗi task khác là lỗi của task đang chờ. Broker và OAuth MCP không cần restart.
+
+Sau khi restart riêng worker bản sửa, xử lý lại **chính ID tác vụ trên**: broker completed lúc `2026-10-08T17:29:29.398Z`, product69 ký tự, completedResult qua và link nguyên bản. Chưa giả lập lưu chiến dịch; chủ máy xác nhận UI nhận/lưu riêng. 43 tests/check qua, gồm quá dài→viết lại thành công, hai lần sai→dừng, ngân sách không đủ→không viết lại, báo lỗi đúng task và fallback khi không có worker.
+
+Để dùng thông báo lỗi mới, cần reload bản extension đã cập nhật sau khi nhận và lưu kết quả đang chờ. Không reload dashboard đang chờ vì handle hiện còn ở bộ nhớ (L012).
+
+Chủ máy báo UI vẫn không chuyển sau khi task completed. Chưa xác định vì sao tab cũ không nhận được response; không suy từ broker completed rằng UI đã nhận. Bổ sung nút **Nhận kết quả đã có** trong AI & nguồn: đọc tối đa20 completed tasks, chọn analyze khớp nguyên link và đưa cấu hình vào form để chủ máy kiểm tra/lưu; không enqueue hoặc gọi model. Hàm recovery đã đọc đúng task78d3938f từ broker thật, product69 ký tự/exact URL. 44 tests/check qua. Đây là khôi phục thủ công có giới hạn, chưa thay thế L012 lưu handle bền vững.
+
+Nguồn extension và gói outputs/LinkDesk-0.2.0/linkdesk đã cập nhật. Chủ máy reload LinkDesk tại chrome://extensions, mở lại dashboard; nếu session pairing mất thì chọn pairing.json của broker đang chạy, rồi bấm Nhận kết quả đã có. Reload không xóa chiến dịch đã lưu ở storage.local. Không phải cài lại ChatGPT/ngrok, không cần đăng nhập OAuth lại. Giao diện extension mới và việc lưu vẫn cần chủ máy xác nhận vì browser tool không truy cập trang chrome-extension.

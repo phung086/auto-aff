@@ -12,6 +12,8 @@
 
 ## Việc kế tiếp
 
+Sự cố mới09/10: analyze từ nút extension đã tới broker nhưng AI trả product>300 làm worker dừng và dashboard chờ. Đã sửa prompt giới hạn ký tự, một lượt viết lại có tính budget, trạng thái lỗi loopback/GET_TASK. Chính task78d3938f đã completed, product69 ký tự/exact URL qua; UI nhận/lưu chờ chủ máy. 43 tests/check. Reload extension bản mới sau khi nhận/lưu, không restart broker. Xem WORKER_OAUTH_VERIFICATION.
+
 1. Dọn cài đặt đã hoàn tất, chỉ giữ LinkDesk ngrok. Không tạo thêm bản trùng. Custom MCP gỡ trên web; portable cũ gỡ qua công cụ quản lý plugin và đã xác minh danh mục web.
 2. OAuth/model/analyze/compose worker đã qua. Chủ máy kiểm tra nút Đọc link trong AI & nguồn để chứng minh giao diện extension nhận/lưu; công cụ browser không truy cập trang chrome-extension. Không cần API key/prompt ChatGPT khi worker bật.
 3. Thử compose do extension tạo và nhận kết quả trong Chrome. Chỉ dùng một phương thức biên soạn cho cùng hàng đợi; cross-client lease chưa có (L013). Refresh/quota/STOP giữa inference thật chưa qua.

@@ -2,12 +2,34 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { ChatGPTPlan,completedResponse } from '../server/chatgpt-plan.mjs';
-import { PlanWorker,parseDraft,taskPrompt } from '../server/plan-worker.mjs';
+import { PlanWorker,parseDraft,taskPrompt,workerStatus } from '../server/plan-worker.mjs';
 
 const link='https://agentshop247.com/?ref=AS362560C5A713';
 const task={id:randomUUID(),kind:'compose',status:'pending',campaign:{name:'AI',product:'Claude',benefit:'Theo nguồn',keywords:'AI',link,source:'Nguồn'},context:'Tôi cần tìm tài khoản AI',postKind:'comment'};
 const sse=(...events)=>new Response(events.map(e=>'data: '+JSON.stringify(e)+'\r\n\r\n').join(''),{headers:{'content-type':'text/event-stream'}});
 const done=text=>({type:'response.completed',response:{status:'completed',output:[{content:[{type:'output_text',text}]}]}});
+
+test('overlong analysis is rewritten once within budget, never silently truncated',async()=>{
+  const analysis={id:randomUUID(),kind:'analyze',status:'pending',link,source:'Tài khoản AI',extra:''};
+  const campaign={name:'AI',product:'x'.repeat(301),benefit:'Theo nguồn',keywords:'AI'};
+  let calls=0,submitted;const config={enabled:true,remaining:2,model:'m'};
+  const worker=new PlanWorker({plan:{access:async()=>'t'},config,save:async()=>{},request:async(p,b)=>p.startsWith('/tasks?')?{tasks:[analysis]}:p==='/results'?(submitted=b,{}):analysis,fetcher:async(u,o)=>{
+    calls++;const body=JSON.parse(o.body);assert.match(body.instructions,/product tối đa 300/);
+    if(calls===2)assert.match(body.instructions,/Lượt trước vượt/);
+    return sse(done(JSON.stringify({campaign:{...campaign,product:calls===1?campaign.product:'Tài khoản AI'}})));
+  }});
+  await worker.tick();assert.equal(calls,2);assert.equal(config.remaining,0);assert.equal(submitted.campaign.product,'Tài khoản AI');
+  await worker.tick();assert.equal(config.enabled,false);assert.equal(calls,2);
+});
+
+test('invalid analysis stops after one rewrite and exposes only a bounded task error',async()=>{
+  const analysis={id:randomUUID(),kind:'analyze',status:'pending',link,source:'Tài khoản AI',extra:''};
+  let calls=0,submits=0;const config={enabled:true,remaining:5,model:'m'};
+  const worker=new PlanWorker({plan:{access:async()=>'t'},config,save:async()=>{},request:async(p)=>p.startsWith('/tasks?')?{tasks:[analysis]}:p==='/results'?(submits++,{}):analysis,fetcher:async()=>{calls++;return sse(done(JSON.stringify({campaign:{name:'AI',product:'x'.repeat(301),benefit:'Nguồn',keywords:'AI'}})));}});
+  await worker.tick();await worker.tick();assert.equal(calls,2);assert.equal(submits,0);assert.equal(config.enabled,false);assert.equal(config.remaining,3);
+  const status=workerStatus(worker);assert.equal(status.failure.taskId,analysis.id);assert.match(status.failure.message,/vượt giới hạn/);assert.deepEqual(Object.keys(status).sort(),['busy','enabled','failure','message','remaining']);
+  config.enabled=true;config.remaining=1;calls=0;await worker.tick();assert.equal(calls,1);assert.equal(config.remaining,0);
+});
 test('plan stream refuses partial, failed and incomplete responses; waits for completion',async()=>{
   const delta={type:'response.output_text.delta',delta:'partial'};
   await assert.rejects(completedResponse(async()=>sse(delta),'t',{}),/response.completed/);

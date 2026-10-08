@@ -36,4 +36,6 @@ Còn nghiệm thu compose về extension Chrome, Facebook join/comment/Page, Pag
 
 ## Giới hạn
 
+Regression09/10: task analyze do extension tạo dừng vì product>300. Prompt giới hạn ký tự + một lượt viết lại có budget + /status/GET_TASK báo lỗi đã sửa. Chính task78d3938f completed, product69 ký tự, exact URL và completedResult qua. 43 tests/check; UI nhận/lưu vẫn chờ chủ máy. Chưa coi kiểm thử fallback/lỗi mock là đã nghiệm thu extension mới trên Chrome.
+
 Quick Tunnel hostname tạm; auth memory/restart/24h không refresh. Broker single-process, cap5000task, chưa retention/lock. Reload dashboard mất handle manual (L012), task vẫn trên broker. Facebook DOM có thể đổi, uncertain không retry. Chrome/broker/phiên ChatGPT phải hoạt động. Chưa launcher/host production/Chrome Web Store.

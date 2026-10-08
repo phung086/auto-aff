@@ -30,6 +30,8 @@ Nếu Chrome báo ERR_BLOCKED_BY_CLIENT: đăng nhập chưa qua, không phải 
 
 Worker poll4 giây, một request/lần, inference timeout120 giây. Trừ số yêu cầu **trước** inference và persist; restart không tự nạp ngân sách. Lỗi/quota hoặc hết ngân sách dừng, không retry vô hạn hay chuyển API trả phí. STOP hủy request và chặn submit muộn. Ngắt tài khoản cố revoke OpenAI rồi xóa tokens tại máy, UI báo nếu chưa xác nhận revoke từ xa.
 
+Ngoại lệ có giới hạn: nếu phân tích campaign đúng cấu trúc nhưng vượt độ dài name/product/benefit/keywords, worker yêu cầu viết lại tối đa1 lần nếu còn budget và task còn pending. Lượt này cũng tiêu thụ một yêu cầu. Không tự viết lại lỗi URL/ID/HTTP/quota hoặc cắt nội dung để ép qua schema. Nếu vẫn lỗi, worker dừng và extension bản mới hiện lỗi cho đúng task; mở localhost8791 để kiểm tra rồi chủ động bắt đầu phiên mới.
+
 `server/chatgpt-plan.mjs`: state/nonce/PKCE, jose JWT/JWKS + issuer/audience/expiry, identity binding khi tái xác thực, scope plan, refresh serialize và rotating refresh token. Mỗi client/account record riêng; host ID ổn định. Tokens chỉ trong `.linkdesk-data/chatgpt/accounts.json`, không browser/log/Git. Thư mục Windows bỏ quyền kế thừa và cấp SID người dùng hiện tại; Unix0700/0600. Không đọc credentials/Codex auth/cookies của ứng dụng khác.
 
 `server/plan-worker.mjs`: chỉ gửi nguồn/ngữ cảnh cần thiết tới OpenAI. AI không chọn ID, tạo URL, gọi công cụ hoặc gửi Facebook. Chỉ ghi khi stream có response.completed, JSON hợp lệ và task vẫn pending. Broker gắn nguyên link + nhãn tiếp thị. Hủy/hết hạn/đã hoàn tất không bị ghi đè.

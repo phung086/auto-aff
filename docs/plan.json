@@ -38,7 +38,7 @@
       "service supervision",
       "actual compose returned to Chrome"
     ],
-    "testsPassed": 40
+    "testsPassed": 44
   },
   "oauthEvidence": {
     "consentHeaders": "strict-origin and registered HTTPS callback CSP",
@@ -132,6 +132,10 @@
     "verificationReport": "docs/WORKER_OAUTH_VERIFICATION.md",
     "testedCodeCommit": "155ff644a682262707ed67a9d114b9c37b46b8e6",
     "runbook": "docs/AUTO_AI_SETUP.md",
-    "testsPassed": 40
+    "testsPassed": 44,
+    "analysisLengthRepairLimit": 1,
+    "failureStatusEndpoint": "http://127.0.0.1:8791/status",
+    "extensionCreatedAnalysisCompleted": true,
+    "manualAnalysisRecovery": "implemented-live-broker-tested-extension-ui-pending"
   }
 }
