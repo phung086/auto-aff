@@ -2,6 +2,8 @@
 
 Đọc theo thứ tự: `docs/HANDOFF.md` → `docs/SUPER_PLAN.md` → `docs/BACKLOG.md` → `docs/ARCHITECTURE.md` → `VALIDATION.md`. Trạng thái machine-readable ở `docs/plan.json`. Không đọc token/runtime để tìm hiểu dự án.
 
+Trước sửa đọc `docs/COWORK_PROTOCOL.md`, `docs/WORK_REGISTRY.json` và `docs/IMPLEMENTATION_TICKETS.md`. Một ticket/worktree/branch mỗi AI; nhận quyền nhóm file trước sửa; coordinator duy nhất ghi docs trạng thái chung. Không switch/reset/stash checkout của cowork, không restart broker/ngrok/Chrome để làm docs/tests. `docs/DEVELOPMENT_LOOP.md` quy định heartbeat; `docs/DISCOVERY_SPEC.md` là thiết kế source-first (không nhập URL từng bài), chưa chứng nhận runtime.
+
 ## Mục tiêu
 
 Tiện ích Chrome tiếng Việt quản lý nhiều nhà cung cấp affiliate; ChatGPT Plus qua plugin biên soạn không cần AI API key; phiên gửi có quyền/giới hạn tới đích cho phép quảng cáo; lịch sử thật và click có nguồn. Đừng thay mục tiêu bằng demo AI API cần key.

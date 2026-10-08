@@ -1,0 +1,26 @@
+{
+  "schemaVersion": 1,
+  "profileVersion": "1.0",
+  "status": "design-example-not-runtime-loaded",
+  "name": "Chủ đề AI và công cụ lập trình",
+  "entities": [
+    {"id": "ai", "aliases": ["AI", "artificial intelligence", "trí tuệ nhân tạo", "LLM", "mô hình ngôn ngữ"], "requiresAiContext": true, "bareVietnameseAiMatches": false},
+    {"id": "claude", "aliases": ["Claude Code", "Claude"], "requiresAiContext": true},
+    {"id": "codex", "aliases": ["OpenAI Codex", "Codex"], "requiresAiContext": true},
+    {"id": "antigravity", "aliases": ["Antigravity"], "requiresAiContext": true},
+    {"id": "gemini", "aliases": ["Gemini AI", "Gemini"], "requiresAiContext": true},
+    {"id": "grok", "aliases": ["Grok AI", "Grok"], "requiresAiContext": true},
+    {"id": "cursor", "aliases": ["Cursor AI", "Cursor", "Cussor"], "requiresAiContext": true},
+    {"id": "chatgpt", "aliases": ["ChatGPT", "Chat GPT", "Chat-GPT"], "requiresAiContext": true},
+    {"id": "api-ai", "aliases": ["API key", "token API", "API"], "requiresAiContext": true, "genericTerm": true},
+    {"id": "deepseek", "aliases": ["DeepSeek"], "requiresAiContext": true},
+    {"id": "llama", "aliases": ["Llama"], "requiresAiContext": true},
+    {"id": "qwen", "aliases": ["Qwen"], "requiresAiContext": true},
+    {"id": "mistral", "aliases": ["Mistral"], "requiresAiContext": true},
+    {"id": "copilot", "aliases": ["Copilot"], "requiresAiContext": true}
+  ],
+  "matching": {"unicodeNormalization": "NFKC", "wordBoundaries": "unicode-letter-number", "preferLongestAlias": true, "fuzzyMatching": false, "ignoreUrlsEmailsCodeBlocks": true, "maxContextNeighborSentences": 1},
+  "intent": {"draftRequires": ["ai-context-confirmed", "resource-or-tool-request", "approved-advertising-source", "campaign-product-compatible", "stable-post-identity", "not-duplicate"], "ambiguousDecision": "review", "topicOnlyDecision": "skip-advertising"},
+  "publishing": {"keywordMatchGrantsPermission": false, "classifierCanPublish": false, "approvalRequired": true, "disclosureRequired": true},
+  "exampleRawAffiliateUrl": "https://agentshop247.com/?ref=AS362560C5A713"
+}

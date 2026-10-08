@@ -25,6 +25,17 @@ Ready nghĩa là có thể triển khai tiếp. Awaiting live nghĩa là code c�
 | L060 | M6 / P0 | In progress | Ngrok account domain thật + metadata/OAuth/analyze đã hoạt động. Còn MCP OAuth client/token persistence/refresh/revoke và restart evidence |
 | L061 | M6 / P1 | Ready | Windows background launcher, shutdown orderly, safe update/backup/rollback; ký bản phân phối |
 | L062 | M6 / P1 | Ready | Retention/delete task data có backup, không full-file corruption, test disk/full/crash; single-process lock |
-| L070 | M7 / P2 | Planned | Source adapter contracts/version, nhiều industry prompts, platform adapter API có quyền |
+| L070 | M7 / P1 | Ready contract-only | Provider/platform capabilities/version/market/permissions; adapter unknown disabled; publisher phụ thuộc G0/quyền thật |
+| L071 | G1 / P1 | Ready | SourceScope/account capabilities/rules evidence/expiry; chọn nguồn một lần, không nhập URL từng bài; schema additive, restore không bật gửi |
+| L072 | G1 / P1 | Planned, depends L071/L013 | Candidate identity/cursor/dedupe liên lượt và liên tài khoản; thiếu identity không publish |
+| L073 | G1 / P1 | Design specified, depends L072/L042 | KEYWORD_DISCOVERY + profile/18 acceptance examples: entity/alias/context/intent/campaign router; demo không hỏi mua skip; injection không đổi link/quyền; classifier chưa triển khai |
+| L074 | G1 / P1 | Planned, permission gate | Bounded source reader + STOP/resume/layout detection; chưa xác minh quyền Facebook/read live |
+| L075 | G1 / P1 | Planned, depends L012/L022/L073 | UX Discovery nguồn lưu sẵn, permalink tự tìm, preview/skip/progress/STOP/error recovery |
+| L080 | G4 / P1 | Planned, depends L071 | AccountRef/private credentialRef, scope và approval account binding, không gửi chéo |
+| L081 | G4 / P1 | Planned, depends L080/L013 | Phiên theo account/cap/quota/STOP; không rotation hoặc retry qua tài khoản khác |
+| L082 | G4 / P1 | Planned, depends L051 | Report orders/refunds/commission/currency/source, pending/confirmed, overlap đối soát |
+| L090 | G5 / P2 | Planned, depends L070/L051 | Shopee VN link chính thức + CSV/report; API khi có tài liệu/quyền thật |
+| L091 | G5 / P2 | Planned, depends L070/L082 | TikTok Shop VN link/campaign/order/refund; không suy product anchor từ link ngoài |
+| L092 | G5 / P2 | Research gate; publisher disabled | TikTok Direct Post intended-use/app review/scope/audit/consent; tool nội bộ không mặc định phù hợp |
 
-Chọn một ticket ở mốc chưa qua có ưu tiên P0 trước. Ticket live chỉ đóng khi evidence ghi rõ. Mọi thay đổi phải cập nhật bảng này và plan.json. Đề xuất tiếp theo: L011 rồi L040; nếu chưa có phiên Chrome/ChatGPT điều khiển được, làm L012 và L060, giữ live tickets mở.
+Chọn một ticket đủ phụ thuộc: G0 L013/L012 trước discovery/publisher. L011/L014 tiếp tục gate live; L071 và L070 contract có thể làm độc lập với ownership riêng. Không mở rộng gửi trước G2. Xem IMPLEMENTATION_TICKETS cho acceptance/rollback, COWORK_PROTOCOL cho phân việc. Coordinator đồng bộ bảng này và plan.json; ticket live chỉ đóng có evidence.

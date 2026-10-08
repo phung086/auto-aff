@@ -1,0 +1,55 @@
+{
+  "schemaVersion": 1,
+  "updated": "2026-10-09",
+  "coordinationImplemented": false,
+  "protocol": "docs/COWORK_PROTOCOL.md",
+  "registryWriter": "coordinator-only",
+  "claimAuthority": "atomic local lock in git common directory; this file is not a lock",
+  "activeClaims": [],
+  "completedHandoffs": [
+    {
+      "ticket": "DOCS-PLAN-2",
+      "owner": "root",
+      "branch": "codex/affiliate-super-plan",
+      "baseCommit": "4efd045",
+      "scope": "docs-only; no runtime or Facebook actions",
+      "status": "review",
+      "dependency": "PR #1 fix/worker-local-oauth-flow"
+    },
+    {
+      "ticket": "DOCS-KEYWORD-ROUTING",
+      "owner": "root",
+      "branch": "codex/affiliate-super-plan",
+      "baseCommit": "81a85e8",
+      "scope": "keyword discovery spec/profile/18 acceptance examples; docs-only",
+      "status": "review",
+      "dependency": "PR #2 and L071/L072 before runtime integration"
+    }
+  ],
+  "suggestedIndependentStreams": [
+    {
+      "ticket": "L013",
+      "lockGroups": [
+        "server-tasks"
+      ],
+      "state": "ready",
+      "owner": null
+    },
+    {
+      "ticket": "L071",
+      "lockGroups": [
+        "extension-model"
+      ],
+      "state": "ready",
+      "owner": null
+    },
+    {
+      "ticket": "L070",
+      "lockGroups": [
+        "platform-research"
+      ],
+      "state": "ready-contract-only",
+      "owner": null
+    }
+  ]
+}

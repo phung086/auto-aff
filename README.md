@@ -47,6 +47,8 @@ Chrome Plus và LinkDesk extension đã cài/ghép; custom MCP LinkDesk ngrok đ
 
 ## Phát triển
 
+Kế hoạch 2.0: [SUPER PLAN](docs/SUPER_PLAN.md), [Discovery theo nguồn](docs/DISCOVERY_SPEC.md), [Phối hợp AI](docs/COWORK_PROTOCOL.md), [Ticket/acceptance/rollback](docs/IMPLEMENTATION_TICKETS.md), [Nghiên cứu nền tảng](docs/PLATFORM_RESEARCH.md), [Vòng lặp phát triển](docs/DEVELOPMENT_LOOP.md). Đọc các tài liệu này trước khi tiếp tục; chọn nguồn một lần là mục tiêu mới, chưa phải feature live đã hoàn tất.
+
 ```powershell
 npm ci
 npm test
