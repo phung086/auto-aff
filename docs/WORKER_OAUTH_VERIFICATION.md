@@ -17,6 +17,23 @@ Ngày 09/10/2026. PR https://github.com/phung086/auto-aff/pull/1, code được 
 
 ## Gate chưa qua
 
-Chủ tài khoản cấp quyền → callback xác minh token/scope → Kiểm tra model → worker xử lý analyze và compose thật → Chrome nhận kết quả và nguyên affiliate URL. Chỉ sau các bước đó mới đánh dấu L014 live. Không gửi Facebook trong kiểm tra OAuth.
+Các gate đã qua và phần còn chờ được cập nhật dưới đây. Không gửi Facebook trong kiểm tra OAuth.
 
 Phiên authorize có hạn 10 phút. Nếu trang consent để lâu, quay về worker và bắt đầu lại; không tái sử dụng mã. Không restart worker khi đang chờ callback vì state/PKCE của phiên đang ở bộ nhớ.
+
+## Cập nhật: chủ tài khoản cấp quyền và inference thật đã qua
+
+Chủ tài khoản hoàn tất consent và quay về worker; UI báo quyền dùng gói ChatGPT đã cấp. Kiểm tra model trả danh sách tài khoản; chọn GPT-6.1-Sol. Không dùng API key hoặc prompt thủ công trong ChatGPT cho hai lượt sau:
+
+| Tác vụ | ID | Bằng chứng |
+|---|---|---|
+| Analyze | c38b0eb4-004d-4d43-b65e-3d9b9dca105f | Worker tự nhận nguồn AgentShop247 đã lưu từ lượt extension trước; broker completed; campaign giữ nguyên URL |
+| Compose Page draft | e62300a4-8a04-4d25-b5a5-6989f8ec064a | Worker dùng campaign vừa phân tích, tạo bản thảo Page, broker completed, relevant=true, đúng một URL khớp nguyên chuỗi |
+
+`completedResult` của extension đọc hai kết quả thật và vượt kiểm tra hợp đồng/link. Đây là kiểm chứng hàm nhận dữ liệu của extension, **chưa phải bằng chứng giao diện extension Chrome đã nhận/lưu** hai tác vụ: chúng được tạo qua Device API để thử worker, không qua nút extension. Context compose là yêu cầu bản thảo Page của chủ dự án, không giả làm một bài Facebook đã quét.
+
+Worker giới hạn2 yêu cầu tự dừng khi còn0. Sau đó restart riêng worker, tài khoản đang chọn/quyền/model đã lưu vẫn còn, budget vẫn0, bấm Kiểm tra model thành công mà không đăng nhập lại. Chưa kiểm chứng refresh khi token hết hạn, quota thật hoặc STOP giữa inference thật.
+
+Đã bật phiên vận hành giới hạn10 yêu cầu mới, chờ hàng đợi; broker và ngrok giữ nguyên. Không cấu hình Windows startup. Screenshot ngoài Git: `outputs/LinkDesk-worker-enabled-live.png`. Bản thảo thật trong runtime riêng, không commit token/task store/ảnh tài khoản.
+
+L014: OAuth/model/analyze/compose worker thật đã có bằng chứng. Gate UI extension nhận/lưu còn chờ chủ máy kiểm tra nút Đọc link; L011/M1 không đánh dấu hoàn tất toàn bộ. Tiếp theo L013 lease, L012 handle refresh, L060 MCP OAuth bền vững và L061 startup; Facebook cap1 cần target và bằng chứng riêng.

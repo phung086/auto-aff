@@ -8,7 +8,7 @@ Ready nghĩa là có thể triển khai tiếp. Awaiting live nghĩa là code c�
 | L010 | M1 / P0 | Done-code | Broker durable/idempotent/expiry, schema, MCP tools, OAuth PKCE, loopback pairing |
 | L011 | M1 / P0 | Analyze live / compose pending | LinkDesk ngrok Primary connected; ChatGPT Plus đã xử lý analyze thật từ extension, broker completed và giữ exact URL. Còn compose về Chrome và đối chiếu nhận/lưu UI. 40 tests/check qua |
 | L012 | M1 / P1 | Ready | Lưu handle manual pending để refresh dashboard không mất yêu cầu; cancel khi đóng/ngắt; không tạo task trùng |
-| L014 | M1 / P0 | Chrome consent reached / callback pending | PR #1 155ff644 chạy Windows/Chrome thật, POST /auth/start tới trang cấp quyền OpenAI; 40 tests/check và kiểm tra lock/CSRF qua. Chờ chủ tài khoản cấp quyền, callback/model/analyze/compose thật. Xem AUTO_AI_SETUP và WORKER_OAUTH_VERIFICATION |
+| L014 | M1 / P0 | Worker inference live / extension UI pending | PR #1 chạy Windows/Chrome thật: OAuth/model/analyze/compose GPT-6.1-Sol qua, exact URL, giới hạn2 dừng và restart giữ account/budget. completedResult nhận kết quả thật; chưa UI extension nhận/lưu. Refresh/quota/STOP inference thật chưa qua. 40 tests/check; xem WORKER_OAUTH_VERIFICATION |
 | L013 | M1 / P1 | Ready | Lease xử lý task/worker; nhiều phiên ChatGPT không ghi đè; pending pagination ổn định |
 | L020 | M2 / P0 | Done-code | Home 3 steps, AIChatGPT mặc định, API nâng cao, báo cáo có nguồn, trạng thái chờ |
 | L021 | M2 / P1 | Ready | Setup wizard/launcher Windows, tự khám phá file ghép không truyền secret ra chat, error recovery dễ hiểu |
