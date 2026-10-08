@@ -6,7 +6,7 @@ Ready nghĩa là có thể triển khai tiếp. Awaiting live nghĩa là code c�
 |---|---|---|---|
 | L001 | M0 / P0 | Done-code | Exact link, snapshot jobs, URL phụ, backup reset quyền; regression bắt buộc |
 | L010 | M1 / P0 | Done-code | Broker durable/idempotent/expiry, schema, MCP tools, OAuth PKCE, loopback pairing |
-| L011 | M1 / P0 | Awaiting consent/live | Chrome Plus đã kết nối; form MCP nhận OAuth/DCR/compose. Đã sửa CSP redirect và Origin null do no-referrer, fixture Chrome/28 tests qua; broker đã cập nhật. Còn consent, list 4 tools, analyze 1 task và compose 1 task về extension; không cần AI key |
+| L011 | M1 / P0 | Awaiting consent/live | Đã sửa CSP/Origin null và file owner khác bộ nhớ do startup ghi mã trước bind; 31 tests/check qua. Cầu nối thật OAuth/PKCE và SDK list 4 tools đã kiểm chứng bằng client riêng, token test đã revoke. Còn consent trong ChatGPT, analyze 1 task và compose 1 task về extension; không cần AI key |
 | L012 | M1 / P1 | Ready | Lưu handle manual pending để refresh dashboard không mất yêu cầu; cancel khi đóng/ngắt; không tạo task trùng |
 | L013 | M1 / P1 | Ready | Lease xử lý task/worker; nhiều phiên ChatGPT không ghi đè; pending pagination ổn định |
 | L020 | M2 / P0 | Done-code | Home 3 steps, AIChatGPT mặc định, API nâng cao, báo cáo có nguồn, trạng thái chờ |
@@ -21,7 +21,7 @@ Ready nghĩa là có thể triển khai tiếp. Awaiting live nghĩa là code c�
 | L050 | M5 / P1 | Done-code | Status theo campaign, lịch sử CSV, báo cáo click nhập tay; không cộng kỳ trùng |
 | L051 | M5 / P1 | Ready | Adapter CSV nhà cung cấp: preview mapping columns, exact link/ref, dedupe source+period, bằng chứng import |
 | L052 | M5 / P2 | Pending supplier | Nhà cung cấp cấp API click/conversion/commission + định nghĩa metric; không suy đoán endpoint |
-| L060 | M6 / P0 | Ready | HTTPS hostname cố định, persisted OAuth hoặc OAuth provider chuẩn; revoke device/client; restart không phải reconnect hàng ngày |
+| L060 | M6 / P0 | Ready | Owner code đã persist, startup không ghi đè khi bind lỗi. Còn HTTPS hostname cố định, persisted OAuth client/token hoặc provider chuẩn; revoke device/client; restart không phải reconnect hàng ngày |
 | L061 | M6 / P1 | Ready | Windows background launcher, shutdown orderly, safe update/backup/rollback; ký bản phân phối |
 | L062 | M6 / P1 | Ready | Retention/delete task data có backup, không full-file corruption, test disk/full/crash; single-process lock |
 | L070 | M7 / P2 | Planned | Source adapter contracts/version, nhiều industry prompts, platform adapter API có quyền |

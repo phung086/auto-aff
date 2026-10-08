@@ -24,7 +24,7 @@ Ghép Chrome và kết nối ChatGPT là hai bước riêng. Xác minh Chrome nh
 
 ChatGPT cần phiên thực sự xử lý task. Broker giữ hàng đợi nhưng không tự mở phiên ChatGPT. Task hết hạn30 phút; quá hạn cần yêu cầu mới. Runner kiểm tra một nhịp mỗi phút; STOP hủy task đang chờ. Không thêm shortener/UTM để đo click.
 
-Quick Tunnel đổi URL khi restart; auth provider xóa token khi restart. Access token24h, không refresh. Cần kết nối lại plugin khi endpoint/token đổi. Đây là cấu hình cá nhân thử nghiệm; M6 phát triển host cố định, OAuth bền vững và launcher.
+Quick Tunnel đổi URL khi restart; auth provider xóa client/token khi restart. Owner code hiện được lưu và dùng lại, không tự đổi sau restart hoặc khi một broker thứ hai gặp lỗi bind. Access token 24h, không refresh. Cần kết nối lại plugin khi endpoint/token đổi. Đây là cấu hình cá nhân thử nghiệm; M6 phát triển host cố định, OAuth bền vững và launcher.
 
 ## Chẩn đoán
 
@@ -32,6 +32,7 @@ Quick Tunnel đổi URL khi restart; auth provider xóa token khi restart. Acces
 - ChatGPT không kết nối: kiểm tra HTTPS metadata, Host đúng origin, OAuth URL `/mcp` và tunnel đang chạy; URL cũ không dùng lại.
 - Pending lâu: mở plugin trong ChatGPT và yêu cầu xử lý. “Đã ghép” không đồng nghĩa AI đang chạy.
 - PKCE/callback sai: bắt đầu lại từ ChatGPT, không bỏ kiểm tra callback/resource.
+- Mã không đúng: dùng owner-code.txt của broker hiện tại. Phiên hết hạn/đã dùng: bắt đầu lại kết nối từ ChatGPT, không tải lại POST /consent. Code cũ từng ghi đè file owner trước khi bind cổng, làm file khác bộ nhớ của broker đang chạy; đã sửa bằng lưu mã bền vững và chỉ tạo sau bind thành công.
 - Facebook checkpoint/câu hỏi thành viên: xử lý trực tiếp; adapter dừng.
 
 ## Gói plugin

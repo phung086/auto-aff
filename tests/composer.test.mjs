@@ -78,11 +78,13 @@ test('OAuth requires owner consent, PKCE, resource/client binding and one-use co
   assert.match(authorize.headers.get('content-security-policy'),/form-action 'self' https:\/\/chatgpt\.com;/);
   assert.equal(authorize.headers.get('referrer-policy'),'strict-origin');
   const html=await authorize.text(),nonce=html.match(/name="nonce" value="([^"]+)"/)[1];assert.throws(()=>provider.consent(nonce,'wrong'));
-  const consent=from=>call('/consent',{method:'POST',headers:{Origin:from,'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({nonce,code:'owner'}).toString()});
+  const consent=(from,code='owner')=>call('/consent',{method:'POST',headers:{Origin:from,'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({nonce,code}).toString()});
   assert.equal((await consent('https://evil.invalid')).status,403);
   assert.equal((await consent('null')).status,403);
   assert.equal((await call('/consent',{method:'POST',headers:{'Content-Type':'application/x-www-form-urlencoded'},body:new URLSearchParams({nonce,code:'owner'}).toString()})).status,403);
-  const allowed=await consent(origin);assert.equal(allowed.status,303);
+  const incorrect=await consent(origin,'bad-owner');assert.equal(incorrect.status,400);assert.match(await incorrect.text(),/Mã không đúng/);
+  const allowed=await consent(origin,' owner\n');assert.equal(allowed.status,303);
+  const reusedConsent=await consent(origin);assert.equal(reusedConsent.status,400);assert.match(await reusedConsent.text(),/Phiên kết nối đã hết hạn hoặc đã dùng/);
   const callback=new URL(allowed.headers.get('location'));assert.equal(callback.searchParams.get('state'),'exact-state');const code=callback.searchParams.get('code');
   await assert.rejects(provider.challengeForAuthorizationCode({...c,client_id:'other-client'},code));
   await assert.rejects(provider.exchangeAuthorizationCode(c,code,undefined,'https://evil.invalid/callback',new URL(origin+'/mcp')));

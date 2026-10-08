@@ -17,7 +17,7 @@ Port 8765 là preview UI/docs, không phải endpoint MCP. Port 8787 là device 
 
 Theo [Cloudflare Quick Tunnels](https://developers.cloudflare.com/tunnel/get-started/quick-tunnels/), URL tạm ngừng hoạt động khi cloudflared dừng; hostname đổi khi tạo tunnel mới và dịch vụ không có uptime guarantee. Giữ máy, broker và tunnel chạy để thử nghiệm ChatGPT. Không bật xác thực email tương tác trước endpoint MCP vì sẽ cản client.
 
-OAuth hiện lưu session trong memory, access token tối đa 24 giờ, không có refresh. Restart broker cần kết nối lại. Dữ liệu task nằm trong `.linkdesk-data`; trạng thái campaign/job nằm trong extension Chrome. GitHub và ZIP chỉ chứa source/docs, không chứa credentials hay task người dùng.
+Owner code hiện lưu bền vững ở owner-code.txt và dùng lại khi restart; startup lỗi không ghi đè mã của broker đang chạy. OAuth client/session/token vẫn trong memory, access token tối đa 24 giờ, không có refresh. Restart broker cần kết nối lại. Dữ liệu task nằm trong `.linkdesk-data`; trạng thái campaign/job nằm trong extension Chrome. GitHub và ZIP chỉ chứa source/docs, không chứa credentials hay task người dùng.
 
 ## Hai bước triển khai sau trong M6 / L060
 

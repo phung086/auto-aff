@@ -10,13 +10,15 @@ Ngày08/10/2026. Phân biệt local tests và tích hợp tài khoản thật.
 - MCP SDK initialize/list/call qua in-memory và HTTP stateless; schema/output/pagination. OAuth consent, PKCE sai, code một lần, revoke.
 - OAuth hotfix: consent HTTP POST trả 303 về callback, Origin khác bị từ chối; CSP chỉ thêm origin của callback HTTPS đã đăng ký. Kiểm thử local cùng Chrome xác minh form self chặn callback khác origin, policy có callback cho phép tải trang đích. Chưa thay thế nghiệm thu OAuth tài khoản thật.
 - OAuth 403 regression: trên cùng Chrome, fixture `qa/oauth-origin-fixture.mjs` tái hiện `no-referrer` làm POST gửi `Origin: null` và bị từ chối 403. Với `strict-origin`, POST gửi đúng origin, vượt kiểm tra nguồn gửi và callback sau redirect 303 tải thành công. Test HTTP khóa header mới và vẫn từ chối Origin null, thiếu hoặc khác origin; không nới CSRF guard. Broker thật đã restart để áp dụng bản sửa. Chủ tài khoản còn phải hoàn tất consent.
+- Chẩn đoán runtime thật xác nhận nonce còn trong map, chưa hết hạn nhưng owner code trong file khác mã bộ nhớ. Code cũ tạo/ghi owner trước bind cổng; callback app.listen của Express 5 có thể trả lỗi vào callback và bị coi như thành công. Đã sửa startup lưu/dùng lại mã, chỉ tạo sau bind thành công, bắt listening/error, đóng socket khi startup thất bại. Ba tests startup dùng cổng chiếm thật xác minh không ghi đè/tạo mã khi bind lỗi, không để cổng device mở và restart giữ nguyên mã.
+- Cầu nối thật chạy bản mới: DCR 201, authorize 200, mã sai trả 400 với lý do, mã đúng trả 303, PKCE/token 200 và SDK list đúng 4 tools. Token của client kiểm thử đã revoke. Đây là client kiểm thử riêng, chưa chứng minh tài khoản ChatGPT hoàn tất consent hoặc Chrome nhận bản thảo.
 - Report sai link/ngày/số âm bị chặn, dedupe, backup giữ snapshot khi campaign đổi.
 - HTTPS protected-resource metadata trả200; MCP chưa xác thực trả401. Chưa chứng minh ChatGPT account đã kết nối.
 - Chrome cá nhân điều khiển được qua tiện ích ChatGPT chính thức, Plus đăng nhập sẵn. Form custom MCP đã tự nhận metadata OAuth, DCR, scope compose và resource đúng endpoint. Gói plugin riêng tư đã lưu trong tài khoản, nhưng upload gói không chứng minh kết nối MCP hoạt động.
 - UI Home, ChatGPT mặc định/API nâng cao, stats thiếu click rõ, SUPER_PLAN HTML; desktop và khung390px qua browser preview. Preview không gọi AI/Facebook.
 - Fixture0.1 từng kiểm tra điền/gửi một lần trên trang mô phỏng, không Facebook thật.
 
-Gate release: **28 kiểm thử đã qua**, `npm run check` đã qua; GitHub Actions trên commit4501d7d đã hoàn tất success. CI trong .github/workflows/ci.yml. Evaluation10 câu có dataset mô phỏng cố định và test đáp án, chưa chạy model evaluation trên ChatGPT thật.
+Gate release: **31 kiểm thử đã qua**, `npm run check` đã qua; CI trong .github/workflows/ci.yml chạy cho mỗi commit. Evaluation 10 câu có dataset mô phỏng cố định và test đáp án, chưa chạy model evaluation trên ChatGPT thật.
 
 ## Chưa nghiệm thu
 
