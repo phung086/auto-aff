@@ -20,9 +20,13 @@ Ngày08/10/2026. Phân biệt local tests và tích hợp tài khoản thật.
 
 Gate release: **31 kiểm thử đã qua**, `npm run check` đã qua; CI trong .github/workflows/ci.yml chạy cho mỗi commit. Evaluation 10 câu có dataset mô phỏng cố định và test đáp án, chưa chạy model evaluation trên ChatGPT thật.
 
+## Tài khoản thật và gián đoạn kết nối
+
+Ngày 08/10/2026 đã kiểm tra trực tiếp trong cùng Chrome: trang chi tiết và Quản lý của **LinkDesk AI hiện tại** hiển thị **Tài khoản đã kết nối**, tài khoản Primary. Consent tài khoản thật đã hoàn tất. Tuy nhiên, cuộc trò chuyện **Kiểm tra LinkDesk AI** báo `Connection failed`. Khi kiểm tra máy, cổng 8787/8790 không có broker lắng nghe; đã khởi động lại tiến trình nền và tunnel. Quick Tunnel cấp hostname mới, trong khi app ChatGPT vẫn giữ URL cũ. OAuth client/token còn memory nên lần khôi phục này cần cấu hình endpoint và xác thực lại. Không coi nhãn account connected là bằng chứng tools còn truy cập được.
+
 ## Chưa nghiệm thu
 
-OAuth consent và bốn tools trong ChatGPT thật, analyze/compose trả về extension Chrome, Facebook join/comment/Page, Page quyền/token và supplier API click/conversion/commission. Chrome đã kết nối; người dùng đã tạo custom MCP, chưa có bằng chứng consent hoàn tất. Ảnh người dùng cung cấp cho thấy extension LinkDesk 0.2.0 đã cài và đang bật; broker /health trả ok, đúng version. Chưa nghiệm thu ghép extension và nhận kết quả AI. Không vượt challenge hoặc đọc cookie.
+Bốn tools truy cập được trong ChatGPT thật, analyze/compose trả về extension Chrome, Facebook join/comment/Page, Page quyền/token và supplier API click/conversion/commission. Consent đã có bằng chứng UI; kết nối công cụ sau gián đoạn chưa khôi phục. Ảnh người dùng cung cấp cho thấy extension LinkDesk 0.2.0 đã cài và đang bật. Chưa nghiệm thu ghép extension và nhận kết quả AI. Không vượt challenge hoặc đọc cookie.
 
 ## Giới hạn
 

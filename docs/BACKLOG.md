@@ -6,7 +6,7 @@ Ready nghĩa là có thể triển khai tiếp. Awaiting live nghĩa là code c�
 |---|---|---|---|
 | L001 | M0 / P0 | Done-code | Exact link, snapshot jobs, URL phụ, backup reset quyền; regression bắt buộc |
 | L010 | M1 / P0 | Done-code | Broker durable/idempotent/expiry, schema, MCP tools, OAuth PKCE, loopback pairing |
-| L011 | M1 / P0 | Awaiting consent/live | Đã sửa CSP/Origin null và file owner khác bộ nhớ do startup ghi mã trước bind; 31 tests/check qua. Cầu nối thật OAuth/PKCE và SDK list 4 tools đã kiểm chứng bằng client riêng, token test đã revoke. Còn consent trong ChatGPT, analyze 1 task và compose 1 task về extension; không cần AI key |
+| L011 | M1 / P0 | Awaiting tools/live | OAuth tài khoản thật đã hiện Tài khoản đã kết nối trong Chrome. ChatGPT gọi plugin báo Connection failed; broker đã dừng và được khôi phục với hostname Quick Tunnel mới, khác URL app đã kết nối. Cần khôi phục kết nối endpoint và nghiệm thu analyze 1 task, compose 1 task về extension. 31 tests/check đã qua; không cần AI key |
 | L012 | M1 / P1 | Ready | Lưu handle manual pending để refresh dashboard không mất yêu cầu; cancel khi đóng/ngắt; không tạo task trùng |
 | L013 | M1 / P1 | Ready | Lease xử lý task/worker; nhiều phiên ChatGPT không ghi đè; pending pagination ổn định |
 | L020 | M2 / P0 | Done-code | Home 3 steps, AIChatGPT mặc định, API nâng cao, báo cáo có nguồn, trạng thái chờ |

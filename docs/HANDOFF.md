@@ -18,9 +18,13 @@ Local tests và HTTPS metadata/auth rejection có kiểm chứng; xem VALIDATION
 
 Người dùng đã cài extension Chrome thủ công; ảnh version 0.2.0 và pairing/health cho thấy cầu nối phản hồi. Chưa nhận bản thảo AI. Đã sửa ba lỗi OAuth/startup: CSP callback/redirect 303, no-referrer làm Origin null, và owner code trong file khác mã bộ nhớ của broker. Lỗi startup cũ ghi mã trước bind cổng và xử lý callback Express 5 như bind thành công ngay cả khi lỗi. Hiện owner code được lưu/dùng lại, chỉ tạo sau bind thành công; lỗi startup đóng socket và không ghi đè mã. 31 tests/check qua. Cầu nối thật đã xác minh DCR/OAuth/PKCE và SDK list 4 tools bằng client riêng, token test đã revoke; chưa chứng minh ChatGPT account consent. Broker hiện chạy bản mới ở tiến trình nền Windows, dùng Quick Tunnel mới và cùng owner code, pairing giữ nguyên. Custom MCP hiện tại **LinkDesk AI hiện tại**, OAuth/DCR/compose; còn chờ chủ tài khoản nhập mã/consent. Những kết nối dùng hostname cũ chưa bị xóa. Chi tiết trong LIVE_SETUP. Chưa nghiệm thu Chrome nhận AI hoặc Facebook thật, chưa supplier API click/conversion. Không ghi URL tạm/secret vào manifest Git. Memory OAuth client/token cần kết nối lại sau restart. Plugin không tự tạo AI chạy nền 24/7.
 
+## Trạng thái tài khoản mới nhất
+
+Consent tài khoản thật đã hoàn tất: trang chi tiết và Quản lý của **LinkDesk AI hiện tại** trên cùng Chrome hiện **Tài khoản đã kết nối**, Primary. Những mô tả chờ consent ở phần lịch sử bên trên đã được thay thế bởi bằng chứng này. Cuộc trò chuyện **Kiểm tra LinkDesk AI** báo `Connection failed`; kiểm tra máy thấy broker đã dừng. Đã khôi phục broker/tunnel ở tiến trình nền, nhưng hostname Quick Tunnel mới khác URL app đang giữ, OAuth client/token trước restart cũng mất. Chưa nghiệm thu tool/task. UI Quản lý không có sửa URL; ưu tiên khôi phục endpoint được hỗ trợ/host ổn định, tránh tiếp tục tạo app trùng và bắt người dùng nhập mã lặp lại khi endpoint chưa đúng. Người dùng cần bấm tạo task trong extension vì browser automation từ chối `chrome-extension://`.
+
 ## Việc tiếp theo
 
-1. **L011:** `npm run connect`, ghép pairing.json trong Chrome, đăng ký MCP/OAuth trong ChatGPT. Xử lý một analyze và một compose; kiểm tra nguyên URL. Ghi evidence không chứa token.
+1. **L011/L060:** broker đã khôi phục; không chạy thêm broker. Khôi phục endpoint ChatGPT đang dùng sau thay hostname, rồi xử lý một analyze và một compose từ extension; kiểm tra nguyên URL. Consent từng thành công không chứng minh tools đang truy cập được. Ghi evidence không chứa token.
 2. **L040/L031:** người dùng chọn nhóm cho phép quảng cáo và bài cụ thể, cap1. Kiểm tra membership/target và kết quả; câu hỏi thành viên cần người dùng. L043 nếu có Page token đúng quyền.
 3. **L012:** lưu handle manual qua reload; cancel/disconnect rõ. **L060:** host cố định/OAuth bền vững trước mở rộng.
 
