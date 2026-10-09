@@ -89,5 +89,8 @@ test('approval and new enqueue reject buried disclosure rather than silently pub
   const body = `${AFFILIATE_URL}\nKhông phải ${DISCLOSURE}`;
   state.jobs[0].body = body;
   assert.throws(() => reducer(state, { type: 'REVIEW_JOB', id: state.jobs[0].id, approved: true }));
-  assert.throws(() => reducer(emptyState(), { type: 'ADD_JOB', data: { campaignId: 'agentshop247', destinationId: 'missing', targetUrl: '', body } }));
+  const input = { campaignId: 'agentshop247', destinationId: 'group', targetUrl: 'https://www.facebook.com/groups/12345/posts/67891/', body };
+  assert.throws(() => reducer(state, { type: 'ADD_JOB', data: input }), /nhãn|thông báo/);
+  const accepted = reducer(state, { type: 'ADD_JOB', data: { ...input, body: `${AFFILIATE_URL}\n${DISCLOSURE}` } });
+  assert.equal(accepted.jobs.length, state.jobs.length + 1);
 });
