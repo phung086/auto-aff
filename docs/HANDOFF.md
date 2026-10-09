@@ -3,7 +3,11 @@
 09/10/2026 · release0.2.0 · https://github.com/phung086/auto-aff.
 Đọc AGENTS → SUPER_PLAN → COWORK_PROTOCOL → BACKLOG/IMPLEMENTATION_TICKETS → ARCHITECTURE → VALIDATION; AI worker đọc AUTO_AI_SETUP. npm ci, npm test, npm run check; package allowlist không runtime/secret.
 
-## Bàn giao kế hoạch 2.0
+## Heartbeat L013 — lease local-tested, chưa deploy
+
+Worktree `work/LinkDesk-l013`, nhánh `codex/l013-task-leases`, basee95ba77, phụ thuộc PR #2/#1. Claim/renew/release durable, token/hash redaction, submit fencing/idempotent receipt, cursor append-identity và worker claim-next đã triển khai. 55 tests local/check qua; xem TASK_LEASES. Broker runtime ở checkout cũ vẫn nguyên, chưa có lease7tools live; không restart broker/ngrok/Chrome, không đọc credentials hoặc gọi model/Facebook thật. Submit client mới cần token; cập nhật broker/worker/tool catalog phải cùng phiên bảo trì sau review, giữ L060/live gates mở. Tiếp theo L012 handle reload trong worktree riêng; L013 còn nghiệm thu multi-client thật. Root-l013 giữ server-tasks/server-auth/docs-status theo atomic CreateNew và thả sau commit/push.
+
+## Lịch sử kế hoạch 2.0
 
 Bổ sung thiết kế theo từ khóa người dùng: KEYWORD_DISCOVERY và examples/keyword-profile.json, keyword-cases.json. Pipeline reader → entity/alias matcher → context AI → nhu cầu/quyền → campaign router → draft → preview/approval → publisher riêng. Cursor/Cussor alias, generic ai/API, nghĩa khác và 18 acceptance cases đã đặc tả; chưa nối runtime hoặc chạy classifier thật. Không đổi quyền source/publisher. Owner root giữ docs-status lock local trong lượt sửa và thả sau commit/push; checkout runtime không bị đổi.
 
@@ -26,7 +30,7 @@ Sự cố mới09/10: analyze từ nút extension đã tới broker nhưng AI tr
 
 1. Dọn cài đặt đã hoàn tất, chỉ giữ LinkDesk ngrok. Không tạo thêm bản trùng. Custom MCP gỡ trên web; portable cũ gỡ qua công cụ quản lý plugin và đã xác minh danh mục web.
 2. OAuth/model/analyze/compose worker đã qua. Chủ máy kiểm tra nút Đọc link trong AI & nguồn để chứng minh giao diện extension nhận/lưu; công cụ browser không truy cập trang chrome-extension. Không cần API key/prompt ChatGPT khi worker bật.
-3. Thử compose do extension tạo và nhận kết quả trong Chrome. Chỉ dùng một phương thức biên soạn cho cùng hàng đợi; cross-client lease chưa có (L013). Refresh/quota/STOP giữa inference thật chưa qua.
+3. Thử compose do extension tạo và nhận kết quả trong Chrome. Runtime hiện tại chưa được nâng lease L013: vẫn chỉ chạy một phương thức biên soạn trên cùng hàng đợi. Code lease local đã có ở nhánh riêng; chưa deploy. Refresh/quota/STOP giữa inference thật chưa qua.
 4. L012 manual handle reload; L060 OAuth MCP persistence/refresh; L061 supervision/startup. **MCP OAuth vẫn memory/24h/no refresh**; plan worker có persistence/refresh riêng.
 5. L040/031/043 target cụ thể cho phép quảng cáo, cap1, Facebook evidence; không gửi thử hoặc coi mọi demo là nhu cầu mua.
 

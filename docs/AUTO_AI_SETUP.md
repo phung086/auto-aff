@@ -36,7 +36,7 @@ Ngoại lệ có giới hạn: nếu phân tích campaign đúng cấu trúc nh�
 
 `server/plan-worker.mjs`: chỉ gửi nguồn/ngữ cảnh cần thiết tới OpenAI. AI không chọn ID, tạo URL, gọi công cụ hoặc gửi Facebook. Chỉ ghi khi stream có response.completed, JSON hợp lệ và task vẫn pending. Broker gắn nguyên link + nhãn tiếp thị. Hủy/hết hạn/đã hoàn tất không bị ghi đè.
 
-worker.lock chặn hai worker cùng directory. Sau crash, xác minh đúng tiến trình đã dừng trước khi dọn lock; không tự xóa lock còn sống. Cross-client lease với nhiều phiên MCP thuộc L013: chỉ chạy một phương thức biên soạn trên cùng hàng đợi. Conflicting submit dừng worker, không ghi đè.
+worker.lock chặn hai worker cùng directory. Sau crash xác minh tiến trình đã dừng trước khi dọn lock; không tự xóa lock còn sống. L013 cross-client lease đã local-tested, xem TASK_LEASES, nhưng chưa deploy lên runtime hiện tại: vẫn chỉ chạy một phương thức trên hàng đợi cũ. Khi nâng đồng bộ broker/worker/catalog, worker claim trước inference, renew trước submit, STOP/failure release token của mình; lease stale bị chặn và dừng worker. Không tự restart broker OAuth memory để áp dụng bản này.
 
 ## Nghiệm thu bắt buộc
 

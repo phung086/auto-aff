@@ -16,7 +16,7 @@ ChatGPT thực hiện suy luận và gọi MCP. Cầu nối không đọc cookie
 
 Theo [hướng dẫn chính thức](https://developers.openai.com/api/docs/guides/custom-mcp-server): Plugins → nút+ → Add custom MCP server (UI tiếng Việt: Thêm → Tạo server MCP tùy chỉnh). Đặt tên LinkDesk AI, mô tả “Biên soạn cho hàng đợi affiliate tại máy”. Nhập HTTPS URL có `/mcp`, chọn OAuth. Cài đặt nâng cao phải tự nhận DCR, scope compose và các endpoint cùng hostname. Review quyền/risk notice và Create as a plugin. Khi trang consent LinkDesk mở, chủ tài khoản tự nhập mã owner-code tại máy và đồng ý. Quyền chỉ đọc yêu cầu và ghi kết quả biên soạn.
 
-Kết quả phải có bốn tools: `linkdesk_list_tasks`, `linkdesk_get_task`, `linkdesk_submit_result`, `linkdesk_queue_summary`. Mở chat mới, @plugin LinkDesk, nhắn: “Xử lý tối đa10 yêu cầu LinkDesk đang chờ. Bỏ qua bài không có nhu cầu trực tiếp. Chỉ viết nội dung không URL; gửi kết quả đúng ID.”
+Code L013 có7 tools: `linkdesk_list_tasks`, `linkdesk_get_task`, `linkdesk_submit_result`, `linkdesk_queue_summary`, `linkdesk_claim_task`, `linkdesk_renew_lease`, `linkdesk_release_task`. Broker thật chưa được nâng ở heartbeat; bốn tools cũ là evidence runtime trước nâng. Khi nâng đồng bộ/làm mới catalog, list pending bằng cursor; claim mỗi task trước soạn, giữ token riêng, submit đúng ID/token. Xem [TASK_LEASES](TASK_LEASES.md). Không tự restart broker hoặc tạo connector trùng để làm mới tools.
 
 Ghép Chrome và kết nối ChatGPT là hai bước riêng. Xác minh Chrome nhận kết quả trước khi chạy gửi Facebook.
 

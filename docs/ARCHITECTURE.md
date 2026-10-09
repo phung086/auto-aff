@@ -6,6 +6,8 @@ Chrome lưu campaign, đích, job và báo cáo trong storage.local; secrets ch�
 
 MCP HTTP port8790 qua HTTPS OAuth scope compose. List/get/summary đọc; submit ghi kết quả soạn. Không tool join/comment/publish. Stdio proxy nối cùng broker đang chạy, không tạo kho task riêng.
 
+L013 bổ sung7 tools gồm claim/renew/release: client nhận token lease trước biên soạn; submit chỉ nhận token hiện hành hoặc completed receipt cùng token/nội dung. Durable hash/TTL qua cùng store serialize; GET/list không xuất token/hash. Worker claim-next/renew trước inference và submit; STOP/failure release lease mình. Cursor ID tránh offset pending đổi khi hoàn tất task. Một broker/data directory vẫn bắt buộc; không distributed lock. Xem TASK_LEASES; code mới chưa deploy runtime.
+
 ## Luồng xử lý
 
 Chrome đọc supplier với quyền theo website hoặc dùng nguồn bạn dán. ChatGPT provider enqueue analyze/compose. Dashboard poll4 giây, tối đa30 phút; runner poll nhịp1 phút. Manual key UUID; runner key ổn định theo run/đích/target. Cùng input/key trả cùng task, input khác bị từ chối.
@@ -36,4 +38,4 @@ Report: campaignId/raw link/source/period/clicks/importedAt. Không gán click t
 
 AI campaign có giới hạn ký tự giống contracts; lỗi độ dài có tối đa1 lượt viết lại trong budget, không truncate. LastFailure persist cùng worker config. /status8791 chỉ là trạng thái không credentials/source; extension GET_TASK đọc khi pending để báo lỗi đúng ID và kết thúc spinner. Không cần restart broker để thêm trạng thái; broker vẫn không có tool publish mới.
 
-server/chatgpt-plan.mjs quản lý OAuth OpenAI direct plan + credentials owner-only + refresh; server/plan-worker.mjs chỉ soạn qua public Responses API SSE. scripts/ai-worker.mjs là UI/worker loopback8791, không tunnel. Một worker lock, budget persist, timeout/STOP/error dừng; cùng Device API nhưng không thêm tool publish. Không giả token hoặc dùng cookie ChatGPT. PR #1 đổi form thành POST /auth/start và strict-origin, giữ Origin/CSRF guard; cleanup lock khi bind lỗi. OAuth/model và analyze/compose thật qua ngày09/10; cap2 tự dừng, restart giữ account/budget. Danh sách chiến dịch lưu/exact URL có ảnh chủ máy; compose về UI và refresh/quota/STOP thật còn chờ. Xem AUTO_AI_SETUP và WORKER_OAUTH_VERIFICATION. Lease với nhiều MCP clients vẫn L013.
+server/chatgpt-plan.mjs quản lý OAuth OpenAI direct plan + credentials owner-only + refresh; server/plan-worker.mjs chỉ soạn qua public Responses API SSE. scripts/ai-worker.mjs là UI/worker loopback8791, không tunnel. Một worker process lock, budget persist, timeout/STOP/error dừng; cùng Device API nhưng không thêm tool publish. Không giả token hoặc dùng cookie ChatGPT. PR #1 OAuth/model/analyze/compose thật đã qua; compose về UI và refresh/quota/STOP thật còn chờ. L013 cross-client lease đã local-tested ở nhánh riêng, chưa deploy/nghiệm thu thật. Xem AUTO_AI_SETUP, WORKER_OAUTH_VERIFICATION và TASK_LEASES.
