@@ -20,12 +20,13 @@ export function httpUrl(value) {
   return original;
 }
 export const hasExactLink = (body, link) => body.split(/\r?\n/).some(line => line === link);
+export const hasStandaloneDisclosure = (body, allowLegacy = true) => typeof body === 'string' && body.split(/\r?\n/).some(line => line === DISCLOSURE || (allowLegacy && line === LEGACY_DISCLOSURE));
 export function assertLink(job, campaigns) {
   const link = job.affiliateUrl || campaigns.find(c => c.id === job.campaignId)?.link;
   if (!link || !hasExactLink(job.body, link)) fail('Link affiliate không khớp nguyên chuỗi. Đã chặn gửi.');
   const urls = job.body.match(/https?:\/\/[^\s]+/gi) || [];
   if (urls.length !== 1 || urls[0] !== link) fail('Nội dung phải chứa đúng một link affiliate, không có URL khác hoặc link bị sửa.');
-  if (!job.body.includes(DISCLOSURE) && !job.body.includes(LEGACY_DISCLOSURE)) fail('Nội dung thiếu nhãn tiếp thị liên kết.');
+  if (!hasStandaloneDisclosure(job.body)) fail('Nhãn tiếp thị liên kết phải đứng trên một dòng riêng, không bị che hoặc sửa.');
   return link;
 }
 export function facebookUrl(value) {
@@ -52,7 +53,7 @@ export function renderTemplate(campaign, template) {
   let text = str(template).replace(/\{\{(product|benefit|link)\}\}/g, (_, key) => campaign[key] || '');
   if (/\{\{[^}]+\}\}/.test(text)) fail('Mẫu còn biến chưa hỗ trợ. Chỉ dùng {{product}}, {{benefit}}, {{link}}.');
   if (!hasExactLink(text, campaign.link)) text += `\n${campaign.link}`;
-  if (!text.includes(DISCLOSURE)) text += `\n\n${DISCLOSURE}`;
+  if (!hasStandaloneDisclosure(text, false)) text += `\n\n${DISCLOSURE}`;
   return text.trim();
 }
 export function validText(value) {
@@ -113,7 +114,7 @@ export function reducer(previous, action) {
     const targetUrl = kind === 'comment' ? postTarget(action.data.targetUrl).url : d.url;
     if (kind === 'comment' && postTarget(targetUrl).group !== d.groupId) fail('Bài viết không thuộc nhóm đã chọn.');
     const body = validText(action.data.body);
-    if (!hasExactLink(body, c.link) || !body.includes(DISCLOSURE)) fail('Đặt nguyên link affiliate ở một dòng riêng và giữ thông báo hoa hồng.');
+    if (!hasExactLink(body, c.link) || !hasStandaloneDisclosure(body, false)) fail('Đặt nguyên link affiliate và nhãn tiếp thị ở hai dòng riêng, không sửa chuỗi.');
     assertLink({ body, affiliateUrl: c.link }, state.campaigns);
     if (state.jobs.some(j => j.destinationId === d.id && j.targetUrl === targetUrl && j.status !== 'failed' && (kind === 'comment' || j.body === body))) fail('Bài viết này đã có trong hàng đợi hoặc lịch sử. Kiểm tra mục cũ để tránh bình luận lặp.');
     const scheduledAt = kind === 'page' && action.data.scheduledAt ? new Date(action.data.scheduledAt).toISOString() : null;

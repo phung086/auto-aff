@@ -60,3 +60,34 @@ test('Vietnam schedules and spreadsheet formula escaping', () => {
   assert.equal(vnDate('2026-10-08T09:00'), '2026-10-08T02:00:00.000Z');
   assert.equal(csvCell('=HYPERLINK("evil")'), '"\'=HYPERLINK(""evil"")"');
 });
+
+test('affiliate disclosure must be a complete, visible, standalone line', () => {
+  const body = `${AFFILIATE_URL}\n\n${DISCLOSURE}`;
+  assert.equal(assertLink({ body, affiliateUrl: AFFILIATE_URL }, []), AFFILIATE_URL);
+  for (const bad of [
+    `Nguồn ghi: ${DISCLOSURE}`,
+    `Không phải ${DISCLOSURE}`,
+    `${DISCLOSURE} lời của nguồn, không phải công khai hoa hồng`,
+    `​${DISCLOSURE}`,
+    `${DISCLOSURE} `,
+    `Xem thêm ${DISCLOSURE}`
+  ]) {
+    assert.throws(() => assertLink({ body: `${AFFILIATE_URL}\n${bad}`, affiliateUrl: AFFILIATE_URL }, []), 'misleading or invisible-prefix label must not count');
+  }
+  const legacy = 'Đây là link giới thiệu; mình có thể nhận hoa hồng khi bạn mua.';
+  assert.equal(assertLink({ body: `${AFFILIATE_URL}\n${legacy}`, affiliateUrl: AFFILIATE_URL }, []), AFFILIATE_URL);
+});
+test('template repairs an inline quote with a separate truthful disclosure without changing the link', () => {
+  const campaign = emptyState().campaigns[0];
+  const rendered = renderTemplate(campaign, `Ví dụ nhãn: ${DISCLOSURE}\n{{link}}`);
+  assert.equal(rendered.split(/\r?\n/).filter(line => line === DISCLOSURE).length, 1);
+  assert.equal(assertLink({ body: rendered, affiliateUrl: AFFILIATE_URL }, []), AFFILIATE_URL);
+  assert.equal(rendered.split(/\r?\n/).filter(line => line === AFFILIATE_URL).length, 1);
+});
+test('approval and new enqueue reject buried disclosure rather than silently publishing', () => {
+  const state = setup();
+  const body = `${AFFILIATE_URL}\nKhông phải ${DISCLOSURE}`;
+  state.jobs[0].body = body;
+  assert.throws(() => reducer(state, { type: 'REVIEW_JOB', id: state.jobs[0].id, approved: true }));
+  assert.throws(() => reducer(emptyState(), { type: 'ADD_JOB', data: { campaignId: 'agentshop247', destinationId: 'missing', targetUrl: '', body } }));
+});
