@@ -2,6 +2,8 @@
 
 Phiên bản 2.0 · 09/10/2026. Kế hoạch triển khai và nghiệm thu; không phải tuyên bố mọi tính năng đã hoạt động.
 
+Heartbeat L013: lease/cursor đã local-tested (55 tests/check) trên nhánh codex/l013-task-leases, chưa deploy runtime. Xem [TASK_LEASES](TASK_LEASES.md). Bước code tiếp theo L012; live compose/STOP/quota/refresh/catalog upgrade vẫn mở. Bảng xuất phát bên dưới là baseline trước L013.
+
 ## Kết quả sản phẩm
 
 Thêm link và thông tin nhà cung cấp → AI phân tích → lưu campaign → chọn tài khoản và phạm vi nguồn một lần → tự tìm bài phù hợp → soạn bản thảo → duyệt nội dung/phiên theo khả năng nền tảng → gửi có bằng chứng → đối soát click, đơn hàng, hoa hồng có nguồn.

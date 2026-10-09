@@ -8,12 +8,19 @@ const link='https://agentshop247.com/?ref=AS362560C5A713';
 const task={id:randomUUID(),kind:'compose',status:'pending',campaign:{name:'AI',product:'Claude',benefit:'Theo nguồn',keywords:'AI',link,source:'Nguồn'},context:'Tôi cần tìm tài khoản AI',postKind:'comment'};
 const sse=(...events)=>new Response(events.map(e=>'data: '+JSON.stringify(e)+'\r\n\r\n').join(''),{headers:{'content-type':'text/event-stream'}});
 const done=text=>({type:'response.completed',response:{status:'completed',output:[{content:[{type:'output_text',text}]}]}});
+const testLease='L'.repeat(43);
+const fixtureRequest=(current,onSubmit)=>async(path,body)=>{
+  if(path==='/task-claims')return {task:typeof current==='function'?task:current,leaseToken:testLease};
+  if(path.endsWith('/renew')||path.endsWith('/release')){assert.equal(body.leaseToken,testLease);return {};}
+  if(path==='/results'){assert.equal(body.leaseToken,testLease);return onSubmit?.(body)||{};}
+  return typeof current==='function'?current():current;
+};
 
 test('overlong analysis is rewritten once within budget, never silently truncated',async()=>{
   const analysis={id:randomUUID(),kind:'analyze',status:'pending',link,source:'Tài khoản AI',extra:''};
   const campaign={name:'AI',product:'x'.repeat(301),benefit:'Theo nguồn',keywords:'AI'};
   let calls=0,submitted;const config={enabled:true,remaining:2,model:'m'};
-  const worker=new PlanWorker({plan:{access:async()=>'t'},config,save:async()=>{},request:async(p,b)=>p.startsWith('/tasks?')?{tasks:[analysis]}:p==='/results'?(submitted=b,{}):analysis,fetcher:async(u,o)=>{
+  const worker=new PlanWorker({plan:{access:async()=>'t'},config,save:async()=>{},request:fixtureRequest(analysis,b=>{submitted=b;}),fetcher:async(u,o)=>{
     calls++;const body=JSON.parse(o.body);assert.match(body.instructions,/product tối đa 300/);
     if(calls===2)assert.match(body.instructions,/Lượt trước vượt/);
     return sse(done(JSON.stringify({campaign:{...campaign,product:calls===1?campaign.product:'Tài khoản AI'}})));
@@ -25,7 +32,7 @@ test('overlong analysis is rewritten once within budget, never silently truncate
 test('invalid analysis stops after one rewrite and exposes only a bounded task error',async()=>{
   const analysis={id:randomUUID(),kind:'analyze',status:'pending',link,source:'Tài khoản AI',extra:''};
   let calls=0,submits=0;const config={enabled:true,remaining:5,model:'m'};
-  const worker=new PlanWorker({plan:{access:async()=>'t'},config,save:async()=>{},request:async(p)=>p.startsWith('/tasks?')?{tasks:[analysis]}:p==='/results'?(submits++,{}):analysis,fetcher:async()=>{calls++;return sse(done(JSON.stringify({campaign:{name:'AI',product:'x'.repeat(301),benefit:'Nguồn',keywords:'AI'}})));}});
+  const worker=new PlanWorker({plan:{access:async()=>'t'},config,save:async()=>{},request:fixtureRequest(analysis,()=>{submits++;}),fetcher:async()=>{calls++;return sse(done(JSON.stringify({campaign:{name:'AI',product:'x'.repeat(301),benefit:'Nguồn',keywords:'AI'}})));}});
   await worker.tick();await worker.tick();assert.equal(calls,2);assert.equal(submits,0);assert.equal(config.enabled,false);assert.equal(config.remaining,3);
   const status=workerStatus(worker);assert.equal(status.failure.taskId,analysis.id);assert.match(status.failure.message,/vượt giới hạn/);assert.deepEqual(Object.keys(status).sort(),['busy','enabled','failure','message','remaining']);
   config.enabled=true;config.remaining=1;calls=0;await worker.tick();assert.equal(calls,1);assert.equal(config.remaining,0);
@@ -65,9 +72,9 @@ test('refresh serialization uses issued client and rotating token; missing scope
 });
 test('worker cannot submit after STOP or task cancellation; error pauses instead of retry loop',async()=>{
   let submit=0,release;const config={enabled:true,remaining:2,model:'m'};
-  const request=async(path,body)=>path.startsWith('/tasks?')?{tasks:[task]}:path==='/results'?(submit++,{}):task;
+  const request=fixtureRequest(task,()=>{submit++;});
   const worker=new PlanWorker({plan:{access:async()=>'t'},request,config,save:async()=>{},fetcher:async()=>{await new Promise(r=>release=r);return sse(done('{"relevant":true,"body":"Test"}'));}});
   const running=worker.tick();while(!release)await new Promise(r=>setImmediate(r));await worker.pause();release();await running;assert.equal(submit,0);assert.equal(config.remaining,1);
   config.enabled=true;worker.fetcher=async()=>sse({type:'response.failed'});await worker.tick();assert.equal(config.enabled,false);assert.equal(submit,0);assert.equal(config.remaining,0);
-  config.enabled=true;config.remaining=1;worker.fetcher=async()=>sse(done('{"relevant":true,"body":"Test"}'));let reads=0;worker.request=async p=>p.startsWith('/tasks?')?{tasks:[task]}:p==='/results'?(submit++,{}):{...task,status:++reads===1?'pending':'cancelled'};await worker.tick();assert.equal(submit,0);
+  config.enabled=true;config.remaining=1;worker.fetcher=async()=>sse(done('{"relevant":true,"body":"Test"}'));let reads=0;worker.request=fixtureRequest(()=>({...task,status:++reads===1?'pending':'cancelled'}),()=>{submit++;});await worker.tick();assert.equal(submit,0);
 });

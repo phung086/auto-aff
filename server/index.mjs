@@ -11,6 +11,7 @@ import { TaskStore } from './store.mjs';
 import { createMcp } from './mcp.mjs';
 import { OwnerOAuth, safeEqual } from './oauth.mjs';
 import { z } from 'zod';
+import { claimInput, leaseActionInput } from './contracts.mjs';
 
 export function createConsentHandler(provider,expectedOrigin) {
   return (req,res)=>{
@@ -34,6 +35,11 @@ export async function createApps({store,deviceToken,ownerCode,publicOrigin}) {
   device.get('/health',attempt(()=>({ok:true,version:'0.2.0',mcpUrl:publicOrigin?`${publicOrigin}/mcp`:null,chatgptVerified:false})));
   device.post('/tasks',attempt(req=>store.enqueue(req.body)));
   device.get('/tasks',attempt(req=>{const args=z.object({status:z.enum(['pending','completed','cancelled','expired']).default('pending'),offset:z.coerce.number().int().min(0).default(0),limit:z.coerce.number().int().min(1).max(20).default(10)}).parse(req.query);return {tasks:store.list(args.status,args.offset,args.limit)};}));
+  device.get('/task-page',attempt(req=>{const args=z.object({status:z.enum(['pending','completed','cancelled','expired']).default('pending'),cursor:z.string().uuid().optional(),limit:z.coerce.number().int().min(1).max(20).default(10)}).strict().parse(req.query);return store.page(args.status,args.cursor,args.limit);}));
+  device.post('/task-claims',attempt(req=>store.claimNext(claimInput.parse(req.body))));
+  device.post('/tasks/:id/claim',attempt(req=>store.claim(req.params.id,claimInput.parse(req.body))));
+  device.post('/tasks/:id/renew',attempt(req=>store.renew(req.params.id,leaseActionInput.parse(req.body))));
+  device.post('/tasks/:id/release',attempt(req=>store.release(req.params.id,leaseActionInput.parse(req.body))));
   device.get('/summary',attempt(()=>store.summary()));
   device.post('/results',attempt(req=>store.submit(req.body)));
   device.get('/tasks/:id',attempt(req=>store.get(req.params.id)));
@@ -60,7 +66,7 @@ export async function start({directory=resolve(process.env.LINKDESK_DATA_DIR||'.
     const config=JSON.parse(await readFile(join(directory,'pairing.json'),'utf8'));
     if(config.url!=='http://127.0.0.1:8787'||!/^[A-Za-z0-9_-]{43}$/.test(config.token))throw new Error('Ghép broker trước khi chạy stdio.');
     const request=async(path,body)=>{const res=await fetch(config.url+path,{method:body===undefined?'GET':'POST',headers:{Authorization:`Bearer ${config.token}`,'Content-Type':'application/json'},...(body!==undefined?{body:JSON.stringify(body)}:{}),redirect:'error',signal:AbortSignal.timeout(10000)});const data=await res.json();if(!res.ok)throw new Error(data.error||'Khởi động broker local trước.');return data;};
-    const proxy={list:async(status,offset,limit)=>(await request(`/tasks?status=${status}&offset=${offset}&limit=${limit}`)).tasks,get:id=>request(`/tasks/${id}`),submit:body=>request('/results',body),summary:()=>request('/summary')};
+    const proxy=createDeviceStoreProxy(request);
     await createMcp(proxy).connect(new StdioServerTransport());return;
   }
   const store=await new TaskStore(directory).load();
@@ -82,5 +88,14 @@ export async function start({directory=resolve(process.env.LINKDESK_DATA_DIR||'.
   }catch(error){await close();throw error;}
   process.stderr.write(`LinkDesk 0.2.0 sẵn sàng. Ghép Chrome bằng ${join(directory,'pairing.json')}\n${publicOrigin?`MCP: ${publicOrigin}/mcp`:'Chưa có địa chỉ HTTPS cho ChatGPT. Xem docs/PLUGIN_SETUP.md.'}\nMã chủ sở hữu chỉ lưu trong ${join(directory,'owner-code.txt')}\n`);
   return {...apps,servers,close};
+}
+export function createDeviceStoreProxy(request) {
+  return {
+    list:async(status,offset,limit)=>(await request(`/tasks?status=${status}&offset=${offset}&limit=${limit}`)).tasks,
+    page:(status,cursor,limit)=>request('/task-page?'+new URLSearchParams({status,limit:String(limit),...(cursor===undefined?{}:{cursor})})),
+    get:id=>request(`/tasks/${id}`),submit:body=>request('/results',body),summary:()=>request('/summary'),
+    claim:(id,body)=>request(`/tasks/${id}/claim`,body),
+    renew:(id,body)=>request(`/tasks/${id}/renew`,body),release:(id,body)=>request(`/tasks/${id}/release`,body),
+  };
 }
 if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href)start().catch(e=>{process.stderr.write(e.message+'\n');process.exitCode=1;});

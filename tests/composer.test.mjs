@@ -48,8 +48,9 @@ test('broker survives reload, concurrent requests dedupe and mismatched reuse fa
 });
 test('broker rejects model URLs, preserves raw link, accepts identical result only',async t=>{
   const store=await tempStore(t),task=await store.enqueue(compose('result'));
-  await assert.rejects(store.submit({id:task.id,relevant:true,body:'Xem HTTPS://evil.invalid/'}),/URL/);
-  const result={id:task.id,relevant:true,body:'Bạn có thể xem các gói công cụ phù hợp.'};await Promise.all([store.submit(result),store.submit(result)]);
+  const {leaseToken}=await store.claim(task.id,{owner:'test'});
+  await assert.rejects(store.submit({id:task.id,leaseToken,relevant:true,body:'Xem HTTPS://evil.invalid/'}),/URL/);
+  const result={id:task.id,leaseToken,relevant:true,body:'Bạn có thể xem các gói công cụ phù hợp.'};await Promise.all([store.submit(result),store.submit(result)]);
   const output=completedResult(store.get(task.id));assert.equal(output.body.split(AFFILIATE_URL).length,2);assert.ok(output.body.includes(DISCLOSURE));
   await assert.rejects(store.submit({...result,body:'different'}),/kết quả khác/);
 });
@@ -62,8 +63,9 @@ test('cancel and expiry reject late results; failed writes do not alter committe
 test('source analysis uses saved original link and rejects model-supplied URLs',async t=>{
   const store=await tempStore(t),link='https://example.com/?b=2&a=%2f&ref=ExactCASE';
   const task=await store.enqueue({key:'analyze',kind:'analyze',link,source:'Thông tin nguồn đã cung cấp'});
-  await assert.rejects(store.submit({id:task.id,campaign:{name:'X',product:'Y',benefit:'HTTPS://evil.invalid',keywords:'AI'}}),/URL/);
-  await store.submit({id:task.id,campaign:{name:'X',product:'Y',benefit:'Theo nhà cung cấp, hỗ trợ công cụ AI.',keywords:'AI'}});
+  const {leaseToken}=await store.claim(task.id,{owner:'test'});
+  await assert.rejects(store.submit({id:task.id,leaseToken,campaign:{name:'X',product:'Y',benefit:'HTTPS://evil.invalid',keywords:'AI'}}),/URL/);
+  await store.submit({id:task.id,leaseToken,campaign:{name:'X',product:'Y',benefit:'Theo nhà cung cấp, hỗ trợ công cụ AI.',keywords:'AI'}});
   assert.equal(completedResult(store.get(task.id)).campaign.link,link);
 });
 test('device API blocks missing token and bad Host; valid local calls enqueue once',async t=>{
@@ -82,9 +84,10 @@ test('extension refuses non-loopback pairing and redirects; token only in header
 test('MCP SDK handshake, tools, structured pagination and valid compose result',async t=>{
   const store=await tempStore(t);const first=await store.enqueue(compose('mcp1'));await store.enqueue(compose('mcp2'));
   const server=createMcp(store),client=new Client({name:'test',version:'1.0'});const [left,right]=InMemoryTransport.createLinkedPair();await server.connect(left);await client.connect(right);t.after(async()=>{await client.close();await server.close();});
-  const tools=(await client.listTools()).tools;assert.equal(tools.length,4);assert.equal(tools.find(t=>t.name==='linkdesk_submit_result').annotations.readOnlyHint,false);
+  const tools=(await client.listTools()).tools;assert.equal(tools.length,7);assert.equal(tools.find(t=>t.name==='linkdesk_submit_result').annotations.readOnlyHint,false);
   const list=await client.callTool({name:'linkdesk_list_tasks',arguments:{offset:1,limit:1}});assert.equal(list.structuredContent.tasks.length,1);assert.notEqual(list.structuredContent.tasks[0].id,first.id);
-  const written=await client.callTool({name:'linkdesk_submit_result',arguments:{id:first.id,relevant:true,body:'Thông tin có thể phù hợp với nhu cầu của bạn.'}});assert.equal(written.structuredContent.status,'completed');
+  const claim=await client.callTool({name:'linkdesk_claim_task',arguments:{id:first.id,owner:'mcp-test'}});
+  const written=await client.callTool({name:'linkdesk_submit_result',arguments:{id:first.id,leaseToken:claim.structuredContent.leaseToken,relevant:true,body:'Thông tin có thể phù hợp với nhu cầu của bạn.'}});assert.equal(written.structuredContent.status,'completed');
   const summary=await client.callTool({name:'linkdesk_queue_summary',arguments:{}});assert.equal(summary.structuredContent.counts.completed,1);
 });
 test('OAuth requires owner consent, PKCE, resource/client binding and one-use code',async t=>{
@@ -117,7 +120,13 @@ test('stateless Streamable HTTP responds to authenticated SDK initialize/list/ca
   const store=await tempStore(t),origin='https://linkdesk.example',{remote,provider}=await createApps({store,deviceToken:'T'.repeat(43),ownerCode:'owner',publicOrigin:origin}),base=await listen(t,remote);
   provider.tokens.set('test-access',{clientId:'test',scopes:['compose'],expiresAt:Math.floor(Date.now()/1000)+60,resource:new URL(origin+'/mcp')});
   const transport=new StreamableHTTPClientTransport(new URL(base+'/mcp'),{requestInit:{headers:{Host:'linkdesk.example',Authorization:'Bearer test-access'}},fetch:hostFetch});const client=new Client({name:'http-test',version:'1.0'});t.after(()=>client.close());
-  await client.connect(transport);assert.equal((await client.listTools()).tools.length,4);const summary=await client.callTool({name:'linkdesk_queue_summary',arguments:{}});assert.equal(summary.structuredContent.total,0);
+  await client.connect(transport);assert.equal((await client.listTools()).tools.length,7);const summary=await client.callTool({name:'linkdesk_queue_summary',arguments:{}});assert.equal(summary.structuredContent.total,0);
+  const task=await store.enqueue(compose('stateless-lease'));
+  const claim=await client.callTool({name:'linkdesk_claim_task',arguments:{id:task.id,owner:'stateless-http'}});
+  const leaseToken=claim.structuredContent.leaseToken;
+  const renew=await client.callTool({name:'linkdesk_renew_lease',arguments:{id:task.id,leaseToken}});assert.equal(renew.structuredContent.id,task.id);
+  const written=await client.callTool({name:'linkdesk_submit_result',arguments:{id:task.id,leaseToken,relevant:true,body:'Thông tin có nguồn.'}});assert.equal(written.structuredContent.status,'completed');
+  const retry=await client.callTool({name:'linkdesk_submit_result',arguments:{id:task.id,leaseToken,relevant:true,body:'Thông tin có nguồn.'}});assert.equal(retry.structuredContent.status,'completed');
 });
 test('reports reject changed links, invalid dates and negatives; backups preserve historical snapshot',()=>{
   let state=emptyState();const data={campaignId:'agentshop247',link:AFFILIATE_URL,source:'Supplier dashboard',periodStart:'2026-10-01',periodEnd:'2026-10-08',clicks:12};

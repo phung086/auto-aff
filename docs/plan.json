@@ -5,7 +5,6 @@
   "repository": "https://github.com/phung086/auto-aff",
   "exactDefaultUrl": "https://agentshop247.com/?ref=AS362560C5A713",
   "nextTickets": [
-    "L013",
     "L012",
     "L014",
     "L011",
@@ -66,7 +65,7 @@
       "dependsOn": [
         "M0"
       ],
-      "acceptance": "Worker analyze/compose real; extension saved analysis seen; compose UI, lease and live STOP/quota/refresh pending"
+      "acceptance": "Real inference baseline; local lease55 tests; extension compose/polling/STOP/quota/refresh and live lease upgrade pending"
     },
     {
       "id": "M2",
@@ -107,7 +106,7 @@
       "dependsOn": [
         "M0"
       ],
-      "acceptance": "Permission-gated provider/platform contracts, VN affiliate reports, no unverified public publisher"
+      "acceptance": "Stable HTTPS/OAuth persistence + Windows supervision/startup + rollback; ngrok endpoint already active"
     },
     {
       "id": "M7",
@@ -115,7 +114,7 @@
       "dependsOn": [
         "M6"
       ],
-      "acceptance": "adapter contracts and provider data permissions"
+      "acceptance": "Permission-gated provider/platform contracts and VN affiliate reports; no unverified public publisher"
     }
   ],
   "automaticAI": {
@@ -183,5 +182,22 @@
       "keywordMatchGrantsPublishPermission": false,
       "classifierVerified": false
     }
+  },
+  "taskLeases": {
+    "ticket": "L013",
+    "status": "done-code-local-tested-awaiting-live-upgrade",
+    "branch": "codex/l013-task-leases",
+    "baseCommit": "e95ba77",
+    "report": "docs/TASK_LEASES.md",
+    "testsPassed": 55,
+    "runtimeDeployed": false,
+    "multiClientLiveVerified": false,
+    "mcpToolCount": 7,
+    "submitRequiresLeaseToken": true,
+    "defaultTtlMs": 300000,
+    "maxTtlMs": 600000,
+    "storage": "hash-only, atomic serialized temp/rename; one broker required",
+    "pagination": "identity cursor plus legacy offset read compatibility",
+    "next": "L012 handle reload; coordinated broker/worker/catalog upgrade after review"
   }
 }

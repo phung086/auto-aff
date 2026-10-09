@@ -24,6 +24,17 @@
       "scope": "keyword discovery spec/profile/18 acceptance examples; docs-only",
       "status": "review",
       "dependency": "PR #2 and L071/L072 before runtime integration"
+    },
+    {
+      "ticket": "L013",
+      "owner": "root-l013",
+      "branch": "codex/l013-task-leases",
+      "baseCommit": "e95ba77",
+      "scope": "server task lease/transport/worker/portable instructions + local tests/docs",
+      "status": "review-local-tested-not-deployed",
+      "dependency": "PR #2 and PR #1",
+      "report": "docs/TASK_LEASES.md",
+      "validation": "55 tests/check; no live account actions"
     }
   ],
   "suggestedIndependentStreams": [
@@ -32,7 +43,7 @@
       "lockGroups": [
         "server-tasks"
       ],
-      "state": "ready",
+      "state": "review-local-tested-live-upgrade-pending",
       "owner": null
     },
     {

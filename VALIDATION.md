@@ -1,5 +1,9 @@
 # Kiểm chứng LinkDesk 0.2.0
 
+## L013 — 09/10/2026, isolated local implementation
+
+Nhánh codex/l013-task-leases basee95ba77, phụ thuộc PR #2/#1. npm ci (0 vulnerabilities), npm test55/55, npm run check qua. 11 regression lease mới: claim concurrency, missing/wrong token, hash redaction, durable reload/stale fencing, task/lease expiry boundary+TTL clamp, completed receipt idempotence, release/cancel, failed write/idle no-write, cursor pending mutation, Device+stdio proxy+MCP, hai worker inference fixture, STOP và stale-worker protection. Stateless authenticated HTTP SDK claim/renew/submit/retry cũng qua trong composer test. Ports ngẫu nhiên/data tạm; không model thật/FB, runtime broker/ngrok/Chrome không restart, credentials thật không đọc. Live multi-client/catalog upgrade còn gate; xem TASK_LEASES. Không coi55 tests là bằng chứng feature deployed.
+
 ## Kế hoạch 2.0 — 09/10/2026
 
 Thiết kế keyword routing bổ sung: KEYWORD_DISCOVERY, profileJSON và18 acceptance examples. Kiểm tra JSON, entity IDs/alias coverage (có Cussor/Cursor), decision values, local links, fenced blocks và exact URL qua; npm run check/diff whitespace qua. Đây là kiểm tra cấu trúc tài liệu, chưa chạy classifier thật hoặc test Facebook. Runtime không đổi. Nhận docs-status lock bằng FileMode.CreateNew trong Git common directory và thả sau commit/push; không sửa chồng checkout runtime.

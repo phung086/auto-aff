@@ -6,7 +6,7 @@
 
 | ID | Phụ thuộc / vùng | Acceptance và negative case | Rollback |
 |---|---|---|---|
-| L013 | L010; server-tasks | Lease owner/token/expiry; worker/MCP tranh task chỉ một submit; reject stale/cancelled lease; test crash/clock/concurrency/idempotence. Lease AI không retry publish | Single-consumer flag; migration không xóa task |
+| L013 | L010; server-tasks | Durable lease/cursor local-tested55 tests; reject stale/cancelled/released token; worker/MCP dùng claim/renew/release và receipt. Chưa deploy/live multi-client; xem TASK_LEASES. Lease AI không retry publish | Phiên bảo trì/backup, downgrade đồng bộ về single-consumer; không fail-open, không xóa task |
 | L012 | L013; extension-runner | Handle lưu trước poll; reload nhận cùng task; cancel/failed/completed mở khóa UI; URL/account/campaign match; late response/duplicate click tests | Tắt resume, giữ recovery read-only |
 | L022 | L014/L012; UI | Local/MCP/worker-auth/model/running riêng; health hardcode không thành false disconnected; test budget0/no model/stopped | Trạng thái riêng, không tự bật worker |
 | L011/L014 | Code hiện có; live | Extension analyze/compose về UI exact link; STOP/quota/refresh thật có evidence | STOP, giữ task, không restart broker |
