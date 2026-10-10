@@ -1,4 +1,5 @@
 import { createReviewCard, prepareHelpfulDraft } from './opportunity-workbench.mjs';
+import { request } from './bridge.mjs';
 
 const $ = id => document.getElementById(id);
 let campaigns = [], card = null;
@@ -8,8 +9,8 @@ function selectedCampaign() {
 }
 async function loadCampaigns() {
   try {
-    const { linkdeskState } = await chrome.storage.local.get('linkdeskState');
-    const raw = linkdeskState?.campaigns;
+    const result = await request({ type: 'GET' });
+    const raw = result.state?.campaigns;
     campaigns = Array.isArray(raw) ? raw.filter(c => c?.id && c?.link && c?.product) : [];
   } catch { campaigns = []; }
   $('campaign').replaceChildren();
