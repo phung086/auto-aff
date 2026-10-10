@@ -17,8 +17,15 @@ function getTarget(raw) {
   if (url.protocol !== 'https:' || !FACEBOOK_HOSTS.has(url.hostname) || url.username || url.password || url.port) return null;
   const group = /^\/groups\/([a-zA-Z0-9._-]+)(?:\/|$)/.exec(url.pathname)?.[1];
   if (!group) return null;
-  const pathPost = /^\/groups\/[a-zA-Z0-9._-]+\/(?:posts|permalink)\/(\d+)(?:\/|$)/.exec(url.pathname)?.[1];
-  const queryPost = url.searchParams.get('multi_permalinks');
+  const rootPath = /^\/groups\/[a-zA-Z0-9._-]+\/?$/.test(url.pathname);
+  const postMatch = /^\/groups\/[a-zA-Z0-9._-]+\/(?:posts|permalink)\/(\d+)\/?$/.exec(url.pathname);
+  // A selector on an unrelated group subroute must not certify its identity.
+  if (!rootPath && !postMatch) return null;
+  const pathPost = postMatch?.[1];
+  const queryPosts = url.searchParams.getAll('multi_permalinks');
+  // Duplicated selectors are ambiguous, even when values happen to match.
+  if (queryPosts.length !== new Set(queryPosts).size || queryPosts.length > 1) return null;
+  const queryPost = queryPosts[0] ?? null;
   // A path ID and a different query ID describe an ambiguous post target.
   if (queryPost !== null && (!/^\d+$/.test(queryPost) || (pathPost && pathPost !== queryPost))) return null;
   const post = pathPost || queryPost;
