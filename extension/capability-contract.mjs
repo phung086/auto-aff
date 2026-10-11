@@ -6,7 +6,20 @@ export const CAPABILITY_STATES = Object.freeze(['unknown', 'disabled', 'awaiting
 const actions = new Set(CAPABILITY_ACTIONS);
 const states = new Set(CAPABILITY_STATES);
 const idValid = value => typeof value === 'string' && /^[A-Za-z0-9][A-Za-z0-9._:-]{0,99}$/.test(value);
-const stamp = value => typeof value === 'string' && /^\d{4}-\d{2}-\d{2}T/.test(value) ? Date.parse(value) : NaN;
+// Permission evidence must be a real calendar instant with an explicit timezone.
+// Date.parse silently normalizes nonexistent dates and accepts local-time strings.
+const stamp = value => {
+  if (typeof value !== 'string') return NaN;
+  const match = /^(\d{4})-(\d{2})-(\d{2})T(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d(?:\.\d{1,3})?(?:Z|[+-](?:(?:0\d|1[0-3]):[0-5]\d|14:00))$/.exec(value);
+  if (!match) return NaN;
+  const year = Number(match[1]);
+  const month = Number(match[2]);
+  const day = Number(match[3]);
+  const leap = year % 4 === 0 && (year % 100 !== 0 || year % 400 === 0);
+  const days = [31, leap ? 29 : 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+  if (month < 1 || month > 12 || day < 1 || day > days[month - 1]) return NaN;
+  return Date.parse(value);
+};
 const deny = (reason, action) => ({ allowed: false, action, reason });
 
 /**
