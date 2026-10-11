@@ -20,7 +20,7 @@ export function evaluateCapability(adapter, action, context = {}) {
   if (!adapter || !idValid(adapter.adapterId) || !/^\d+\.\d+\.\d+$/.test(adapter.version ?? ''))
     return deny('ADAPTER_INVALID', action);
   if (adapter.enabled !== true) return deny('ADAPTER_DISABLED', action);
-  if (!/^[A-Z]{2}$/.test(adapter.market ?? '') || !/^[A-Z]{2}$/.test(context.market ?? ''))
+  if (!/^[A-Z]{2}$/.test(adapter.market ?? '') || !/^[A-Z]{2}$/.test(context?.market ?? ''))
     return deny('MARKET_UNKNOWN', action);
   if (adapter.market !== context.market) return deny('MARKET_MISMATCH', action);
   if (!idValid(context.accountId) || adapter.accountId !== context.accountId)
